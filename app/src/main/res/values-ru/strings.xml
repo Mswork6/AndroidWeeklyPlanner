@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CourseWorkAndroidWeeklyPlanner</string>
+    <string name="action_back">Назад</string>
+    <string name="action_add_task">Добавить задачу</string>
+    <string name="description_task_title">Название задачи</string>
+    <string name="description_task_description">Описание задачи</string>
+    <string name="description_date">Дата</string>
+    <string name="description_not_defined">Не установлено</string>
+    <string name="description_priority">Приоритет</string>
+    <string name="description_basic">Стандартный</string>
+    <string name="description_notification">Напоминание</string>
+    <string name="action_previous_week">Предыдущая неделя</string>
+    <string name="action_next_week">Следующая неделя</string>
+    <string name="description_task_check_box">Отметка выполнения задачи</string>
+    <string name="action_search">Поиск</string>
+    <string name="action_filter">Фильтр</string>
+    <string name="description_show_hide_tasks">Показать / скрыть задачи</string>
+    <string name="description_confirm">Подтвердить</string>
+    <string name="description_cancel">Отмена</string>
+    <string name="descipition_dayitem_animation">Анимация карточки дня</string>
+    <string name="action_complete_task">Выполнить задачу</string>
+    <string name="action_cancel_completion_of_task">Отменить выполнение задачи</string>
+    <string name="action_open_task">Открыть задачу</string>
+    <string name="action_edit_task">Редактировать задачу</string>
+    <string name="action_delete_task">Удалить задачу</string>
+    <string name="description_choose_task_priority">Выберите приоритет задачи</string>
+    <string name="description_choose_sorting_type">Выберите режим сортировки</string>
+    <string name="description_high">Высокий</string>
+    <string name="description_standard">Стандартный</string>
+    <string name="description_low">Низкий</string>
+    <string name="error_empty_title">Заголовок не может быть пустым</string>
+    <string name="error_long_title">Заголовок не может превышать 100 символов</string>
+    <string name="description_sort_priority_ascending">По возрастанию приоритета</string>
+    <string name="description_sort_priority_descending">По убыванию приоритета</string>
+    <string name="description_no_sorting">Без сортировки</string>
+    <string name="day_monday">Понедельник</string>
+    <string name="day_tuesday">Вторник</string>
+    <string name="day_wednesday">Среда</string>
+    <string name="day_thursday">Четверг</string>
+    <string name="day_friday">Пятница</string>
+    <string name="day_saturday">Суббота</string>
+    <string name="day_sunday">Воскресенье</string>
+    <string name="postpone_for_day">Отложить на день</string>
+    <string name="error_whitespaces">Пустые символы</string>
+</resources>
