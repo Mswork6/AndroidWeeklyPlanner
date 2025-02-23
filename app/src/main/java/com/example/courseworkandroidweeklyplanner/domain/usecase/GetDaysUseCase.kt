@@ -20,6 +20,7 @@ class GetDaysUseCase @Inject constructor(
     private val sortRepository: SortRepository,
     private val weekRepository: WeekRepository,
 ) {
+    //Получает таски с репозитория, формирует дни, потом сортирует таски
     operator fun invoke(): Flow<List<Day>> = taskRepository.getTasks()
         .combine(weekRepository.getWeek()) { tasks, week ->
             buildDays(week = week, tasks = tasks)

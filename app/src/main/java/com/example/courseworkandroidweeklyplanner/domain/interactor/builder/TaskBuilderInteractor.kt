@@ -29,6 +29,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
     val state: Flow<TaskBuilderState> = _state.asStateFlow()
 
     init {
+        // Проверяем переданный taskId, создаем схему задачи если задача существует
         scope.launch {
             when (taskId) {
                 null -> _schemaState.emit(TaskSchema())
@@ -40,6 +41,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
         }
         scope.launch {
             _schemaState.collect { schema ->
+                // Обновляем стейт интерактора при изменении схемы задачи
                 _state.update {
                     when (it) {
                         is TaskBuilderState.Initial -> when (schema) {
