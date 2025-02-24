@@ -11,6 +11,7 @@ data class Task(
     val name: String,
     val description: String?,
     val priority: Priority,
+    val difficulty: Difficulty,
     val date: LocalDate,
     val time: LocalTime?,
     val isDone: Boolean,
@@ -22,11 +23,18 @@ enum class Priority {
     LOW
 }
 
+enum class Difficulty {
+    HARD,
+    MEDIUM,
+    EASY
+}
+
 data class TaskSchema(
     val id: UUID? = null,
     val name: String = "",
     val description: String? = null,
     val priority: Priority = Priority.BASIC,
+    val difficulty: Difficulty = Difficulty.MEDIUM,
     val day: LocalDate = LocalDate.now(),
     val time: LocalTime? = null,
     val isDone: Boolean? = null,

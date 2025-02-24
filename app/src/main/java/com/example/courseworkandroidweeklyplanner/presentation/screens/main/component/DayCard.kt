@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.courseworkandroidweeklyplanner.domain.model.Day
 import com.example.courseworkandroidweeklyplanner.domain.model.DayType
+import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
@@ -61,6 +62,7 @@ private fun DayCardPreview() {
                 description = "Сдать до 25 числа",
                 date = LocalDate.of(2024, 10, 25),
                 priority = Priority.HIGH,
+                difficulty = Difficulty.MEDIUM,
                 time = null,
                 isDone = false
             ),
@@ -71,6 +73,7 @@ private fun DayCardPreview() {
                 description = "Сдать до 25 числа",
                 date = LocalDate.of(2024, 10, 25),
                 priority = Priority.HIGH,
+                difficulty = Difficulty.MEDIUM,
                 time = null,
                 isDone = false
             )

@@ -28,7 +28,8 @@ interface DataModule {
                 context = context,
                 klass = ApplicationDatabase::class.java,
                 name = "android_weekly_planner_database"
-            ).build()
+            ).fallbackToDestructiveMigration()
+            .build()
 
         @Provides
         @Singleton

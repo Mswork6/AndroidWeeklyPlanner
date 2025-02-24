@@ -8,6 +8,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.model.DayType
+import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.SortType
 import com.example.courseworkandroidweeklyplanner.domain.model.Week
@@ -86,6 +87,14 @@ val DayType.description: Int
         DayType.FRIDAY -> R.string.day_friday
         DayType.SATURDAY -> R.string.day_saturday
         DayType.SUNDAY -> R.string.day_sunday
+    }
+
+@get:StringRes
+val Difficulty.description: Int
+    get() = when(this) {
+        Difficulty.EASY -> R.string.description_difficulty_easy
+        Difficulty.MEDIUM -> R.string.description_difficulty_medium
+        Difficulty.HARD -> R.string.description_difficulty_hard
     }
 
 suspend inline fun <T, R> Iterable<T>.asyncMap(

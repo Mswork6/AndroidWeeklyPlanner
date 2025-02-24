@@ -1,6 +1,7 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.main.component
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
@@ -20,10 +21,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.courseworkandroidweeklyplanner.R
+import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import java.time.LocalDate
+import java.time.LocalTime
 import java.util.UUID
 
 @Composable
@@ -67,15 +70,24 @@ fun TaskItem(
         Icon(
             imageVector = Icons.Default.Notifications,
             contentDescription = stringResource(R.string.description_notification),
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(0.5f)
         )
     }
+    Spacer(modifier = Modifier.width(8.dp))
+    Row(modifier = Modifier.weight(0.5f)) {
+        when (task.difficulty) {
+            Difficulty.HARD -> BatteryIcon(color = colorResource(R.color.red))
+            Difficulty.MEDIUM -> BatteryIcon(bodyCoefficient = 0.5f ,color = colorResource(R.color.orange))
+            Difficulty.EASY -> BatteryIcon(bodyCoefficient = 0.25f ,color = colorResource(R.color.green))
+        }
+    }
+
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun TaskCardWithIconPreview() {
+private fun TaskCardWithIconPreview1() {
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskItem(
             onClick = { },
@@ -84,6 +96,7 @@ private fun TaskCardWithIconPreview() {
                 name = "Отвезти бананы в грузию",
                 description = "Нужно сесть в грузовик и привезти бананы",
                 priority = Priority.HIGH,
+                difficulty = Difficulty.MEDIUM,
                 date = LocalDate.of(2024, 10, 13),
                 time = null,
                 isDone = true
@@ -92,3 +105,26 @@ private fun TaskCardWithIconPreview() {
         )
     }
 }
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun TaskCardWithIconPreview2() {
+    CourseWorkAndroidWeeklyPlannerTheme {
+        TaskItem(
+            onClick = { },
+            task = Task(
+                id = UUID.randomUUID(),
+                name = "Отвезти бананы в грузию",
+                description = "Нужно сесть в грузовик и привезти бананы",
+                priority = Priority.HIGH,
+                difficulty = Difficulty.MEDIUM,
+                date = LocalDate.of(2024, 10, 13),
+                time = LocalTime.of(23, 30),
+                isDone = true
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+

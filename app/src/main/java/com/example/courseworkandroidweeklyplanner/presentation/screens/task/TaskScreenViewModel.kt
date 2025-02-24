@@ -80,6 +80,8 @@ class TaskScreenViewModel @AssistedInject constructor(
         is TaskScreenAction.SetTimePickerVisibility -> setNotificationPickerVisibility(action.opened)
         is TaskScreenAction.SetPriority -> taskBuilderInteractor.setPriority(action.priority)
         is TaskScreenAction.SetPriorityPickerVisibility -> setPriorityPickerVisibility(action.opened)
+        is TaskScreenAction.SetDifficulty -> taskBuilderInteractor.setDifficulty(action.difficulty)
+        is TaskScreenAction.SetDifficultyPickerVisibility -> setDifficultyPickerVisibility(action.opened)
         is TaskScreenAction.Save -> save()
     }
 
@@ -139,6 +141,16 @@ class TaskScreenViewModel @AssistedInject constructor(
         }
     }
 
+    private fun setDifficultyPickerVisibility(opened: Boolean) {
+        _state.update {
+            when (it) {
+                is TaskScreenState.Add -> it.copy(isDifficultyPickerOpened = opened)
+                is TaskScreenState.Edit -> it.copy(isDifficultyPickerOpened = opened)
+                else -> it
+            }
+        }
+    }
+
     private fun merge(state: TaskScreenState.View, task: Task): TaskScreenState.View {
         return with(task) {
             state.copy(
@@ -146,6 +158,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 description = description,
                 date = date,
                 priority = priority,
+                difficulty = difficulty,
                 time = time
             )
         }
@@ -158,6 +171,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 description = description,
                 date = date,
                 priority = priority,
+                difficulty = difficulty,
                 time = time
             )
         }
@@ -170,6 +184,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 description = description,
                 date = date,
                 priority = priority,
+                difficulty = difficulty,
                 time = time
             )
         }
@@ -182,10 +197,12 @@ class TaskScreenViewModel @AssistedInject constructor(
                 description = description,
                 date = date,
                 priority = priority,
+                difficulty = difficulty,
                 time = time,
                 isDatePickerOpened = false,
                 isTimePickerOpened = false,
                 isPriorityPickerOpened = false,
+                isDifficultyPickerOpened = false,
                 errorMessage = null
             )
         }
@@ -198,10 +215,12 @@ class TaskScreenViewModel @AssistedInject constructor(
                 description = description,
                 date = date,
                 priority = priority,
+                difficulty = difficulty,
                 time = time,
                 isDatePickerOpened = false,
                 isTimePickerOpened = false,
                 isPriorityPickerOpened = false,
+                isDifficultyPickerOpened = false,
                 errorMessage = null
             )
         }
@@ -214,6 +233,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 description = description,
                 date = date,
                 priority = priority,
+                difficulty = difficulty,
                 time = time,
             )
         }
