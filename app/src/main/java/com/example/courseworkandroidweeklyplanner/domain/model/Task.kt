@@ -22,6 +22,12 @@ enum class Priority {
     LOW
 }
 
+enum class Difficulty {
+    HARD,
+    MEDIUM,
+    EASY
+}
+
 data class TaskSchema(
     val id: UUID? = null,
     val name: String = "",

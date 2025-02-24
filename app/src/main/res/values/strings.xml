@@ -42,4 +42,8 @@
     <string name="day_sunday">Sunday</string>
     <string name="postpone_for_day">Postpone for day</string>
     <string name="error_whitespaces">Title has useless whitespaces</string>
+    <string name="description_difficulty_hard">Hard</string>
+    <string name="description_difficulty_medium">Medium</string>
+    <string name="description_difficulty_easy">Easy</string>
+    <string name="description_choose_task_difficulty">Choose task difficulty</string>
 </resources>

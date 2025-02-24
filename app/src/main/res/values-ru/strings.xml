@@ -43,4 +43,8 @@
     <string name="day_sunday">Воскресенье</string>
     <string name="postpone_for_day">Отложить на день</string>
     <string name="error_whitespaces">Пустые символы</string>
+    <string name="description_difficulty_hard">Тяжелая</string>
+    <string name="description_difficulty_medium">Средняя</string>
+    <string name="description_difficulty_easy">Легкая</string>
+    <string name="description_choose_task_difficulty">Выберите сложность задачи</string>
 </resources>

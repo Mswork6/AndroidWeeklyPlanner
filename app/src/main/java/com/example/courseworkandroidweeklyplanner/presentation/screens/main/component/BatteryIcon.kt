@@ -9,13 +9,16 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 
 @Composable
 fun BatteryIcon(
     bodyCoefficient: Float = 1f,
+    color: Color = Color.Black
 ) {
     Canvas(
         modifier = Modifier
@@ -41,7 +44,7 @@ fun BatteryIcon(
         val batteryBodyOffset = Offset(offsetValue, offsetValue)
 
         drawRect(
-            color = Color.Black,
+            color = color,
             style = Stroke(strokeWidth),
             size = Size(
                 batteryContourWidth,
@@ -54,7 +57,7 @@ fun BatteryIcon(
                 batteryContactWidth,
                 batteryContactHeight
             ),
-            color = Color.Black
+            color = color
 
         )
         drawRect(
@@ -63,7 +66,7 @@ fun BatteryIcon(
                 batteryBodyWidth * bodyCoefficient,
                 batterBodyHeight
             ),
-            color = Color.Black
+            color = color
 
         )
     }
@@ -74,7 +77,10 @@ fun BatteryIcon(
 @Composable
 private fun BatteryIconPreview1() {
     CourseWorkAndroidWeeklyPlannerTheme {
-        BatteryIcon(bodyCoefficient = 0.25f)
+        BatteryIcon(
+            bodyCoefficient = 0.25f,
+            color = colorResource(R.color.green)
+        )
     }
 }
 
@@ -83,7 +89,10 @@ private fun BatteryIconPreview1() {
 @Composable
 private fun BatteryIconPreview2() {
     CourseWorkAndroidWeeklyPlannerTheme {
-        BatteryIcon(bodyCoefficient = 0.5f)
+        BatteryIcon(
+            bodyCoefficient = 0.5f,
+            color = colorResource(R.color.orange)
+            )
     }
 }
 
@@ -92,6 +101,8 @@ private fun BatteryIconPreview2() {
 @Composable
 private fun BatteryIconPreview3() {
     CourseWorkAndroidWeeklyPlannerTheme {
-        BatteryIcon()
+        BatteryIcon(
+            color = colorResource(R.color.red)
+        )
     }
 }
