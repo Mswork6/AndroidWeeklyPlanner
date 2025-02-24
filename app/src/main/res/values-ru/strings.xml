@@ -47,4 +47,5 @@
     <string name="description_difficulty_medium">Средняя</string>
     <string name="description_difficulty_easy">Легкая</string>
     <string name="description_choose_task_difficulty">Выберите сложность задачи</string>
+    <string name="description_difficulty">Сложность</string>
 </resources>

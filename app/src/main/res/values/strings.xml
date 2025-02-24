@@ -46,4 +46,5 @@
     <string name="description_difficulty_medium">Medium</string>
     <string name="description_difficulty_easy">Easy</string>
     <string name="description_choose_task_difficulty">Choose task difficulty</string>
+    <string name="description_difficulty">Difficulty</string>
 </resources>

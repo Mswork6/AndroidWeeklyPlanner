@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.courseworkandroidweeklyplanner.R
+import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.DatePickerModal
 import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.ErrorScreen
@@ -35,6 +36,7 @@ import com.example.courseworkandroidweeklyplanner.presentation.screens.task.comp
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenTopBar
 import com.example.courseworkandroidweeklyplanner.presentation.PastOrPresentSelectableDates
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenDifficultyInputField
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.LocalTime
@@ -126,6 +128,13 @@ private fun TaskScreenBaseContent(
                 editState = state.editable,
                 priority = state.priority,
                 onClick = { onAction(TaskScreenAction.SetPriorityPickerVisibility(true)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+            TaskAddScreenDivider()
+            TaskScreenDifficultyInputField(
+                editState = state.editable,
+                difficulty = Difficulty.EASY,
+                onClick = { },
                 modifier = Modifier.fillMaxWidth()
             )
             TaskAddScreenDivider()
