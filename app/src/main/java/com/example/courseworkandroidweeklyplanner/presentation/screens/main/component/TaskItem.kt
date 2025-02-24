@@ -24,6 +24,7 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import java.time.LocalDate
+import java.time.LocalTime
 import java.util.UUID
 
 @Composable
@@ -75,7 +76,7 @@ fun TaskItem(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun TaskCardWithIconPreview() {
+private fun TaskCardWithIconPreview1() {
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskItem(
             onClick = { },
@@ -92,3 +93,25 @@ private fun TaskCardWithIconPreview() {
         )
     }
 }
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun TaskCardWithIconPreview2() {
+    CourseWorkAndroidWeeklyPlannerTheme {
+        TaskItem(
+            onClick = { },
+            task = Task(
+                id = UUID.randomUUID(),
+                name = "Отвезти бананы в грузию",
+                description = "Нужно сесть в грузовик и привезти бананы",
+                priority = Priority.HIGH,
+                date = LocalDate.of(2024, 10, 13),
+                time = LocalTime.of(23, 30),
+                isDone = true
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
