@@ -1,6 +1,7 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.main.component
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
@@ -69,9 +70,18 @@ fun TaskItem(
         Icon(
             imageVector = Icons.Default.Notifications,
             contentDescription = stringResource(R.string.description_notification),
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(0.5f)
         )
     }
+    Spacer(modifier = Modifier.width(8.dp))
+    Row(modifier = Modifier.weight(0.5f)) {
+        when (task.difficulty) {
+            Difficulty.HARD -> BatteryIcon(color = colorResource(R.color.red))
+            Difficulty.MEDIUM -> BatteryIcon(bodyCoefficient = 0.5f ,color = colorResource(R.color.orange))
+            Difficulty.EASY -> BatteryIcon(bodyCoefficient = 0.25f ,color = colorResource(R.color.green))
+        }
+    }
+
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

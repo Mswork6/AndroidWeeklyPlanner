@@ -2,6 +2,7 @@ package com.example.courseworkandroidweeklyplanner.presentation.screens.task
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
+import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import java.time.LocalDate
 import java.time.LocalTime
@@ -21,9 +22,11 @@ sealed interface TaskScreenState {
         val description: String?
         val date: LocalDate
         val priority: Priority
+        val difficulty: Difficulty
         val time: LocalTime?
         val isDatePickerOpened: Boolean
         val isPriorityPickerOpened: Boolean
+        val isDifficultyPickerOpened: Boolean
         val isTimePickerOpened: Boolean
         @get:StringRes
         val errorMessage: Int?
@@ -36,11 +39,14 @@ sealed interface TaskScreenState {
         override val description: String?,
         override val date: LocalDate,
         override val priority: Priority,
+        override val difficulty: Difficulty,
         override val time: LocalTime?
     ) : Content {
         override val isDatePickerOpened: Boolean
             get() = false
         override val isPriorityPickerOpened: Boolean
+            get() = false
+        override val isDifficultyPickerOpened: Boolean
             get() = false
         override val isTimePickerOpened: Boolean
             get() = false
@@ -56,8 +62,10 @@ sealed interface TaskScreenState {
         override val description: String?,
         override val date: LocalDate,
         override val priority: Priority,
+        override val difficulty: Difficulty,
         override val time: LocalTime?,
         override val isPriorityPickerOpened: Boolean,
+        override val isDifficultyPickerOpened: Boolean,
         override val isDatePickerOpened: Boolean,
         override val isTimePickerOpened: Boolean,
         override val errorMessage: Int?
@@ -72,8 +80,10 @@ sealed interface TaskScreenState {
         override val description: String?,
         override val date: LocalDate,
         override val priority: Priority,
+        override val difficulty: Difficulty,
         override val time: LocalTime?,
         override val isPriorityPickerOpened: Boolean,
+        override val isDifficultyPickerOpened: Boolean,
         override val isDatePickerOpened: Boolean,
         override val isTimePickerOpened: Boolean,
         override val errorMessage: Int?
