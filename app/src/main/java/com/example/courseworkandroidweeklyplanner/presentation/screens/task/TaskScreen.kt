@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.courseworkandroidweeklyplanner.R
+import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.DatePickerModal
 import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.ErrorScreen
@@ -35,6 +36,8 @@ import com.example.courseworkandroidweeklyplanner.presentation.screens.task.comp
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenTopBar
 import com.example.courseworkandroidweeklyplanner.presentation.PastOrPresentSelectableDates
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.DifficultyDialogWindow
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenDifficultyInputField
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.LocalTime
@@ -129,6 +132,13 @@ private fun TaskScreenBaseContent(
                 modifier = Modifier.fillMaxWidth()
             )
             TaskAddScreenDivider()
+            TaskScreenDifficultyInputField(
+                editState = state.editable,
+                difficulty = state.difficulty,
+                onClick = { onAction(TaskScreenAction.SetDifficultyPickerVisibility(true)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+            TaskAddScreenDivider()
             TaskScreenDateInputField(
                 selectedDate = state.date,
                 editState = state.editable,
@@ -188,6 +198,19 @@ private fun TaskScreenBaseContent(
                 modifier = Modifier.fillMaxWidth(0.9f)
             )
         }
+
+        if (state.isDifficultyPickerOpened) {
+            DifficultyDialogWindow(
+                selectedOption = state.difficulty,
+                onOptionSelected = { option ->
+                    onAction(TaskScreenAction.SetDifficulty(option))
+                },
+                onDismissRequest = {
+                    onAction(TaskScreenAction.SetDifficultyPickerVisibility(false))
+                },
+                modifier = Modifier.fillMaxWidth(0.9f)
+            )
+        }
     }
 }
 
@@ -209,6 +232,7 @@ private fun TaskScreenContent1Preview() {
         description = "description",
         date = LocalDate.now(),
         priority = Priority.HIGH,
+        difficulty = Difficulty.HARD,
         time = LocalTime.now(),
     )
     CourseWorkAndroidWeeklyPlannerTheme {
@@ -230,9 +254,11 @@ private fun TaskScreenContent2Preview() {
         description = "description",
         date = LocalDate.now(),
         priority = Priority.HIGH,
+        difficulty = Difficulty.HARD,
         time = LocalTime.now(),
         isDatePickerOpened = false,
         isPriorityPickerOpened = false,
+        isDifficultyPickerOpened = false,
         isTimePickerOpened = false,
         errorMessage = null
     )
@@ -255,9 +281,11 @@ private fun TaskScreenContent3Preview() {
         description = "description",
         date = LocalDate.now(),
         priority = Priority.HIGH,
+        difficulty = Difficulty.HARD,
         time = LocalTime.now(),
         isDatePickerOpened = false,
         isPriorityPickerOpened = false,
+        isDifficultyPickerOpened = false,
         isTimePickerOpened = false,
         errorMessage = null
     )

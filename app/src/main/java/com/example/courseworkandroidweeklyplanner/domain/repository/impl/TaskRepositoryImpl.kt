@@ -4,6 +4,7 @@ import com.example.courseworkandroidweeklyplanner.data.dao.TaskDao
 import com.example.courseworkandroidweeklyplanner.data.entity.TaskEntity
 import com.example.courseworkandroidweeklyplanner.domain.Converter
 import com.example.courseworkandroidweeklyplanner.domain.localTimeOfMilliOfDay
+import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.domain.repository.TaskRepository
@@ -52,6 +53,7 @@ class TaskRepositoryImpl @Inject constructor(
                 date = date.toEpochDay(),
                 time = time?.toMilliOfDay(),
                 priority = priority.toString(),
+                difficulty = difficulty.toString(),
                 isDone = isDone
             )
         }
@@ -64,6 +66,7 @@ class TaskRepositoryImpl @Inject constructor(
                 name = name,
                 description = description,
                 priority = Priority.valueOf(priority),
+                difficulty = Difficulty.valueOf(difficulty),
                 date = LocalDate.ofEpochDay(entity.date),
                 time = time?.let(::localTimeOfMilliOfDay),
                 isDone = isDone,

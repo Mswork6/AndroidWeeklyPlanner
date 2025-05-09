@@ -26,6 +26,9 @@ data class TaskEntity(
     @ColumnInfo(name = "priority")
     val priority: String,
 
+    @ColumnInfo(name = "difficulty")
+    val difficulty: String,
+
     @ColumnInfo(name = "is_done")
     val isDone: Boolean
 )

@@ -2,6 +2,7 @@ package com.example.courseworkandroidweeklyplanner.domain.interactor.builder
 
 import com.example.courseworkandroidweeklyplanner.domain.Converter
 import com.example.courseworkandroidweeklyplanner.domain.interactor.saver.TaskInteractor
+import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.domain.model.TaskSchema
@@ -79,6 +80,12 @@ class TaskBuilderInteractor @AssistedInject constructor(
         }
     }
 
+    fun setDifficulty(difficulty: Difficulty) {
+        _schemaState.update {
+            it?.copy(difficulty = difficulty)
+        }
+    }
+
     fun setDate(dateInMillis: Long) {
         _schemaState.update {
             it?.copy(day = convertToLocalDate(dateInMillis))
@@ -130,6 +137,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
                 name = name,
                 description = description,
                 priority = priority,
+                difficulty = difficulty,
                 day = date,
                 time = time,
                 isDone = isDone
@@ -146,6 +154,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
                 date = day,
                 time = time,
                 priority = priority,
+                difficulty = difficulty,
                 isDone = isDone ?: false,
             )
         }
