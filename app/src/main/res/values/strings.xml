@@ -50,7 +50,7 @@
     <string name="warning_attention">Attention</string>
     <string name="description_task_limit_explanation">You have already added enough tasks of this difficulty level for the selected day. According to the 1-3-5 time management technique, it is recommended to plan 1 heavy, 3 medium and 5 light tasks for the day.</string>
     <string name="tip_task_limit_tip">Tip: Break this task into parts or reschedule it for another day.</string>
-    <string name="question_add_task_with_limit_exceeded">Still add the task in its current form?</string>
-    <string name="description_add">Add</string>
-    <string name="description_dont_add">Don\'t add</string>
+    <string name="question_add_task_with_limit_exceeded">Still leave the task in its current form?</string>
+    <string name="description_leave_it">Leave it</string>
+    <string name="description_change">Change</string>
 </resources>

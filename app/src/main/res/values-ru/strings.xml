@@ -51,7 +51,7 @@
     <string name="warning_attention">Внимание</string>
     <string name="description_task_limit_explanation">Вы уже добавили достаточно задач этого уровня сложности на выбранный день. Согласно технике тайм-менеджмента 1-3-5 на день рекомендуется планировать 1 тяжелую, 3 средних и 5 легких задач.</string>
     <string name="tip_task_limit_tip">Совет: Разбейте эту задачу на части или перенесите на другой день.</string>
-    <string name="question_add_task_with_limit_exceeded">Всё равно добавить задачу в текущем виде?</string>
-    <string name="description_add">Добавить</string>
-    <string name="description_dont_add">Не добавлять</string>
+    <string name="question_add_task_with_limit_exceeded">Всё равно оставить задачу в текущем виде?</string>
+    <string name="description_leave_it">Оставить</string>
+    <string name="description_change">Изменить</string>
 </resources>
