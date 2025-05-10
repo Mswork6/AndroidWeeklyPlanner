@@ -37,6 +37,7 @@ import com.example.courseworkandroidweeklyplanner.presentation.screens.task.comp
 import com.example.courseworkandroidweeklyplanner.presentation.PastOrPresentSelectableDates
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.DifficultyDialogWindow
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskLimitWindow
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenDifficultyInputField
 import kotlinx.coroutines.delay
 import java.time.LocalDate
@@ -103,7 +104,7 @@ private fun TaskScreenBaseContent(
                     is TaskScreenState.View -> null
                 },
                 navigateBackAction = onNavigateBack,
-                confirmAction = { onAction(TaskScreenAction.Save) }
+                confirmAction = { onAction(TaskScreenAction.ValidateAndReact) }
             )
         }
     ) { padding: PaddingValues ->
@@ -211,6 +212,18 @@ private fun TaskScreenBaseContent(
                 modifier = Modifier.fillMaxWidth(0.9f)
             )
         }
+
+        if(state.isTaskLimitWindowOpened) {
+            TaskLimitWindow(
+                onOptionSelected = {
+                    onAction(TaskScreenAction.Save)
+                },
+                onDismissRequest = {
+                    onAction(TaskScreenAction.SetTaskLimitWindowVisibility(false))
+                },
+                //modifier = Modifier.fillMaxWidth(0.95f)
+            )
+        }
     }
 }
 
@@ -260,6 +273,7 @@ private fun TaskScreenContent2Preview() {
         isPriorityPickerOpened = false,
         isDifficultyPickerOpened = false,
         isTimePickerOpened = false,
+        isTaskLimitWindowOpened = false,
         errorMessage = null
     )
     CourseWorkAndroidWeeklyPlannerTheme {
@@ -287,6 +301,7 @@ private fun TaskScreenContent3Preview() {
         isPriorityPickerOpened = false,
         isDifficultyPickerOpened = false,
         isTimePickerOpened = false,
+        isTaskLimitWindowOpened = false,
         errorMessage = null
     )
     CourseWorkAndroidWeeklyPlannerTheme {

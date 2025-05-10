@@ -28,6 +28,7 @@ sealed interface TaskScreenState {
         val isPriorityPickerOpened: Boolean
         val isDifficultyPickerOpened: Boolean
         val isTimePickerOpened: Boolean
+        val isTaskLimitWindowOpened: Boolean
         @get:StringRes
         val errorMessage: Int?
         val editable: Boolean
@@ -50,6 +51,8 @@ sealed interface TaskScreenState {
             get() = false
         override val isTimePickerOpened: Boolean
             get() = false
+        override val isTaskLimitWindowOpened: Boolean
+            get() = false
         override val errorMessage: Int?
             get() = null
         override val editable: Boolean
@@ -68,6 +71,7 @@ sealed interface TaskScreenState {
         override val isDifficultyPickerOpened: Boolean,
         override val isDatePickerOpened: Boolean,
         override val isTimePickerOpened: Boolean,
+        override val isTaskLimitWindowOpened: Boolean,
         override val errorMessage: Int?
     ) : Content {
         override val editable: Boolean
@@ -86,6 +90,7 @@ sealed interface TaskScreenState {
         override val isDifficultyPickerOpened: Boolean,
         override val isDatePickerOpened: Boolean,
         override val isTimePickerOpened: Boolean,
+        override val isTaskLimitWindowOpened: Boolean,
         override val errorMessage: Int?
     ) : Content {
         override val editable: Boolean

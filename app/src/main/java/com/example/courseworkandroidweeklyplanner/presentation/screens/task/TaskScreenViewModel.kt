@@ -83,10 +83,12 @@ class TaskScreenViewModel @AssistedInject constructor(
         is TaskScreenAction.SetPriorityPickerVisibility -> setPriorityPickerVisibility(action.opened)
         is TaskScreenAction.SetDifficulty -> taskBuilderInteractor.setDifficulty(action.difficulty)
         is TaskScreenAction.SetDifficultyPickerVisibility -> setDifficultyPickerVisibility(action.opened)
+        is TaskScreenAction.SetTaskLimitWindowVisibility -> setTaskLimitScreenVisibility(action.opened)
+        is TaskScreenAction.ValidateAndReact -> validateAndReact()
         is TaskScreenAction.Save -> save()
     }
 
-    private suspend fun validate() {
+    private suspend fun validateAndReact() {
         val report: TaskBuilderReport = taskBuilderInteractor.validate()
         val errorMessage: Int? = when (report) {
             is TaskBuilderReport.Default -> when (report.nameReport) {
@@ -109,20 +111,21 @@ class TaskScreenViewModel @AssistedInject constructor(
         }
 
         if(report is TaskBuilderReport.Default
+            && report.nameReport is NameReport.Valid
             && report.taskLimitReport is TaskLimitReport.Exceeded) {
-            TODO()
+            setTaskLimitScreenVisibility(true)
         }
 
         if (report is TaskBuilderReport.Default
             && report.nameReport is NameReport.Valid
             && report.taskLimitReport is TaskLimitReport.Valid) {
-            _state.emit(TaskScreenState.Success)
             save()
         }
     }
 
     private suspend fun save() {
         taskBuilderInteractor.save()
+        _state.emit(TaskScreenState.Success)
     }
 
     private fun setDeadlinePickerVisibility(opened: Boolean) {
@@ -160,6 +163,16 @@ class TaskScreenViewModel @AssistedInject constructor(
             when (it) {
                 is TaskScreenState.Add -> it.copy(isDifficultyPickerOpened = opened)
                 is TaskScreenState.Edit -> it.copy(isDifficultyPickerOpened = opened)
+                else -> it
+            }
+        }
+    }
+
+    private fun setTaskLimitScreenVisibility(opened: Boolean) {
+        _state.update {
+            when (it) {
+                is TaskScreenState.Add -> it.copy(isTaskLimitWindowOpened = opened)
+                is TaskScreenState.Edit -> it.copy(isTaskLimitWindowOpened = opened)
                 else -> it
             }
         }
@@ -217,6 +230,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 isTimePickerOpened = false,
                 isPriorityPickerOpened = false,
                 isDifficultyPickerOpened = false,
+                isTaskLimitWindowOpened = false,
                 errorMessage = null
             )
         }
@@ -235,6 +249,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 isTimePickerOpened = false,
                 isPriorityPickerOpened = false,
                 isDifficultyPickerOpened = false,
+                isTaskLimitWindowOpened = false,
                 errorMessage = null
             )
         }

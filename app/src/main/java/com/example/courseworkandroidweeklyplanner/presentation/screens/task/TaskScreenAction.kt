@@ -24,5 +24,9 @@ sealed interface TaskScreenAction {
 
     data class SetTimePickerVisibility(val opened: Boolean) : TaskScreenAction
 
+    data class SetTaskLimitWindowVisibility(val opened: Boolean) : TaskScreenAction
+
+    data object ValidateAndReact : TaskScreenAction
+
     data object Save : TaskScreenAction
 }
