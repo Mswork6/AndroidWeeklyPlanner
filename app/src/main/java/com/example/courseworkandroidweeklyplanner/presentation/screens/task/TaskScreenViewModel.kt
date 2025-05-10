@@ -6,6 +6,7 @@ import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.Name
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskBuilderInteractor
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskBuilderReport
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskBuilderState
+import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskLimitReport
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.core.BaseViewModel
 import dagger.assisted.Assisted
@@ -85,14 +86,14 @@ class TaskScreenViewModel @AssistedInject constructor(
         is TaskScreenAction.Save -> save()
     }
 
-    private suspend fun save() {
-        val report: TaskBuilderReport = taskBuilderInteractor.save()
+    private suspend fun validate() {
+        val report: TaskBuilderReport = taskBuilderInteractor.validate()
         val errorMessage: Int? = when (report) {
             is TaskBuilderReport.Default -> when (report.nameReport) {
                 NameReport.Empty -> R.string.error_empty_title
                 NameReport.TooLong -> R.string.error_long_title
-                NameReport.Valid -> null
                 NameReport.UselessWhitespaces -> R.string.error_whitespaces
+                NameReport.Valid -> null
             }
             TaskBuilderReport.NotInitialized -> null
         }
@@ -106,9 +107,22 @@ class TaskScreenViewModel @AssistedInject constructor(
                 is TaskScreenState.View -> it
             }
         }
-        if (report is TaskBuilderReport.Default && report.nameReport is NameReport.Valid) {
-            _state.emit(TaskScreenState.Success)
+
+        if(report is TaskBuilderReport.Default
+            && report.taskLimitReport is TaskLimitReport.Exceeded) {
+            TODO()
         }
+
+        if (report is TaskBuilderReport.Default
+            && report.nameReport is NameReport.Valid
+            && report.taskLimitReport is TaskLimitReport.Valid) {
+            _state.emit(TaskScreenState.Success)
+            save()
+        }
+    }
+
+    private suspend fun save() {
+        taskBuilderInteractor.save()
     }
 
     private fun setDeadlinePickerVisibility(opened: Boolean) {
