@@ -98,7 +98,7 @@ private fun TaskCardWithIconPreview1() {
                 priority = Priority.HIGH,
                 difficulty = Difficulty.MEDIUM,
                 date = LocalDate.of(2024, 10, 13),
-                time = null,
+                time = LocalTime.of(17,33),
                 isDone = true
             ),
             modifier = Modifier.fillMaxWidth()

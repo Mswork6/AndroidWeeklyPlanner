@@ -149,15 +149,8 @@ private fun TaskScreenBaseContent(
             TaskAddScreenDivider()
             TaskScreenTimeInputField(
                 selectedTime = state.time,
-                isChecked = state.time != null,
                 editState = state.editable,
-                onClick = {
-                    if (state.time == null) {
-                        onAction(TaskScreenAction.SetTimePickerVisibility(true))
-                    } else {
-                        onAction(TaskScreenAction.SetTime(null, null))
-                    }
-                },
+                onClick = { onAction(TaskScreenAction.SetTimePickerVisibility(true)) },
                 modifier = Modifier.fillMaxWidth()
             )
         }

@@ -14,7 +14,7 @@ sealed interface TaskScreenAction {
 
     data class SetDifficulty(val difficulty: Difficulty) : TaskScreenAction
 
-    data class SetTime(val hour: Int?, val minute: Int?) : TaskScreenAction
+    data class SetTime(val hour: Int, val minute: Int) : TaskScreenAction
 
     data class SetDatePickerVisibility(val opened: Boolean) : TaskScreenAction
 

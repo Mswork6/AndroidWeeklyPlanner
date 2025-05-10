@@ -34,7 +34,6 @@ import java.time.LocalTime
 @Composable
 internal fun TaskScreenTimeInputField(
     selectedTime: LocalTime?,
-    isChecked: Boolean,
     editState: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -74,7 +73,6 @@ private fun TaskAddScreenNotificationInputFieldPreview() {
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenTimeInputField(
             selectedTime = null,
-            isChecked = isChecked,
             editState = false,
             onClick = { isChecked = isChecked.not() },
             modifier = Modifier.fillMaxWidth()

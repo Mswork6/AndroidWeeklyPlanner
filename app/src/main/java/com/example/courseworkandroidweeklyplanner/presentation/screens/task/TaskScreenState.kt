@@ -23,7 +23,7 @@ sealed interface TaskScreenState {
         val date: LocalDate
         val priority: Priority
         val difficulty: Difficulty
-        val time: LocalTime?
+        val time: LocalTime
         val isDatePickerOpened: Boolean
         val isPriorityPickerOpened: Boolean
         val isDifficultyPickerOpened: Boolean
@@ -41,7 +41,7 @@ sealed interface TaskScreenState {
         override val date: LocalDate,
         override val priority: Priority,
         override val difficulty: Difficulty,
-        override val time: LocalTime?
+        override val time: LocalTime
     ) : Content {
         override val isDatePickerOpened: Boolean
             get() = false
@@ -66,7 +66,7 @@ sealed interface TaskScreenState {
         override val date: LocalDate,
         override val priority: Priority,
         override val difficulty: Difficulty,
-        override val time: LocalTime?,
+        override val time: LocalTime,
         override val isPriorityPickerOpened: Boolean,
         override val isDifficultyPickerOpened: Boolean,
         override val isDatePickerOpened: Boolean,
@@ -85,7 +85,7 @@ sealed interface TaskScreenState {
         override val date: LocalDate,
         override val priority: Priority,
         override val difficulty: Difficulty,
-        override val time: LocalTime?,
+        override val time: LocalTime,
         override val isPriorityPickerOpened: Boolean,
         override val isDifficultyPickerOpened: Boolean,
         override val isDatePickerOpened: Boolean,

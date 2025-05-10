@@ -19,6 +19,7 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import java.time.LocalDate
+import java.time.LocalTime
 import java.util.UUID
 
 @Composable
@@ -63,7 +64,7 @@ private fun DayCardPreview() {
                 date = LocalDate.of(2024, 10, 25),
                 priority = Priority.HIGH,
                 difficulty = Difficulty.MEDIUM,
-                time = null,
+                time = LocalTime.of(17,33),
                 isDone = false
             ),
 
@@ -74,7 +75,7 @@ private fun DayCardPreview() {
                 date = LocalDate.of(2024, 10, 25),
                 priority = Priority.HIGH,
                 difficulty = Difficulty.MEDIUM,
-                time = null,
+                time = LocalTime.of(17,33),
                 isDone = false
             )
         )

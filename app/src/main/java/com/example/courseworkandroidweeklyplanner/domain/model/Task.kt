@@ -2,6 +2,7 @@ package com.example.courseworkandroidweeklyplanner.domain.model
 
 import androidx.compose.runtime.Immutable
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.UUID
 
@@ -13,7 +14,7 @@ data class Task(
     val priority: Priority,
     val difficulty: Difficulty,
     val date: LocalDate,
-    val time: LocalTime?,
+    val time: LocalTime,
     val isDone: Boolean,
 )
 
@@ -35,7 +36,8 @@ data class TaskSchema(
     val description: String? = null,
     val priority: Priority = Priority.BASIC,
     val difficulty: Difficulty = Difficulty.MEDIUM,
-    val day: LocalDate = LocalDate.now(),
-    val time: LocalTime? = null,
+    val day: LocalDate = if (LocalDateTime.now().plusHours(1).toLocalDate()
+            .equals(LocalDate.now())) LocalDate.now() else LocalDate.now().plusDays(1),
+    val time: LocalTime = LocalTime.now().plusHours(1),
     val isDone: Boolean? = null,
 )

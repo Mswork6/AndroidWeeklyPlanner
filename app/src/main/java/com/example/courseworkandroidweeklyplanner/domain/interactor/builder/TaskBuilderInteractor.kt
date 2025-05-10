@@ -95,13 +95,10 @@ class TaskBuilderInteractor @AssistedInject constructor(
         }
     }
 
-    fun setTime(hour: Int?, minute: Int?) {
+    fun setTime(hour: Int, minute: Int) {
         _schemaState.update {
             it?.copy(
-                time = when {
-                    hour != null && minute != null -> LocalTime.of(hour, minute)
-                    else -> null
-                }
+                time = LocalTime.of(hour, minute)
             )
         }
     }
