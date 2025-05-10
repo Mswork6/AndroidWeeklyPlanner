@@ -1,11 +1,13 @@
 package com.example.courseworkandroidweeklyplanner.domain.interactor.builder
 
+import android.util.Log
 import com.example.courseworkandroidweeklyplanner.domain.Converter
 import com.example.courseworkandroidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.domain.model.TaskSchema
+import com.example.courseworkandroidweeklyplanner.domain.usecase.CheckDailyTaskLimitUseCase
 import com.example.courseworkandroidweeklyplanner.presentation.convertToLocalDate
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -23,6 +25,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
     @Assisted private val taskId: UUID?,
     @Assisted private val scope: CoroutineScope,
     private val taskInteractor: TaskInteractor,
+    private val checkDailyTaskLimitUseCase: CheckDailyTaskLimitUseCase
 ) : Converter<TaskSchema, Task> {
     private val _schemaState: MutableStateFlow<TaskSchema?> = MutableStateFlow(null)
     private val _state: MutableStateFlow<TaskBuilderState> =
@@ -103,24 +106,46 @@ class TaskBuilderInteractor @AssistedInject constructor(
         }
     }
 
-    suspend fun save(): TaskBuilderReport {
-        return when (val taskState = _state.value) {
-            is TaskBuilderState.Initial -> TaskBuilderReport.NotInitialized
-            is TaskBuilderState.Invalid -> TaskBuilderReport.NotInitialized
-            is TaskBuilderState.Default -> {
-                val task = taskState.task
-                when {
-                    task.name.length > 100 -> TaskBuilderReport.Default(NameReport.TooLong)
-                    task.name.isBlank() -> TaskBuilderReport.Default(NameReport.Empty)
-                    task.name.trim() != task.name -> TaskBuilderReport.Default(NameReport.UselessWhitespaces)
-                    else -> {
-                        when (taskId) {
-                            null -> taskInteractor.addTask(task)
-                            else -> taskInteractor.updateTask(task)
-                        }
-                        TaskBuilderReport.Default(NameReport.Valid)
-                    }
-                }
+    suspend fun validate(): TaskBuilderReport {
+        val stateValue = _state.value
+        if (stateValue !is TaskBuilderState.Default) {
+            return TaskBuilderReport.NotInitialized
+        }
+
+        val task = stateValue.task
+
+        // 1) Проверяем имя
+        val nameReport = when {
+            task.name.isBlank() -> NameReport.Empty
+            task.name.length > 100 -> NameReport.TooLong
+            task.name.trim() != task.name -> NameReport.UselessWhitespaces
+            else -> NameReport.Valid
+        }
+
+        // 2) Проверяем лимит 1-3-5, но только если имя валидно
+        val taskLimitReport = if (nameReport == NameReport.Valid) {
+            Log.d("MSWORK6", taskId.toString())
+            val canAdd = checkDailyTaskLimitUseCase(task.date, task.difficulty, taskId)
+            if (canAdd) TaskLimitReport.Valid else TaskLimitReport.Exceeded
+        } else {
+            // если имя невалидно, нам не важно, сколько там задач
+            TaskLimitReport.Valid
+        }
+
+        return TaskBuilderReport.Default(
+            nameReport       = nameReport,
+            taskLimitReport  = taskLimitReport
+        )
+    }
+
+    suspend fun save() {
+        val taskState = _state.value
+        if (taskState is TaskBuilderState.Default){
+            val task = taskState.task
+
+            when (taskId) {
+                null -> taskInteractor.addTask(task)
+                else -> taskInteractor.updateTask(task)
             }
         }
     }

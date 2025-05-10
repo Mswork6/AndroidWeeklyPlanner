@@ -6,6 +6,7 @@ import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.Name
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskBuilderInteractor
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskBuilderReport
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskBuilderState
+import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskLimitReport
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.core.BaseViewModel
 import dagger.assisted.Assisted
@@ -82,17 +83,19 @@ class TaskScreenViewModel @AssistedInject constructor(
         is TaskScreenAction.SetPriorityPickerVisibility -> setPriorityPickerVisibility(action.opened)
         is TaskScreenAction.SetDifficulty -> taskBuilderInteractor.setDifficulty(action.difficulty)
         is TaskScreenAction.SetDifficultyPickerVisibility -> setDifficultyPickerVisibility(action.opened)
+        is TaskScreenAction.SetTaskLimitWindowVisibility -> setTaskLimitScreenVisibility(action.opened)
+        is TaskScreenAction.ValidateAndReact -> validateAndReact()
         is TaskScreenAction.Save -> save()
     }
 
-    private suspend fun save() {
-        val report: TaskBuilderReport = taskBuilderInteractor.save()
+    private suspend fun validateAndReact() {
+        val report: TaskBuilderReport = taskBuilderInteractor.validate()
         val errorMessage: Int? = when (report) {
             is TaskBuilderReport.Default -> when (report.nameReport) {
                 NameReport.Empty -> R.string.error_empty_title
                 NameReport.TooLong -> R.string.error_long_title
-                NameReport.Valid -> null
                 NameReport.UselessWhitespaces -> R.string.error_whitespaces
+                NameReport.Valid -> null
             }
             TaskBuilderReport.NotInitialized -> null
         }
@@ -106,9 +109,23 @@ class TaskScreenViewModel @AssistedInject constructor(
                 is TaskScreenState.View -> it
             }
         }
-        if (report is TaskBuilderReport.Default && report.nameReport is NameReport.Valid) {
-            _state.emit(TaskScreenState.Success)
+
+        if(report is TaskBuilderReport.Default
+            && report.nameReport is NameReport.Valid
+            && report.taskLimitReport is TaskLimitReport.Exceeded) {
+            setTaskLimitScreenVisibility(true)
         }
+
+        if (report is TaskBuilderReport.Default
+            && report.nameReport is NameReport.Valid
+            && report.taskLimitReport is TaskLimitReport.Valid) {
+            save()
+        }
+    }
+
+    private suspend fun save() {
+        taskBuilderInteractor.save()
+        _state.emit(TaskScreenState.Success)
     }
 
     private fun setDeadlinePickerVisibility(opened: Boolean) {
@@ -146,6 +163,16 @@ class TaskScreenViewModel @AssistedInject constructor(
             when (it) {
                 is TaskScreenState.Add -> it.copy(isDifficultyPickerOpened = opened)
                 is TaskScreenState.Edit -> it.copy(isDifficultyPickerOpened = opened)
+                else -> it
+            }
+        }
+    }
+
+    private fun setTaskLimitScreenVisibility(opened: Boolean) {
+        _state.update {
+            when (it) {
+                is TaskScreenState.Add -> it.copy(isTaskLimitWindowOpened = opened)
+                is TaskScreenState.Edit -> it.copy(isTaskLimitWindowOpened = opened)
                 else -> it
             }
         }
@@ -203,6 +230,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 isTimePickerOpened = false,
                 isPriorityPickerOpened = false,
                 isDifficultyPickerOpened = false,
+                isTaskLimitWindowOpened = false,
                 errorMessage = null
             )
         }
@@ -221,6 +249,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 isTimePickerOpened = false,
                 isPriorityPickerOpened = false,
                 isDifficultyPickerOpened = false,
+                isTaskLimitWindowOpened = false,
                 errorMessage = null
             )
         }

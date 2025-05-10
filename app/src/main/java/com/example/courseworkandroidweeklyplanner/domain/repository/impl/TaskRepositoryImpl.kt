@@ -22,7 +22,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TaskRepositoryImpl @Inject constructor(
-    private val taskDao: TaskDao
+    private val taskDao: TaskDao,
 ) : TaskRepository, Converter<TaskEntity, Task> {
     override fun getTasks(): Flow<List<Task>> = taskDao.getTasks().map { tasks ->
         tasks.asyncMap(::convertToState).toList()
@@ -43,6 +43,16 @@ class TaskRepositoryImpl @Inject constructor(
     override suspend fun deleteTask(task: Task) = withContext(Dispatchers.IO) {
         taskDao.deleteTask(convertToEntity(task))
     }
+
+    override suspend fun countTasksByDateAndDifficulty(
+        date: Long,
+        difficulty: String,
+        excludeID: UUID?): Int {
+        return withContext(Dispatchers.IO) {
+            taskDao.countTasksByDateAndDifficulty(date, difficulty, excludeID)
+        }
+    }
+
 
     override fun convertToEntity(state: Task): TaskEntity {
         return with(state) {
