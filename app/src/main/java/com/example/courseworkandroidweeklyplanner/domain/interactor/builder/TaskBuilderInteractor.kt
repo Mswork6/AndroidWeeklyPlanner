@@ -1,5 +1,6 @@
 package com.example.courseworkandroidweeklyplanner.domain.interactor.builder
 
+import android.util.Log
 import com.example.courseworkandroidweeklyplanner.domain.Converter
 import com.example.courseworkandroidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
@@ -123,7 +124,8 @@ class TaskBuilderInteractor @AssistedInject constructor(
 
         // 2) Проверяем лимит 1-3-5, но только если имя валидно
         val taskLimitReport = if (nameReport == NameReport.Valid) {
-            val canAdd = checkDailyTaskLimitUseCase(task.date, task.difficulty)
+            Log.d("MSWORK6", taskId.toString())
+            val canAdd = checkDailyTaskLimitUseCase(task.date, task.difficulty, taskId)
             if (canAdd) TaskLimitReport.Valid else TaskLimitReport.Exceeded
         } else {
             // если имя невалидно, нам не важно, сколько там задач

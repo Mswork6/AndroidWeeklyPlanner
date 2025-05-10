@@ -28,6 +28,10 @@ interface TaskDao {
     suspend fun deleteTask(entity: TaskEntity)
 
     @Query("SELECT COUNT(*) FROM tasks WHERE deadline_day = :date " +
-            "AND difficulty = :difficulty")
-    suspend fun countTasksByDateAndDifficulty(date: Long, difficulty: String): Int
+            "AND difficulty = :difficulty " +
+            "AND (:excludeID IS NULL OR id != :excludeID)")
+    suspend fun countTasksByDateAndDifficulty(
+        date: Long,
+        difficulty: String,
+        excludeID: UUID?): Int
 }

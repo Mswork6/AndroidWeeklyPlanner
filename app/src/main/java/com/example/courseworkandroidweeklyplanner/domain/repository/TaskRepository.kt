@@ -16,5 +16,8 @@ interface TaskRepository {
 
     suspend fun deleteTask(task: Task)
 
-    suspend fun countTasksByDateAndDifficulty(date: Long, difficulty: String): Int
+    suspend fun countTasksByDateAndDifficulty(
+        date: Long,
+        difficulty: String,
+        excludeID: UUID? = null): Int
 }

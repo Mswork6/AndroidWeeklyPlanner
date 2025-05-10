@@ -44,9 +44,12 @@ class TaskRepositoryImpl @Inject constructor(
         taskDao.deleteTask(convertToEntity(task))
     }
 
-    override suspend fun countTasksByDateAndDifficulty(date: Long, difficulty: String): Int {
+    override suspend fun countTasksByDateAndDifficulty(
+        date: Long,
+        difficulty: String,
+        excludeID: UUID?): Int {
         return withContext(Dispatchers.IO) {
-            taskDao.countTasksByDateAndDifficulty(date, difficulty)
+            taskDao.countTasksByDateAndDifficulty(date, difficulty, excludeID)
         }
     }
 
