@@ -69,7 +69,7 @@ fun TaskItem(
     if (task.time != null) {
         Icon(
             imageVector = Icons.Default.Notifications,
-            contentDescription = stringResource(R.string.description_notification),
+            contentDescription = stringResource(R.string.description_time),
             modifier = Modifier.weight(0.5f)
         )
     }

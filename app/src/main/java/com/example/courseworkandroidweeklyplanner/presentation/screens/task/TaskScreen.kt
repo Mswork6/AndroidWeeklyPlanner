@@ -31,7 +31,7 @@ import com.example.courseworkandroidweeklyplanner.presentation.screens.task.comp
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.PriorityDialogWindow
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenDateInputField
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenInputField
-import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenNotificationInputField
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenTimeInputField
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenPriorityInputField
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenTopBar
 import com.example.courseworkandroidweeklyplanner.presentation.PastOrPresentSelectableDates
@@ -147,7 +147,7 @@ private fun TaskScreenBaseContent(
                 modifier = Modifier.fillMaxWidth()
             )
             TaskAddScreenDivider()
-            TaskScreenNotificationInputField(
+            TaskScreenTimeInputField(
                 selectedTime = state.time,
                 isChecked = state.time != null,
                 editState = state.editable,

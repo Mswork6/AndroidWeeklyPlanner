@@ -7,7 +7,7 @@
     <string name="description_date">Date</string>
     <string name="description_priority">Priority</string>
     <string name="description_basic">Basic</string>
-    <string name="description_notification">Notification</string>
+    <string name="description_time">Completion time</string>
     <string name="description_not_defined">Not defined</string>
     <string name="action_previous_week">Previous week</string>
     <string name="action_next_week">Next week</string>
