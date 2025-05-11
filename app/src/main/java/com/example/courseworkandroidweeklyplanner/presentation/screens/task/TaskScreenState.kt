@@ -2,6 +2,7 @@ package com.example.courseworkandroidweeklyplanner.presentation.screens.task
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
+import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import java.time.LocalDate
@@ -23,10 +24,12 @@ sealed interface TaskScreenState {
         val date: LocalDate
         val priority: Priority
         val difficulty: Difficulty
+        val category: Category
         val time: LocalTime
         val isDatePickerOpened: Boolean
         val isPriorityPickerOpened: Boolean
         val isDifficultyPickerOpened: Boolean
+        val isCategoryPickerOpened: Boolean
         val isTimePickerOpened: Boolean
         val isTaskLimitWindowOpened: Boolean
         @get:StringRes
@@ -41,6 +44,7 @@ sealed interface TaskScreenState {
         override val date: LocalDate,
         override val priority: Priority,
         override val difficulty: Difficulty,
+        override val category: Category,
         override val time: LocalTime
     ) : Content {
         override val isDatePickerOpened: Boolean
@@ -48,6 +52,8 @@ sealed interface TaskScreenState {
         override val isPriorityPickerOpened: Boolean
             get() = false
         override val isDifficultyPickerOpened: Boolean
+            get() = false
+        override val isCategoryPickerOpened: Boolean
             get() = false
         override val isTimePickerOpened: Boolean
             get() = false
@@ -66,9 +72,11 @@ sealed interface TaskScreenState {
         override val date: LocalDate,
         override val priority: Priority,
         override val difficulty: Difficulty,
+        override val category: Category,
         override val time: LocalTime,
         override val isPriorityPickerOpened: Boolean,
         override val isDifficultyPickerOpened: Boolean,
+        override val isCategoryPickerOpened: Boolean,
         override val isDatePickerOpened: Boolean,
         override val isTimePickerOpened: Boolean,
         override val isTaskLimitWindowOpened: Boolean,
@@ -85,9 +93,11 @@ sealed interface TaskScreenState {
         override val date: LocalDate,
         override val priority: Priority,
         override val difficulty: Difficulty,
+        override val category: Category,
         override val time: LocalTime,
         override val isPriorityPickerOpened: Boolean,
         override val isDifficultyPickerOpened: Boolean,
+        override val isCategoryPickerOpened: Boolean,
         override val isDatePickerOpened: Boolean,
         override val isTimePickerOpened: Boolean,
         override val isTaskLimitWindowOpened: Boolean,

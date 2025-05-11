@@ -1,6 +1,7 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.task.component
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,15 +34,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.courseworkandroidweeklyplanner.R
-import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
+import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.courseworkandroidweeklyplanner.presentation.description
 import com.example.courseworkandroidweeklyplanner.presentation.screens.main.component.BatteryIcon
 
 @Composable
-fun DifficultyDialogWindow(
-    selectedOption: Difficulty,
-    onOptionSelected: (Difficulty) -> Unit,
+fun CategoryDialogWindow(
+    selectedOption: Category,
+    onOptionSelected: (Category) -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -61,13 +62,13 @@ fun DifficultyDialogWindow(
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(
-                    text = stringResource(R.string.description_choose_task_difficulty),
+                    text = stringResource(R.string.description_choose_task_category),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
                 // Группа радиокнопок
-                RadioButtonGroupWithDifficultyEnum(
+                RadioButtonGroupWithCategoryEnum(
                     selectedOption = tempSelectedOption,
                     onOptionSelected = { option ->
                         tempSelectedOption = option
@@ -115,17 +116,18 @@ fun DifficultyDialogWindow(
 }
 
 @Composable
-fun RadioButtonGroupWithDifficultyEnum(
-    selectedOption: Difficulty,
-    onOptionSelected: (Difficulty) -> Unit,
+fun RadioButtonGroupWithCategoryEnum(
+    selectedOption: Category,
+    onOptionSelected: (Category) -> Unit,
 ) {
     Column {
-        Difficulty.entries.forEach { option ->
+        Category.entries.forEach { option ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp)
+                    //.height(48.dp) // MAKE UNIFORM SIZE!
                     .clickable { onOptionSelected(option) }
 
             ) {
@@ -147,18 +149,7 @@ fun RadioButtonGroupWithDifficultyEnum(
                         .weight(3f)
                 )
                 Row(modifier = Modifier.weight(1f)) {
-                    BatteryIcon(
-                        bodyCoefficient = when (option) {
-                            Difficulty.HARD -> 1f
-                            Difficulty.MEDIUM -> 0.5f
-                            Difficulty.EASY -> 0.25f
-                        },
-                        color = when (option) {
-                            Difficulty.HARD -> colorResource(R.color.red)
-                            Difficulty.MEDIUM -> colorResource(R.color.orange)
-                            Difficulty.EASY -> colorResource(R.color.green)
-                        }
-                    )
+                    Text(option.emoji)
                 }
 
             }
@@ -169,10 +160,10 @@ fun RadioButtonGroupWithDifficultyEnum(
 @Preview(showBackground = true)
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun DifficultyDialogWindowPreview() {
+fun CategoryDialogWindowPreview() {
     CourseWorkAndroidWeeklyPlannerTheme {
-        DifficultyDialogWindow(
-            selectedOption = Difficulty.HARD,
+        CategoryDialogWindow(
+            selectedOption = Category.WORK,
             onOptionSelected = {},
             onDismissRequest = {}
         )

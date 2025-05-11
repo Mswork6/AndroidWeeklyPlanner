@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Day
 import com.example.courseworkandroidweeklyplanner.domain.model.DayType
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
@@ -64,6 +65,7 @@ private fun DayCardPreview() {
                 date = LocalDate.of(2024, 10, 25),
                 priority = Priority.HIGH,
                 difficulty = Difficulty.MEDIUM,
+                category = Category.WORK,
                 time = LocalTime.of(17,33),
                 isDone = false
             ),
@@ -75,6 +77,7 @@ private fun DayCardPreview() {
                 date = LocalDate.of(2024, 10, 25),
                 priority = Priority.HIGH,
                 difficulty = Difficulty.MEDIUM,
+                category = Category.WORK,
                 time = LocalTime.of(17,33),
                 isDone = false
             )

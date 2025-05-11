@@ -1,6 +1,7 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.task
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.courseworkandroidweeklyplanner.R
+import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.DatePickerModal
@@ -36,8 +38,10 @@ import com.example.courseworkandroidweeklyplanner.presentation.screens.task.comp
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenTopBar
 import com.example.courseworkandroidweeklyplanner.presentation.PastOrPresentSelectableDates
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.CategoryDialogWindow
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.DifficultyDialogWindow
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskLimitWindow
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenCategoryInputField
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenDifficultyInputField
 import kotlinx.coroutines.delay
 import java.time.LocalDate
@@ -140,6 +144,13 @@ private fun TaskScreenBaseContent(
                 modifier = Modifier.fillMaxWidth()
             )
             TaskAddScreenDivider()
+            TaskScreenCategoryInputField(
+                editState = state.editable,
+                category = state.category,
+                onClick = { onAction(TaskScreenAction.SetCategoryPickerVisibility(true)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+            TaskAddScreenDivider()
             TaskScreenDateInputField(
                 selectedDate = state.date,
                 editState = state.editable,
@@ -206,6 +217,19 @@ private fun TaskScreenBaseContent(
             )
         }
 
+        if (state.isCategoryPickerOpened) {
+            CategoryDialogWindow(
+                selectedOption = state.category,
+                onOptionSelected = { option ->
+                    onAction(TaskScreenAction.SetCategory(option))
+                },
+                onDismissRequest = {
+                    onAction(TaskScreenAction.SetCategoryPickerVisibility(false))
+                },
+                modifier = Modifier.fillMaxWidth(0.9f)
+            )
+        }
+
         if(state.isTaskLimitWindowOpened) {
             TaskLimitWindow(
                 onOptionSelected = {
@@ -239,6 +263,7 @@ private fun TaskScreenContent1Preview() {
         date = LocalDate.now(),
         priority = Priority.HIGH,
         difficulty = Difficulty.HARD,
+        category = Category.WORK,
         time = LocalTime.now(),
     )
     CourseWorkAndroidWeeklyPlannerTheme {
@@ -261,10 +286,12 @@ private fun TaskScreenContent2Preview() {
         date = LocalDate.now(),
         priority = Priority.HIGH,
         difficulty = Difficulty.HARD,
+        category = Category.WORK,
         time = LocalTime.now(),
         isDatePickerOpened = false,
         isPriorityPickerOpened = false,
         isDifficultyPickerOpened = false,
+        isCategoryPickerOpened = false,
         isTimePickerOpened = false,
         isTaskLimitWindowOpened = false,
         errorMessage = null
@@ -289,10 +316,12 @@ private fun TaskScreenContent3Preview() {
         date = LocalDate.now(),
         priority = Priority.HIGH,
         difficulty = Difficulty.HARD,
+        category = Category.WORK,
         time = LocalTime.now(),
         isDatePickerOpened = false,
         isPriorityPickerOpened = false,
         isDifficultyPickerOpened = false,
+        isCategoryPickerOpened = false,
         isTimePickerOpened = false,
         isTaskLimitWindowOpened = false,
         errorMessage = null

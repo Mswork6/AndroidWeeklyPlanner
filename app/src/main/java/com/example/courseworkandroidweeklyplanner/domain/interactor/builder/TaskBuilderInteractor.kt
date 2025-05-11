@@ -3,6 +3,7 @@ package com.example.courseworkandroidweeklyplanner.domain.interactor.builder
 import android.util.Log
 import com.example.courseworkandroidweeklyplanner.domain.Converter
 import com.example.courseworkandroidweeklyplanner.domain.interactor.saver.TaskInteractor
+import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
@@ -89,6 +90,12 @@ class TaskBuilderInteractor @AssistedInject constructor(
         }
     }
 
+    fun setCategory(category: Category) {
+        _schemaState.update {
+            it?.copy(category = category)
+        }
+    }
+
     fun setDate(dateInMillis: Long) {
         _schemaState.update {
             it?.copy(day = convertToLocalDate(dateInMillis))
@@ -121,7 +128,6 @@ class TaskBuilderInteractor @AssistedInject constructor(
 
         // 2) Проверяем лимит 1-3-5, но только если имя валидно
         val taskLimitReport = if (nameReport == NameReport.Valid) {
-            Log.d("MSWORK6", taskId.toString())
             val canAdd = checkDailyTaskLimitUseCase(task.date, task.difficulty, taskId)
             if (canAdd) TaskLimitReport.Valid else TaskLimitReport.Exceeded
         } else {
@@ -160,6 +166,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
                 description = description,
                 priority = priority,
                 difficulty = difficulty,
+                category = category,
                 day = date,
                 time = time,
                 isDone = isDone
@@ -177,6 +184,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
                 time = time,
                 priority = priority,
                 difficulty = difficulty,
+                category = category,
                 isDone = isDone ?: false,
             )
         }

@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.courseworkandroidweeklyplanner.R
+import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
@@ -185,6 +186,7 @@ private fun DayCardPreview() {
             date = LocalDate.of(2024, 10, 22),
             priority = Priority.LOW,
             difficulty = Difficulty.EASY,
+            category = Category.WORK,
             time = LocalTime.of(17,33),
             isDone = false
         )

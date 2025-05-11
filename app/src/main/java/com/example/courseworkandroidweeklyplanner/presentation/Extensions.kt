@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.courseworkandroidweeklyplanner.R
+import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.DayType
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
@@ -96,6 +97,19 @@ val Difficulty.description: Int
         Difficulty.MEDIUM -> R.string.description_difficulty_medium
         Difficulty.HARD -> R.string.description_difficulty_hard
     }
+
+@get:StringRes
+val Category.description: Int
+    get() = when(this) {
+        Category.WORK -> R.string.description_work
+        Category.STUDY -> R.string.description_study
+        Category.SPORT -> R.string.description_sport
+        Category.HOUSEHOLD_CHORES -> R.string.description_household_chores
+        Category.VACATION -> R.string.description_vacation
+        Category.NONE -> R.string.description_none_category
+    }
+
+
 
 suspend inline fun <T, R> Iterable<T>.asyncMap(
     crossinline transform: suspend (value: T) -> R
