@@ -25,6 +25,7 @@ import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAn
 fun ItemCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    contentModifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = CardDefaults.shape,
     colors: CardColors = CardDefaults.cardColors(),
@@ -43,15 +44,16 @@ fun ItemCard(
         contentColor = colors.contentColor,
     ) {
         Row(
-//            Was 16.dp all
+//            Was 16.dp all In COURSE WORK
 //            modifier = Modifier.padding(16.dp),
-//            FOR TESTING
-//            modifier = Modifier.padding(8.dp),
-            modifier = Modifier.padding(
-                top = 16.dp,
-                bottom = 16.dp,
-                start = 8.dp,
-                end = 8.dp),
+//            Was like That while writing DIPLOMA
+//            Modifier.
+//                padding(
+//                    top = 16.dp,
+//                    bottom = 16.dp,
+//                    start = 8.dp,
+//                    end = 8.dp),
+            modifier = contentModifier,
             content = content,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
