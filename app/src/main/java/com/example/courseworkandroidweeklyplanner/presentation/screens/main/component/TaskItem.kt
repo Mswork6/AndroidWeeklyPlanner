@@ -19,6 +19,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.courseworkandroidweeklyplanner.R
+import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
@@ -110,6 +111,7 @@ private fun TaskCardWithIconPreview1() {
                 description = "Нужно сесть в грузовик и привезти бананы",
                 priority = Priority.HIGH,
                 difficulty = Difficulty.MEDIUM,
+                category = Category.WORK,
                 date = LocalDate.of(2024, 10, 13),
                 time = LocalTime.of(17, 33),
                 isDone = true
@@ -132,6 +134,7 @@ private fun TaskCardWithIconPreview2() {
                 description = "Нужно сесть в грузовик и привезти бананы",
                 priority = Priority.HIGH,
                 difficulty = Difficulty.MEDIUM,
+                category = Category.WORK,
                 date = LocalDate.of(2024, 10, 13),
                 time = LocalTime.of(23, 30),
                 isDone = true

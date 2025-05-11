@@ -13,6 +13,7 @@ data class Task(
     val description: String?,
     val priority: Priority,
     val difficulty: Difficulty,
+    val category: Category,
     val date: LocalDate,
     val time: LocalTime,
     val isDone: Boolean,
@@ -47,6 +48,7 @@ data class TaskSchema(
     val description: String? = null,
     val priority: Priority = Priority.BASIC,
     val difficulty: Difficulty = Difficulty.MEDIUM,
+    val category: Category = Category.NONE,
     val day: LocalDate = if (LocalDateTime.now().plusHours(1).toLocalDate()
             .equals(LocalDate.now())) LocalDate.now() else LocalDate.now().plusDays(1),
     val time: LocalTime = LocalTime.now().plusHours(1),
