@@ -60,6 +60,8 @@ fun TaskItem(
         },
         )
     Spacer(modifier = Modifier.width(4.dp))
+    Text(text = task.category.emoji)
+    Spacer(modifier = Modifier.width(4.dp))
     Text(
         text = task.name,
         modifier = Modifier
