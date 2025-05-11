@@ -35,7 +35,8 @@ enum class Category(val emoji: String) {
     STUDY("\uD83D\uDCDA"),
     SPORT("\uD83C\uDFC3"),
     HOUSEHOLD_CHORES("\uD83C\uDFE0"),
-    VACATION("\uD83C\uDF34")
+    VACATION("\uD83C\uDF34"),
+    NONE(null.toString())
 }
 
 

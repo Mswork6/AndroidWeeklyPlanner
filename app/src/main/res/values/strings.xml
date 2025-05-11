@@ -58,4 +58,6 @@
     <string name="description_sport">Sport</string>
     <string name="description_household_chores">Household chores</string>
     <string name="description_vacation">Vacation</string>
+    <string name="description_none_category">None</string>
+    <string name="description_category">Category</string>
 </resources>

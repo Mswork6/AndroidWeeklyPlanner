@@ -106,6 +106,7 @@ val Category.description: Int
         Category.SPORT -> R.string.description_sport
         Category.HOUSEHOLD_CHORES -> R.string.description_household_chores
         Category.VACATION -> R.string.description_vacation
+        Category.NONE -> R.string.description_none_category
     }
 
 

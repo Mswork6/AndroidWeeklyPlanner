@@ -59,4 +59,6 @@
     <string name="description_sport">Спорт</string>
     <string name="description_household_chores">Домашние дела</string>
     <string name="description_vacation">Отдых</string>
+    <string name="description_none_category">Без категории</string>
+    <string name="description_category">Категория</string>
 </resources>
