@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +23,7 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.timeToString
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID
@@ -33,7 +32,7 @@ import java.util.UUID
 fun TaskItem(
     task: Task,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) = ItemCard(
     shape = MaterialTheme.shapes.large,
     colors = CardDefaults.cardColors(
@@ -58,27 +57,41 @@ fun TaskItem(
                 Priority.HIGH -> colorResource(R.color.red)
             }
         },
-
         )
-    Spacer(modifier = Modifier.width(16.dp))
+    Spacer(modifier = Modifier.width(4.dp))
     Text(
         text = task.name,
         modifier = Modifier
-            .weight(5f)
+            .weight(1f),
+        style = MaterialTheme.typography.bodyMedium
     )
-    if (task.time != null) {
-        Icon(
-            imageVector = Icons.Default.Notifications,
-            contentDescription = stringResource(R.string.description_notification),
-            modifier = Modifier.weight(0.5f)
-        )
-    }
     Spacer(modifier = Modifier.width(8.dp))
-    Row(modifier = Modifier.weight(0.5f)) {
+    Text(
+        text = timeToString(task.time),
+        style = MaterialTheme.typography.bodyMedium
+    )
+
+//    if (task.time != null) {
+//        Icon(
+//            imageVector = Icons.Default.Notifications,
+//            contentDescription = stringResource(R.string.description_time),
+//            modifier = Modifier.weight(0.5f)
+//        )
+//    } OUTDATED (May use later)
+
+    Spacer(modifier = Modifier.width(8.dp))
+    Row {
         when (task.difficulty) {
             Difficulty.HARD -> BatteryIcon(color = colorResource(R.color.red))
-            Difficulty.MEDIUM -> BatteryIcon(bodyCoefficient = 0.5f ,color = colorResource(R.color.orange))
-            Difficulty.EASY -> BatteryIcon(bodyCoefficient = 0.25f ,color = colorResource(R.color.green))
+            Difficulty.MEDIUM -> BatteryIcon(
+                bodyCoefficient = 0.5f,
+                color = colorResource(R.color.orange)
+            )
+
+            Difficulty.EASY -> BatteryIcon(
+                bodyCoefficient = 0.25f,
+                color = colorResource(R.color.green)
+            )
         }
     }
 
@@ -98,7 +111,7 @@ private fun TaskCardWithIconPreview1() {
                 priority = Priority.HIGH,
                 difficulty = Difficulty.MEDIUM,
                 date = LocalDate.of(2024, 10, 13),
-                time = null,
+                time = LocalTime.of(17, 33),
                 isDone = true
             ),
             modifier = Modifier.fillMaxWidth()

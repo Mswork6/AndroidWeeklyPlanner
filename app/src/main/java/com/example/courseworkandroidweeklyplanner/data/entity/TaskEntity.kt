@@ -21,7 +21,7 @@ data class TaskEntity(
     val date: Long,
 
     @ColumnInfo(name = "deadline_time")
-    val time: Long?,
+    val time: Long,
 
     @ColumnInfo(name = "priority")
     val priority: String,

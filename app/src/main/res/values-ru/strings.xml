@@ -9,7 +9,7 @@
     <string name="description_not_defined">Не установлено</string>
     <string name="description_priority">Приоритет</string>
     <string name="description_basic">Стандартный</string>
-    <string name="description_notification">Напоминание</string>
+    <string name="description_time">Время выполнения</string>
     <string name="action_previous_week">Предыдущая неделя</string>
     <string name="action_next_week">Следующая неделя</string>
     <string name="description_task_check_box">Отметка выполнения задачи</string>
