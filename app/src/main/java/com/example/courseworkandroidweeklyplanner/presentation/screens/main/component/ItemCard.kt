@@ -43,7 +43,15 @@ fun ItemCard(
         contentColor = colors.contentColor,
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+//            Was 16.dp all
+//            modifier = Modifier.padding(16.dp),
+//            FOR TESTING
+//            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(
+                top = 16.dp,
+                bottom = 16.dp,
+                start = 8.dp,
+                end = 8.dp),
             content = content,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
