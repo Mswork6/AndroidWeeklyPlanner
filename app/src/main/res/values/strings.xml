@@ -53,4 +53,9 @@
     <string name="question_add_task_with_limit_exceeded">Still leave the task in its current form?</string>
     <string name="description_leave_it">Leave it</string>
     <string name="description_change">Change</string>
+    <string name="description_work">Work</string>
+    <string name="description_study">Study</string>
+    <string name="description_sport">Sport</string>
+    <string name="description_household_chores">Household chores</string>
+    <string name="description_vacation">Vacation</string>
 </resources>

@@ -54,4 +54,9 @@
     <string name="question_add_task_with_limit_exceeded">Всё равно оставить задачу в текущем виде?</string>
     <string name="description_leave_it">Оставить</string>
     <string name="description_change">Изменить</string>
+    <string name="description_work">Работа</string>
+    <string name="description_study">Учеба</string>
+    <string name="description_sport">Спорт</string>
+    <string name="description_household_chores">Домашние дела</string>
+    <string name="description_vacation">Отдых</string>
 </resources>

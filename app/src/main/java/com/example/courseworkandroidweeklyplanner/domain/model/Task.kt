@@ -30,6 +30,16 @@ enum class Difficulty {
     EASY
 }
 
+enum class Category(val emoji: String) {
+    WORK("\uD83D\uDCBC"),
+    STUDY("\uD83D\uDCDA"),
+    SPORT("\uD83C\uDFC3"),
+    HOUSEHOLD_CHORES("\uD83C\uDFE0"),
+    VACATION("\uD83C\uDF34")
+}
+
+
+
 data class TaskSchema(
     val id: UUID? = null,
     val name: String = "",
