@@ -123,8 +123,8 @@ fun RadioButtonGroupWithPriorityEnum(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(vertical = 4.dp)
                     .clickable { onOptionSelected(option) }
-                    .padding(vertical = 8.dp)
             ) {
                 RadioButton(
                     selected = (option == selectedOption),

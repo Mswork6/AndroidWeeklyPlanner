@@ -128,7 +128,6 @@ class TaskBuilderInteractor @AssistedInject constructor(
 
         // 2) Проверяем лимит 1-3-5, но только если имя валидно
         val taskLimitReport = if (nameReport == NameReport.Valid) {
-            Log.d("MSWORK6", taskId.toString())
             val canAdd = checkDailyTaskLimitUseCase(task.date, task.difficulty, taskId)
             if (canAdd) TaskLimitReport.Valid else TaskLimitReport.Exceeded
         } else {

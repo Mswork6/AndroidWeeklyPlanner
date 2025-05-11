@@ -1,6 +1,7 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.task.component
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -61,7 +62,7 @@ fun CategoryDialogWindow(
                 horizontalAlignment = Alignment.Start,
             ) {
                 Text(
-                    text = stringResource(R.string.description_choose_task_difficulty),
+                    text = stringResource(R.string.description_choose_task_category),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
@@ -125,9 +126,10 @@ fun RadioButtonGroupWithCategoryEnum(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(40.dp) // MAKE UNIFORM SIZE!
+                    .padding(vertical = 4.dp)
+                    //.height(48.dp) // MAKE UNIFORM SIZE!
                     .clickable { onOptionSelected(option) }
-                    //.padding(vertical = 1.dp)
+
             ) {
                 RadioButton(
                     selected = (option == selectedOption),
