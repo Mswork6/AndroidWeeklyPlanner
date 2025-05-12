@@ -40,6 +40,16 @@ enum class Category(val emoji: String) {
     NONE(" ")
 }
 
+enum class NotificationTime {
+    MINUTES_120_BEFORE,
+    MINUTES_90_BEFORE,
+    MINUTES_60_BEFORE,
+    MINUTES_30_BEFORE,
+    MINUTES_15_BEFORE,
+    TASK_TIME,
+    NONE
+}
+
 
 
 data class TaskSchema(

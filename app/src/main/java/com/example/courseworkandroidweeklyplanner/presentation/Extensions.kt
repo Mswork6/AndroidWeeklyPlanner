@@ -11,6 +11,7 @@ import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.DayType
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
+import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.SortType
 import com.example.courseworkandroidweeklyplanner.domain.model.Week
@@ -118,6 +119,17 @@ val Category.description: Int
         Category.NONE -> R.string.description_none_category
     }
 
+@get:StringRes
+val NotificationTime.description: Int
+    get() = when(this) {
+        NotificationTime.MINUTES_120_BEFORE -> R.string.description_minutes_120_before
+        NotificationTime.MINUTES_90_BEFORE -> R.string.description_minutes_90_before
+        NotificationTime.MINUTES_60_BEFORE -> R.string.description_minutes_60_before
+        NotificationTime.MINUTES_30_BEFORE -> R.string.description_minutes_30_before
+        NotificationTime.MINUTES_15_BEFORE -> R.string.description_minutes_15_before
+        NotificationTime.TASK_TIME -> R.string.description_tasktime
+        NotificationTime.NONE -> R.string.description_no
+    }
 
 
 suspend inline fun <T, R> Iterable<T>.asyncMap(

@@ -62,4 +62,12 @@
     <string name="description_category">Category</string>
     <string name="description_choose_task_category">Choose task category</string>
     <string name="description_notification_time">Notification time</string>
+    <string name="description_minutes_120_before">2 hours before</string>
+    <string name="description_minutes_90_before">An hour and a half before</string>
+    <string name="description_minutes_60_before">1 hour before</string>
+    <string name="description_minutes_30_before">30 minutes before</string>
+    <string name="description_minutes_15_before">15 minutes before</string>
+    <string name="description_tasktime">At completion time</string>
+    <string name="description_no">No</string>
+    <string name="description_choose_notification_time">Choose notification time</string>
 </resources>
