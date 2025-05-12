@@ -1,5 +1,6 @@
 package com.example.courseworkandroidweeklyplanner.presentation
 
+import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
@@ -96,6 +97,14 @@ val Difficulty.description: Int
         Difficulty.EASY -> R.string.description_difficulty_easy
         Difficulty.MEDIUM -> R.string.description_difficulty_medium
         Difficulty.HARD -> R.string.description_difficulty_hard
+    }
+
+@get:ColorRes
+val Difficulty.color: Int
+    get() = when(this) {
+        Difficulty.EASY -> R.color.green
+        Difficulty.MEDIUM -> R.color.orange
+        Difficulty.HARD -> R.color.red
     }
 
 @get:StringRes

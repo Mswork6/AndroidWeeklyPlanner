@@ -1,6 +1,7 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.task.component
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.annotation.ColorRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,9 +35,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
+import com.example.courseworkandroidweeklyplanner.presentation.color
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.courseworkandroidweeklyplanner.presentation.description
 import com.example.courseworkandroidweeklyplanner.presentation.screens.main.component.BatteryIcon
+import com.example.courseworkandroidweeklyplanner.presentation.screens.main.component.DifficultyCircle
 
 @Composable
 fun DifficultyDialogWindow(
@@ -147,17 +150,8 @@ fun RadioButtonGroupWithDifficultyEnum(
                         .weight(3f)
                 )
                 Row(modifier = Modifier.weight(1f)) {
-                    BatteryIcon(
-                        bodyCoefficient = when (option) {
-                            Difficulty.HARD -> 1f
-                            Difficulty.MEDIUM -> 0.5f
-                            Difficulty.EASY -> 0.25f
-                        },
-                        color = when (option) {
-                            Difficulty.HARD -> colorResource(R.color.red)
-                            Difficulty.MEDIUM -> colorResource(R.color.orange)
-                            Difficulty.EASY -> colorResource(R.color.green)
-                        }
+                    DifficultyCircle(
+                        color = colorResource(option.color)
                     )
                 }
 

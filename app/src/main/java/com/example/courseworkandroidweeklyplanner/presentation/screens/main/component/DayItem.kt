@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -47,7 +48,13 @@ fun DayItem(
             containerColor = MaterialTheme.colorScheme.primary
         ),
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier,
+        contentModifier = Modifier
+            .padding(
+                top = 16.dp,
+                bottom = 16.dp,
+                start = 8.dp,
+                end = 8.dp),
     ) {
         Spacer(modifier = Modifier.width(16.dp))
         Text(
