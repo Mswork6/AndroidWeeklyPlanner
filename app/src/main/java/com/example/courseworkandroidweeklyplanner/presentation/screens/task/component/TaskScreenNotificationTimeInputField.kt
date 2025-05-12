@@ -6,12 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -28,12 +23,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.presentation.timeToString
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
-import com.example.courseworkandroidweeklyplanner.presentation.dateToString
 import java.time.LocalTime
 
 @Composable
-internal fun TaskScreenTimeInputField(
-    selectedTime: LocalTime,
+internal fun TaskScreenNotificationTimeInputField(
+    selectedTime: LocalTime?,
     editState: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -50,16 +44,17 @@ internal fun TaskScreenTimeInputField(
         horizontalAlignment = Alignment.Start
     ) {
         Text(
-            text = stringResource(R.string.description_time),
+            text = stringResource(R.string.description_notification_time),
             style = MaterialTheme.typography.titleSmall
         )
         Text(
-            text =  timeToString(selectedTime),
+            text = selectedTime?.let { timeToString(it) }
+                ?: stringResource(R.string.description_not_defined),
             style = MaterialTheme.typography.labelSmall
         )
     }
     Icon(
-        imageVector = ImageVector.vectorResource(R.drawable.baseline_access_time_24),
+        imageVector = ImageVector.vectorResource(R.drawable.baseline_notifications_24),
         contentDescription = null
     )
 }
@@ -70,8 +65,8 @@ internal fun TaskScreenTimeInputField(
 private fun TaskAddScreenNotificationInputFieldPreview() {
     var isChecked by remember { mutableStateOf(false) }
     CourseWorkAndroidWeeklyPlannerTheme {
-        TaskScreenTimeInputField(
-            selectedTime = LocalTime.of(17,33),
+        TaskScreenNotificationTimeInputField(
+            selectedTime = null,
             editState = false,
             onClick = { isChecked = isChecked.not() },
             modifier = Modifier.fillMaxWidth()

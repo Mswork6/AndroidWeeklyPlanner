@@ -62,4 +62,5 @@
     <string name="description_none_category">Без категории</string>
     <string name="description_category">Категория</string>
     <string name="description_choose_task_category">Выберите категорию задачи</string>
+    <string name="description_notification_time">Время уведомления</string>
 </resources>
