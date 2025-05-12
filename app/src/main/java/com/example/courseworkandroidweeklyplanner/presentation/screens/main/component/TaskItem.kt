@@ -32,6 +32,7 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
+import com.example.courseworkandroidweeklyplanner.presentation.color
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.courseworkandroidweeklyplanner.presentation.timeToString
 import java.time.LocalDate
@@ -51,11 +52,8 @@ fun TaskItem(
     onClick = onClick,
     modifier = modifier,
 ) {
-    val stripeColor = when (task.difficulty) {
-        Difficulty.HARD   -> colorResource(R.color.red)
-        Difficulty.MEDIUM -> colorResource(R.color.orange)
-        Difficulty.EASY   -> colorResource(R.color.green)
-    }
+
+    val stripeColor = task.difficulty.color
     val stripeWidth = 12.dp
 
     Box(modifier = Modifier
@@ -68,7 +66,7 @@ fun TaskItem(
                 .fillMaxHeight()
                 .width(stripeWidth)
                 .align(Alignment.CenterEnd)
-                .background(stripeColor)
+                .background(colorResource(stripeColor))
         )
         // Main content
         Column(
