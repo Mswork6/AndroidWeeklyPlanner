@@ -100,14 +100,18 @@ fun TaskItem(
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = task.category.emoji,
-                    modifier = Modifier
-                        .width(24.dp),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(Modifier.width(8.dp))
+                if (task.category != Category.NONE) {
+                    Text(
+                        text = task.category.emoji,
+                        modifier = Modifier
+                            .width(24.dp),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(Modifier.width(4.dp))
+                } else {
+                    //Spacer(Modifier.width(4.dp))
+                }
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.baseline_access_time_16),
                     contentDescription = null
@@ -136,12 +140,14 @@ private fun TaskCardWithIconPreview1() {
                 description = "Нужно сесть в грузовик и привезти бананы",
                 priority = Priority.HIGH,
                 difficulty = Difficulty.EASY,
-                category = Category.WORK,
+                category = Category.VACATION,
                 date = LocalDate.of(2024, 10, 13),
                 time = LocalTime.of(17, 33),
                 isDone = true
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
         )
     }
 }
