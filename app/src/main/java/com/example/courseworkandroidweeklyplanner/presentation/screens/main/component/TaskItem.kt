@@ -25,6 +25,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.courseworkandroidweeklyplanner.R
@@ -95,7 +96,9 @@ fun TaskItem(
                 Text(
                     text = task.name,
                     modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
             Row(
