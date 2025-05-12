@@ -169,6 +169,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
                 category = category,
                 day = date,
                 time = time,
+                notificationTime = notificationTime,
                 isDone = isDone
             )
         }
@@ -182,6 +183,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
                 description = description,
                 date = day,
                 time = time,
+                notificationTime = notificationTime,
                 priority = priority,
                 difficulty = difficulty,
                 category = category,

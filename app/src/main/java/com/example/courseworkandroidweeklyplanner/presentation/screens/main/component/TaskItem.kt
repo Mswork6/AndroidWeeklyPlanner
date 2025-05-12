@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
+import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.color
@@ -146,6 +147,7 @@ private fun TaskCardWithIconPreview1() {
                 category = Category.VACATION,
                 date = LocalDate.of(2024, 10, 13),
                 time = LocalTime.of(17, 33),
+                notificationTime = NotificationTime.MINUTES_15_BEFORE,
                 isDone = true
             ),
             modifier = Modifier

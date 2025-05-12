@@ -32,6 +32,9 @@ data class TaskEntity(
     @ColumnInfo(name = "category")
     val category: String,
 
+    @ColumnInfo(name = "notification_time")
+    val notificationTime: String,
+
     @ColumnInfo(name = "is_done")
     val isDone: Boolean
 )

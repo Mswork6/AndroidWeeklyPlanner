@@ -16,6 +16,7 @@ data class Task(
     val category: Category,
     val date: LocalDate,
     val time: LocalTime,
+    val notificationTime: NotificationTime,
     val isDone: Boolean,
 )
 
@@ -62,5 +63,6 @@ data class TaskSchema(
     val day: LocalDate = if (LocalDateTime.now().plusHours(1).toLocalDate()
             .equals(LocalDate.now())) LocalDate.now() else LocalDate.now().plusDays(1),
     val time: LocalTime = LocalTime.now().plusHours(1),
+    val notificationTime: NotificationTime = NotificationTime.NONE,
     val isDone: Boolean? = null,
 )

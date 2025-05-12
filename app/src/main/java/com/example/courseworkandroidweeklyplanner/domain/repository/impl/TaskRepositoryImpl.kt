@@ -6,6 +6,7 @@ import com.example.courseworkandroidweeklyplanner.domain.Converter
 import com.example.courseworkandroidweeklyplanner.domain.localTimeOfMilliOfDay
 import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
+import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.domain.repository.TaskRepository
@@ -63,6 +64,7 @@ class TaskRepositoryImpl @Inject constructor(
                 description = description,
                 date = date.toEpochDay(),
                 time = time.toMilliOfDay(),
+                notificationTime = notificationTime.toString(),
                 priority = priority.toString(),
                 difficulty = difficulty.toString(),
                 category = category.toString(),
@@ -82,6 +84,7 @@ class TaskRepositoryImpl @Inject constructor(
                 category = Category.valueOf(category),
                 date = LocalDate.ofEpochDay(entity.date),
                 time = localTimeOfMilliOfDay(time),
+                notificationTime = NotificationTime.valueOf(notificationTime),
                 isDone = isDone,
             )
         }
