@@ -78,7 +78,9 @@ class TaskScreenViewModel @AssistedInject constructor(
         is TaskScreenAction.SetDescription -> taskBuilderInteractor.setDescription(action.description)
         is TaskScreenAction.SetName -> taskBuilderInteractor.setName(action.name)
         is TaskScreenAction.SetTime -> taskBuilderInteractor.setTime(action.hour, action.minute)
-        is TaskScreenAction.SetTimePickerVisibility -> setNotificationPickerVisibility(action.opened)
+        is TaskScreenAction.SetTimePickerVisibility -> setTimePickerVisibility(action.opened)
+        is TaskScreenAction.SetNotificationTime -> taskBuilderInteractor.setNotificationTime(action.notificationTime)
+        is TaskScreenAction.SetNotificationTimePickerVisibility -> setNotificationTimePickerVisibility(action.opened)
         is TaskScreenAction.SetPriority -> taskBuilderInteractor.setPriority(action.priority)
         is TaskScreenAction.SetPriorityPickerVisibility -> setPriorityPickerVisibility(action.opened)
         is TaskScreenAction.SetDifficulty -> taskBuilderInteractor.setDifficulty(action.difficulty)
@@ -140,11 +142,21 @@ class TaskScreenViewModel @AssistedInject constructor(
         }
     }
 
-    private fun setNotificationPickerVisibility(opened: Boolean) {
+    private fun setTimePickerVisibility(opened: Boolean) {
         _state.update {
             when (it) {
                 is TaskScreenState.Add -> it.copy(isTimePickerOpened = opened)
                 is TaskScreenState.Edit -> it.copy(isTimePickerOpened = opened)
+                else -> it
+            }
+        }
+    }
+
+    private fun setNotificationTimePickerVisibility(opened: Boolean){
+        _state.update {
+            when (it) {
+                is TaskScreenState.Add -> it.copy(isNotificationTimePickerOpened = opened)
+                is TaskScreenState.Edit -> it.copy(isNotificationTimePickerOpened = opened)
                 else -> it
             }
         }
@@ -199,7 +211,8 @@ class TaskScreenViewModel @AssistedInject constructor(
                 priority = priority,
                 difficulty = difficulty,
                 category = category,
-                time = time
+                time = time,
+                notificationTime = notificationTime
             )
         }
     }
@@ -213,7 +226,8 @@ class TaskScreenViewModel @AssistedInject constructor(
                 priority = priority,
                 difficulty = difficulty,
                 category = category,
-                time = time
+                time = time,
+                notificationTime = notificationTime
             )
         }
     }
@@ -227,7 +241,8 @@ class TaskScreenViewModel @AssistedInject constructor(
                 priority = priority,
                 difficulty = difficulty,
                 category = category,
-                time = time
+                time = time,
+                notificationTime = notificationTime
             )
         }
     }
@@ -242,8 +257,10 @@ class TaskScreenViewModel @AssistedInject constructor(
                 difficulty = difficulty,
                 category = category,
                 time = time,
+                notificationTime = notificationTime,
                 isDatePickerOpened = false,
                 isTimePickerOpened = false,
+                isNotificationTimePickerOpened = false,
                 isPriorityPickerOpened = false,
                 isDifficultyPickerOpened = false,
                 isCategoryPickerOpened = false,
@@ -263,8 +280,10 @@ class TaskScreenViewModel @AssistedInject constructor(
                 difficulty = difficulty,
                 category = category,
                 time = time,
+                notificationTime = notificationTime,
                 isDatePickerOpened = false,
                 isTimePickerOpened = false,
+                isNotificationTimePickerOpened = false,
                 isPriorityPickerOpened = false,
                 isDifficultyPickerOpened = false,
                 isCategoryPickerOpened = false,
@@ -284,6 +303,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 difficulty = difficulty,
                 category = category,
                 time = time,
+                notificationTime = notificationTime
             )
         }
     }

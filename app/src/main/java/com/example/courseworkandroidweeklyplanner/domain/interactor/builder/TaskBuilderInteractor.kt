@@ -5,6 +5,7 @@ import com.example.courseworkandroidweeklyplanner.domain.Converter
 import com.example.courseworkandroidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
+import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.domain.model.TaskSchema
@@ -107,6 +108,12 @@ class TaskBuilderInteractor @AssistedInject constructor(
             it?.copy(
                 time = LocalTime.of(hour, minute)
             )
+        }
+    }
+
+    fun setNotificationTime(notificationTime: NotificationTime) {
+        _schemaState.update {
+            it?.copy(notificationTime = notificationTime)
         }
     }
 

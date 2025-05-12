@@ -21,21 +21,25 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.courseworkandroidweeklyplanner.R
+import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.presentation.timeToString
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.description
 import java.time.LocalTime
 
 @Composable
 internal fun TaskScreenNotificationTimeInputField(
-    selectedTime: LocalTime?,
+    notificationTime: NotificationTime,
     editState: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) = Row(
-    modifier = Modifier.fillMaxWidth().clickable(
-        onClick = onClick,
-        enabled = editState
-    ),
+    modifier = Modifier
+        .fillMaxWidth()
+        .clickable(
+            onClick = onClick,
+            enabled = editState
+        ),
     verticalAlignment = Alignment.CenterVertically,
 ) {
     Column(
@@ -48,8 +52,7 @@ internal fun TaskScreenNotificationTimeInputField(
             style = MaterialTheme.typography.titleSmall
         )
         Text(
-            text = selectedTime?.let { timeToString(it) }
-                ?: stringResource(R.string.description_not_defined),
+            text = stringResource(notificationTime.description),
             style = MaterialTheme.typography.labelSmall
         )
     }
@@ -66,7 +69,7 @@ private fun TaskAddScreenNotificationInputFieldPreview() {
     var isChecked by remember { mutableStateOf(false) }
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenNotificationTimeInputField(
-            selectedTime = null,
+            notificationTime = NotificationTime.MINUTES_15_BEFORE,
             editState = false,
             onClick = { isChecked = isChecked.not() },
             modifier = Modifier.fillMaxWidth()
