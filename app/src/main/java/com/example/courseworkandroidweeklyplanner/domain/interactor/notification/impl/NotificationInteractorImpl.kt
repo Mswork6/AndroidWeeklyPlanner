@@ -1,9 +1,11 @@
 package com.example.courseworkandroidweeklyplanner.domain.interactor.notification.impl
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import com.example.courseworkandroidweeklyplanner.domain.TASK_ID_KEY
 import com.example.courseworkandroidweeklyplanner.domain.fromLocalDateTime
 import com.example.courseworkandroidweeklyplanner.domain.interactor.notification.NotificationCreator
@@ -18,6 +20,7 @@ class NotificationInteractorImpl @Inject constructor(
     private val alarmManager: AlarmManager,
     @ApplicationContext private val context: Context
 ) : NotificationInteractor {
+    @SuppressLint("ScheduleExactAlarm")
     override suspend fun saveNotification(notification: Notification) {
         val trigger = notification.scheduledTime
             .atZone(ZoneId.systemDefault())
@@ -39,7 +42,8 @@ class NotificationInteractorImpl @Inject constructor(
             /* intent = */ intent,
             /* flags = */ PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        alarmManager.setAndAllowWhileIdle(
+
+        alarmManager.setExactAndAllowWhileIdle(
             /* type = */ AlarmManager.RTC_WAKEUP,
             /* triggerAtMillis = */ trigger,
             /* operation = */ pending
