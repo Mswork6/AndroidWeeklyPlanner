@@ -6,6 +6,7 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.domain.model.Week
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.util.UUID
@@ -22,6 +23,25 @@ fun localTimeOfMilliOfDay(millis: Long): LocalTime {
 
 fun instantFromDateAndTime(date: LocalDate, time: LocalTime): Instant {
     return date.atTime(time).atZone(ZoneId.systemDefault()).toInstant()
+}
+
+fun toMilliFromDateTime(date: LocalDateTime): Long {
+    return date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+}
+
+fun toLocalDateTime(value: Long?): LocalDateTime? {
+    return value?.let {
+        Instant.ofEpochMilli(it)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime()
+    }
+}
+
+fun fromLocalDateTime(dateTime: LocalDateTime?): Long? {
+    return dateTime
+        ?.atZone(ZoneId.systemDefault())
+        ?.toInstant()
+        ?.toEpochMilli()
 }
 
 val Task.notification: Notification?

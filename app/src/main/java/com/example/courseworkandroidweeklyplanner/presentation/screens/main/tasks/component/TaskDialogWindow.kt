@@ -31,6 +31,7 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.UUID
 
@@ -189,7 +190,7 @@ private fun DayCardPreview() {
             difficulty = Difficulty.EASY,
             category = Category.WORK,
             time = LocalTime.of(17,33),
-            notificationTime = NotificationTime.MINUTES_15_BEFORE,
+            notificationTime = LocalDateTime.now(),
             isDone = false
         )
 

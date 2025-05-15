@@ -203,7 +203,6 @@ private fun TaskScreenBaseContent(
 
         if (state.isNotificationTimePickerOpened) {
             NotificationTimeDialogWindow(
-                selectedOption = state.notificationTime,
                 onOptionSelected = { option ->
                     onAction(TaskScreenAction.SetNotificationTime(option))
                 },
@@ -288,7 +287,7 @@ private fun TaskScreenContent1Preview() {
         difficulty = Difficulty.HARD,
         category = Category.WORK,
         time = LocalTime.now(),
-        notificationTime = NotificationTime.MINUTES_15_BEFORE
+        notificationTime = null
     )
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenContent(
@@ -312,7 +311,7 @@ private fun TaskScreenContent2Preview() {
         difficulty = Difficulty.HARD,
         category = Category.WORK,
         time = LocalTime.now(),
-        notificationTime = NotificationTime.MINUTES_15_BEFORE,
+        notificationTime = null,
         isDatePickerOpened = false,
         isPriorityPickerOpened = false,
         isDifficultyPickerOpened = false,
@@ -344,7 +343,7 @@ private fun TaskScreenContent3Preview() {
         difficulty = Difficulty.HARD,
         category = Category.WORK,
         time = LocalTime.now(),
-        notificationTime = NotificationTime.MINUTES_15_BEFORE,
+        notificationTime = null,
         isDatePickerOpened = false,
         isPriorityPickerOpened = false,
         isDifficultyPickerOpened = false,

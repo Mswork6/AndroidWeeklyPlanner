@@ -7,6 +7,7 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
 import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 sealed interface TaskScreenState {
@@ -27,7 +28,7 @@ sealed interface TaskScreenState {
         val difficulty: Difficulty
         val category: Category
         val time: LocalTime
-        val notificationTime: NotificationTime
+        val notificationTime: LocalDateTime?
         val isDatePickerOpened: Boolean
         val isPriorityPickerOpened: Boolean
         val isDifficultyPickerOpened: Boolean
@@ -49,7 +50,7 @@ sealed interface TaskScreenState {
         override val difficulty: Difficulty,
         override val category: Category,
         override val time: LocalTime,
-        override val notificationTime: NotificationTime
+        override val notificationTime: LocalDateTime?
     ) : Content {
         override val isDatePickerOpened: Boolean
             get() = false
@@ -80,7 +81,7 @@ sealed interface TaskScreenState {
         override val difficulty: Difficulty,
         override val category: Category,
         override val time: LocalTime,
-        override val notificationTime: NotificationTime,
+        override val notificationTime: LocalDateTime?,
         override val isPriorityPickerOpened: Boolean,
         override val isDifficultyPickerOpened: Boolean,
         override val isCategoryPickerOpened: Boolean,
@@ -103,7 +104,7 @@ sealed interface TaskScreenState {
         override val difficulty: Difficulty,
         override val category: Category,
         override val time: LocalTime,
-        override val notificationTime: NotificationTime,
+        override val notificationTime: LocalDateTime?,
         override val isPriorityPickerOpened: Boolean,
         override val isDifficultyPickerOpened: Boolean,
         override val isCategoryPickerOpened: Boolean,

@@ -22,14 +22,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
-import com.example.courseworkandroidweeklyplanner.presentation.timeToString
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.dateTimeToString
 import com.example.courseworkandroidweeklyplanner.presentation.description
-import java.time.LocalTime
+import java.time.LocalDateTime
 
 @Composable
 internal fun TaskScreenNotificationTimeInputField(
-    notificationTime: NotificationTime,
+    notificationTime: LocalDateTime?,
     editState: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -52,7 +52,8 @@ internal fun TaskScreenNotificationTimeInputField(
             style = MaterialTheme.typography.titleSmall
         )
         Text(
-            text = stringResource(notificationTime.description),
+            text = if (notificationTime != null) dateTimeToString(notificationTime)
+            else stringResource(R.string.description_not_defined) ,
             style = MaterialTheme.typography.labelSmall
         )
     }
@@ -69,7 +70,7 @@ private fun TaskAddScreenNotificationInputFieldPreview() {
     var isChecked by remember { mutableStateOf(false) }
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenNotificationTimeInputField(
-            notificationTime = NotificationTime.MINUTES_15_BEFORE,
+            notificationTime = null,
             editState = false,
             onClick = { isChecked = isChecked.not() },
             modifier = Modifier.fillMaxWidth()

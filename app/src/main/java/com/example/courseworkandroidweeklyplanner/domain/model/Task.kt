@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
 import java.util.UUID
 
 @Immutable
@@ -16,7 +17,7 @@ data class Task(
     val category: Category,
     val date: LocalDate,
     val time: LocalTime,
-    val notificationTime: NotificationTime,
+    val notificationTime: LocalDateTime?,
     val isDone: Boolean,
 )
 
@@ -41,14 +42,15 @@ enum class Category(val emoji: String) {
     NONE(" ")
 }
 
-enum class NotificationTime {
-    MINUTES_120_BEFORE,
-    MINUTES_90_BEFORE,
-    MINUTES_60_BEFORE,
-    MINUTES_30_BEFORE,
-    MINUTES_15_BEFORE,
-    TASK_TIME,
-    NONE
+
+enum class NotificationTime(val offsetMinutes: Long?) {
+    MINUTES_120_BEFORE(120),
+    MINUTES_90_BEFORE(90),
+    MINUTES_60_BEFORE(60),
+    MINUTES_30_BEFORE(30),
+    MINUTES_15_BEFORE(15),
+    TASK_TIME(0),
+    NONE(null)
 }
 
 
@@ -63,6 +65,6 @@ data class TaskSchema(
     val day: LocalDate = if (LocalDateTime.now().plusHours(1).toLocalDate()
             .equals(LocalDate.now())) LocalDate.now() else LocalDate.now().plusDays(1),
     val time: LocalTime = LocalTime.now().plusHours(1),
-    val notificationTime: NotificationTime = NotificationTime.NONE,
+    val notificationTime: LocalDateTime? = null,
     val isDone: Boolean? = null,
 )

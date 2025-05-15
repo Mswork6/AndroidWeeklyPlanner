@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.UUID
 
@@ -113,7 +114,15 @@ class TaskBuilderInteractor @AssistedInject constructor(
 
     fun setNotificationTime(notificationTime: NotificationTime) {
         _schemaState.update {
-            it?.copy(notificationTime = notificationTime)
+            val currentDateTime = LocalDateTime.of(it?.day, it?.time)
+            val notifyTime: LocalDateTime?
+            val timeOffset = notificationTime.offsetMinutes
+            notifyTime = if (timeOffset != null) {
+                currentDateTime.minusMinutes(timeOffset)
+            } else {
+                null
+            }
+            it?.copy(notificationTime = notifyTime)
         }
     }
 
