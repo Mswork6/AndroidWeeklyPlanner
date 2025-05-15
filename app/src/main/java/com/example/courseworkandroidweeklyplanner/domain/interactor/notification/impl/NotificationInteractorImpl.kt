@@ -5,10 +5,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.example.courseworkandroidweeklyplanner.domain.TASK_ID_KEY
+import com.example.courseworkandroidweeklyplanner.domain.fromLocalDateTime
 import com.example.courseworkandroidweeklyplanner.domain.interactor.notification.NotificationCreator
 import com.example.courseworkandroidweeklyplanner.domain.interactor.notification.NotificationInteractor
 import com.example.courseworkandroidweeklyplanner.domain.model.Notification
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.time.ZoneId
 import java.util.UUID
 import javax.inject.Inject
 
@@ -18,6 +20,9 @@ class NotificationInteractorImpl @Inject constructor(
 ) : NotificationInteractor {
     override suspend fun saveNotification(notification: Notification) {
         val trigger = notification.scheduledTime
+            .atZone(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
         val intent = Intent(
             /* packageContext = */ context,
             /* cls = */ NotificationCreator::class.java
@@ -36,7 +41,7 @@ class NotificationInteractorImpl @Inject constructor(
         )
         alarmManager.setAndAllowWhileIdle(
             /* type = */ AlarmManager.RTC_WAKEUP,
-            /* triggerAtMillis = */ trigger.toEpochMilli(),
+            /* triggerAtMillis = */ trigger,
             /* operation = */ pending
         )
     }

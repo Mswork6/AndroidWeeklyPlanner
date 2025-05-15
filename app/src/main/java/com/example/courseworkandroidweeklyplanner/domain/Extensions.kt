@@ -45,11 +45,11 @@ fun fromLocalDateTime(dateTime: LocalDateTime?): Long? {
 }
 
 val Task.notification: Notification?
-    get() = when (time) {
+    get() = when (notificationTime) {
         null -> null
         else -> Notification(
             taskId = id,
-            scheduledTime = instantFromDateAndTime(date, time)
+            scheduledTime = notificationTime
         )
     }
 

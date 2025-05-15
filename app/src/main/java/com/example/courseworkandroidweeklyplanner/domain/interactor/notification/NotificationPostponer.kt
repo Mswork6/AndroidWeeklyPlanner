@@ -7,6 +7,7 @@ import android.content.Intent
 import android.util.Log
 import com.example.courseworkandroidweeklyplanner.domain.getTaskId
 import com.example.courseworkandroidweeklyplanner.domain.interactor.saver.TaskInteractor
+import com.example.courseworkandroidweeklyplanner.presentation.dateTimeToString
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -30,8 +31,9 @@ class NotificationPostponer : BroadcastReceiver() {
                     null -> Unit
                     else -> {
                         notificationManager.cancel(task.id.hashCode())
-                        val date = task.date.plusDays(1)
-                        taskInteractor.updateTask(task.copy(date = date))
+                        val date = task.notificationTime?.plusMinutes(5)
+                        Log.d("MSWORK6", date.toString())
+                        taskInteractor.updateTask(task.copy(notificationTime = date))
                     }
                 }
             }
