@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -140,11 +141,23 @@ class NotificationCreator : BroadcastReceiver() {
     }
 
     private fun buildOnClickIntent(context: Context, id: UUID): PendingIntent {
+        // Создаём Intent, который запустит (или поднимет) MainActivity
+        val intent = Intent(context, MainActivity::class.java).apply {
+            // передаём в него UUID задачи
+            putExtra(TASK_ID_KEY, id.toString())
+            // Для холодного старта — NEW_TASK
+            // Для горячего — CLEAR_TOP + SINGLE_TOP, чтобы onNewIntent(...) прилетел
+            addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+            )
+        }
         return PendingIntent.getActivity(
-            /* context = */ context,
-            /* requestCode = */ id.hashCode(),
-            /* intent = */ Intent(context, MainActivity::class.java),
-            /* flags = */ PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            context,
+            id.hashCode(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 
