@@ -47,7 +47,7 @@ class NotificationCreator : BroadcastReceiver() {
                         val channel = buildChannel(
                             id = CHANNEL_ID,
                             name = CHANNEL_NAME,
-                            importance = NotificationManager.IMPORTANCE_DEFAULT
+                            importance = NotificationManager.IMPORTANCE_HIGH
                         )
                         notificationManager.createNotificationChannel(channel)
                         val notification = buildNotification(
@@ -81,6 +81,8 @@ class NotificationCreator : BroadcastReceiver() {
         .setContentTitle(title)
         .setContentText(text)
         .setContentIntent(onClickIntent)
+        .setPriority(Notification.PRIORITY_HIGH)
+        .setDefaults(Notification.DEFAULT_ALL)
         .addAction(
             Notification.Action.Builder(
                 /* icon = */ Icon.createWithResource(context, R.drawable.baseline_more_time_24),
@@ -97,7 +99,11 @@ class NotificationCreator : BroadcastReceiver() {
         /* id = */ id,
         /* name = */ name,
         /* importance = */ importance
-    )
+    ). apply {
+        enableLights(true)
+        enableVibration(true)
+        description = "Напоминание о задачах"
+    }
 
     private fun buildOnClickIntent(context: Context, id: UUID): PendingIntent {
         return PendingIntent.getActivity(
