@@ -40,7 +40,7 @@
     <string name="day_friday">Friday</string>
     <string name="day_saturday">Saturday</string>
     <string name="day_sunday">Sunday</string>
-    <string name="postpone_for_day">Postpone for day</string>
+    <string name="postpone_for_15_minutes">Postpone for 15 minutes</string>
     <string name="error_whitespaces">Title has useless whitespaces</string>
     <string name="description_difficulty_hard">Hard</string>
     <string name="description_difficulty_medium">Medium</string>
@@ -70,4 +70,8 @@
     <string name="description_tasktime">At completion time</string>
     <string name="description_no">No</string>
     <string name="description_choose_notification_time">Choose notification time</string>
+    <string name="description_notification_message">Don\'t forget to complete task: \"%1$s\" \nTask need to be completed to %2$s</string>
+    <string name="description_reminder">Reminder</string>
+    <string name="description_notification_message_expired">Try to complete task \"%1$s\" as soon as possible!\nTask need to be completed to %2$s</string>
+    <string name="description_hurry_up">Hurry up!</string>
 </resources>

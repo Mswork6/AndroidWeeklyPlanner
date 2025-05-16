@@ -8,17 +8,19 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
-import android.os.Bundle
 import android.util.Log
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.TASK_ID_KEY
 import com.example.courseworkandroidweeklyplanner.domain.getTaskId
 import com.example.courseworkandroidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.courseworkandroidweeklyplanner.presentation.MainActivity
-import com.example.courseworkandroidweeklyplanner.presentation.description
+import com.example.courseworkandroidweeklyplanner.presentation.dateTimeToString
+import com.example.courseworkandroidweeklyplanner.presentation.timeToString
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
 
@@ -50,11 +52,42 @@ class NotificationCreator : BroadcastReceiver() {
                             importance = NotificationManager.IMPORTANCE_HIGH
                         )
                         notificationManager.createNotificationChannel(channel)
+                        val title = if (task.notificationTime?.
+                            isAfter(LocalDateTime.of(task.date, task.time)) == true) {
+                            context.getString(R.string.description_hurry_up)
+                        } else {
+                            context.getString(R.string.description_reminder)
+                        }
+
+                        val taskName = if (task.name.length > 35) {
+                            task.name.substring(0, 35).plus("...")
+                        } else {
+                            task.name
+                        }
+
+                        val completionDate = if (LocalDate.now().equals(task.date)){
+                            timeToString(task.time)
+                        } else {
+                            dateTimeToString(task.date, task.time)
+                        }
+
+                        val textPattern: Int = if (task.notificationTime?.
+                            isAfter(LocalDateTime.of(task.date, task.time)) == true) {
+                            R.string.description_notification_message_expired
+                        } else {
+                            R.string.description_notification_message
+                        }
+
+                        val text = context.getString(
+                            textPattern,
+                            taskName,
+                            completionDate
+                        )
                         val notification = buildNotification(
                             context = context,
                             icon = R.drawable.icon_checkbox_done,
-                            title = context.getString(task.priority.description),
-                            text = task.name,
+                            title = title,
+                            text = text,
                             onClickIntent = buildOnClickIntent(context, task.id),
                             cancellingIntent = buildPostponeIntent(context, task.id)
                         )
@@ -83,10 +116,11 @@ class NotificationCreator : BroadcastReceiver() {
         .setContentIntent(onClickIntent)
         .setPriority(Notification.PRIORITY_HIGH)
         .setDefaults(Notification.DEFAULT_ALL)
+        .setStyle(Notification.BigTextStyle().bigText(text))
         .addAction(
             Notification.Action.Builder(
                 /* icon = */ Icon.createWithResource(context, R.drawable.baseline_more_time_24),
-                /* title = */ context.getString(R.string.postpone_for_day),
+                /* title = */ context.getString(R.string.postpone_for_15_minutes),
                 /* intent = */ cancellingIntent
             ).build()
         ).build()

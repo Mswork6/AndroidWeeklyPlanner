@@ -41,7 +41,7 @@
     <string name="day_friday">Пятница</string>
     <string name="day_saturday">Суббота</string>
     <string name="day_sunday">Воскресенье</string>
-    <string name="postpone_for_day">Отложить на день</string>
+    <string name="postpone_for_15_minutes">Отложить на 15 минут</string>
     <string name="error_whitespaces">Пустые символы</string>
     <string name="description_difficulty_hard">Тяжелая</string>
     <string name="description_difficulty_medium">Средняя</string>
@@ -71,4 +71,8 @@
     <string name="description_tasktime">Во время выполнения</string>
     <string name="description_no">Нет</string>
     <string name="description_choose_notification_time">Выберите время уведомления</string>
+    <string name="description_notification_message">Не забудьте выполнить задачу: \"%1$s\" \nВремя выполнения: %2$s</string>
+    <string name="description_reminder">Напоминание</string>
+    <string name="description_notification_message_expired">Постарайтесь выполнить задачу \"%1$s\" как можно скорее!\nЗадача должна была быть выполнена к %2$s</string>
+    <string name="description_hurry_up">Поторопитесь!</string>
 </resources>

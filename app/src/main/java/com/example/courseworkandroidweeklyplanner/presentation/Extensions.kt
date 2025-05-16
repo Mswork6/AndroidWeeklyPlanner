@@ -26,14 +26,20 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 private val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+private val dateFormatterShort: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yy")
 private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-private val dateTimeFormatter : DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm")
+private val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm")
 
 fun dateToString(localDate: LocalDate): String = localDate.format(dateFormatter)
 
 fun timeToString(time: LocalTime): String = time.format(timeFormatter)
 
 fun dateTimeToString(localDateTime: LocalDateTime): String = localDateTime.format(dateTimeFormatter)
+
+fun dateTimeToString(localDate: LocalDate, localTime: LocalTime): String =
+    LocalDateTime.of(localDate, localTime).format(
+        dateTimeFormatter
+    )
 
 fun convertToLocalDate(dateMillis: Long): LocalDate = Instant
     .ofEpochMilli(dateMillis)
@@ -98,7 +104,7 @@ val DayType.description: Int
 
 @get:StringRes
 val Difficulty.description: Int
-    get() = when(this) {
+    get() = when (this) {
         Difficulty.EASY -> R.string.description_difficulty_easy
         Difficulty.MEDIUM -> R.string.description_difficulty_medium
         Difficulty.HARD -> R.string.description_difficulty_hard
@@ -106,7 +112,7 @@ val Difficulty.description: Int
 
 @get:ColorRes
 val Difficulty.color: Int
-    get() = when(this) {
+    get() = when (this) {
         Difficulty.EASY -> R.color.green
         Difficulty.MEDIUM -> R.color.orange
         Difficulty.HARD -> R.color.red
@@ -114,7 +120,7 @@ val Difficulty.color: Int
 
 @get:StringRes
 val Category.description: Int
-    get() = when(this) {
+    get() = when (this) {
         Category.WORK -> R.string.description_work
         Category.STUDY -> R.string.description_study
         Category.SPORT -> R.string.description_sport
@@ -125,7 +131,7 @@ val Category.description: Int
 
 @get:StringRes
 val NotificationTime.description: Int
-    get() = when(this) {
+    get() = when (this) {
         NotificationTime.MINUTES_120_BEFORE -> R.string.description_minutes_120_before
         NotificationTime.MINUTES_90_BEFORE -> R.string.description_minutes_90_before
         NotificationTime.MINUTES_60_BEFORE -> R.string.description_minutes_60_before
@@ -137,7 +143,7 @@ val NotificationTime.description: Int
 
 
 suspend inline fun <T, R> Iterable<T>.asyncMap(
-    crossinline transform: suspend (value: T) -> R
+    crossinline transform: suspend (value: T) -> R,
 ): Iterable<R> = this.map { value ->
     coroutineScope {
         async {
