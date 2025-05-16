@@ -18,6 +18,7 @@ import com.example.courseworkandroidweeklyplanner.presentation.screens.task.navi
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.navigateToEditScreen
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.navigateToViewScreen
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.UUID
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -42,10 +43,7 @@ class MainActivity : ComponentActivity() {
                     )
                     installAddScreen(navController::atomicBack)
                     installEditScreen(navController::atomicBack)
-                    // UI-back внутри TaskScreen просто popBackStack()
-                    installViewScreen { backStackEntry ->
-                        navController.popBackStack()
-                    }
+                    installViewScreen(navController::atomicBack)
                 }
 
                 //Запуск при "холодном старте"
@@ -58,7 +56,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        // При "горячем старте"
-        navController.handleDeepLink(intent)
+        intent.data
+            ?.lastPathSegment
+            ?.let { UUID.fromString(it) }
+            ?.let { navController.navigateToViewScreen(it) }
     }
 }

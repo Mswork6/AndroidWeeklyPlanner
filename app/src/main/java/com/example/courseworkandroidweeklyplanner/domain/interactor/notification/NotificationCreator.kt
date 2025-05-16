@@ -143,14 +143,7 @@ class NotificationCreator : BroadcastReceiver() {
 
     private fun buildOnClickIntent(context: Context, id: UUID): PendingIntent {
         val uri = Uri.parse("todo://view/$id")
-        val intent = Intent(Intent.ACTION_VIEW, uri, context, MainActivity::class.java).apply {
-            // этот флаг заставит поднять уже существующий таск, если он есть
-            addFlags(
-                Intent.FLAG_ACTIVITY_NEW_TASK or
-                        Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                        Intent.FLAG_ACTIVITY_SINGLE_TOP
-            )
-        }
+        val intent = Intent(Intent.ACTION_VIEW, uri, context, MainActivity::class.java)
         return PendingIntent.getActivity(
             context,
             id.hashCode(),
