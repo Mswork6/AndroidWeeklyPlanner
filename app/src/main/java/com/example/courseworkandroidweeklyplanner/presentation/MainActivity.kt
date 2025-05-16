@@ -6,13 +6,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.courseworkandroidweeklyplanner.domain.TASK_ID_KEY
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.courseworkandroidweeklyplanner.presentation.screens.main.installMainScreen
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.installAddScreen
@@ -33,59 +34,54 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // читаем экстру ровно один раз
-        val incomingTaskId: UUID? = intent
-            .getStringExtra(TASK_ID_KEY)
-            ?.toUuidOrNull()
+        val incomingId: String? = intent.data?.lastPathSegment
+        val isColdLaunch = incomingId != null
+        val viewRoutePattern = "view/{taskId}"
+        val startRoute = incomingId?.let { "view/$it" } ?: "main"
 
         setContent {
             CourseWorkAndroidWeeklyPlannerTheme {
+                var coldPending by remember { mutableStateOf(isColdLaunch) }
                 val controller = rememberNavController().also { navController = it }
-
-                // для BackHandler ниже
                 val backStack by controller.currentBackStackEntryAsState()
                 val currentRoute = backStack?.destination?.route
-
-                // стартовый экран — либо view, либо main
-                val startRoute = incomingTaskId
-                    ?.let { "view/$it" }
-                    ?: "main"
 
                 NavHost(
                     navController = controller,
                     startDestination = startRoute
                 ) {
                     installMainScreen(
-                        onNavigateToTaskAddScreen  = controller::navigateToAddScreen,
+                        onNavigateToTaskAddScreen = controller::navigateToAddScreen,
                         onNavigateToTaskEditScreen = controller::navigateToEditScreen,
                         onNavigateToTaskOpenScreen = controller::navigateToViewScreen
                     )
                     installAddScreen(controller::atomicBack)
                     installEditScreen(controller::atomicBack)
-                    installViewScreen { _ ->
-                        // UI-кнопка “назад” внутри TaskScreen
-                        // Попытаться popBackStack: если вернёт false → cold-launch → навигируем на main
-                        val didPop = controller.popBackStack()
-                        if (!didPop) {
-                            controller.navigate("main")
+                    installViewScreen { backStackEntry ->
+                        if (coldPending && currentRoute == viewRoutePattern) {
+                            controller.navigate("main") {
+                                popUpTo(viewRoutePattern) { inclusive = true }
+                                launchSingleTop = true
+                            }
+                        } else {
+                            controller.popBackStack()
                         }
                     }
                 }
 
-                // перехват hardware BACK только если мы именно на view-экране
-                if (currentRoute == "view/{taskId}") {
+                if (coldPending && currentRoute == viewRoutePattern) {
                     BackHandler {
-                        val didPop = controller.popBackStack()
-                        if (!didPop) {
-                            controller.navigate("main")
+                        controller.navigate("main") {
+                            popUpTo(viewRoutePattern) { inclusive = true }
+                            launchSingleTop = true
                         }
+                        coldPending = false
                     }
                 }
 
-                // горячий старт (Activity уже есть в памяти) — после рендера обрабатываем Intent
-                LaunchedEffect(Unit) {
-                    if (incomingTaskId == null) {
-                        handleIntent(intent)
+                if (isColdLaunch && !coldPending && currentRoute == "main") {
+                    BackHandler {
+                        moveTaskToBack(true)
                     }
                 }
             }
@@ -94,21 +90,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        handleIntent(intent)
+        intent.data
+            ?.lastPathSegment
+            ?.let { UUID.fromString(it) }
+            ?.let { id -> navController.navigateToViewScreen(id) }
     }
-
-    private fun handleIntent(intent: Intent) {
-        intent.getStringExtra(TASK_ID_KEY)
-            ?.toUuidOrNull()
-            ?.let { id ->
-                navController.navigateToViewScreen(id)
-            }
-    }
-
-    private fun String.toUuidOrNull(): UUID? =
-        try {
-            UUID.fromString(this)
-        } catch (e: IllegalArgumentException) {
-            null
-        }
 }

@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
+import android.net.Uri
 import android.util.Log
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.TASK_ID_KEY
@@ -141,12 +142,9 @@ class NotificationCreator : BroadcastReceiver() {
     }
 
     private fun buildOnClickIntent(context: Context, id: UUID): PendingIntent {
-        // Создаём Intent, который запустит (или поднимет) MainActivity
-        val intent = Intent(context, MainActivity::class.java).apply {
-            // передаём в него UUID задачи
-            putExtra(TASK_ID_KEY, id.toString())
-            // Для холодного старта — NEW_TASK
-            // Для горячего — CLEAR_TOP + SINGLE_TOP, чтобы onNewIntent(...) прилетел
+        val uri = Uri.parse("todo://view/$id")
+        val intent = Intent(Intent.ACTION_VIEW, uri, context, MainActivity::class.java).apply {
+            // этот флаг заставит поднять уже существующий таск, если он есть
             addFlags(
                 Intent.FLAG_ACTIVITY_NEW_TASK or
                         Intent.FLAG_ACTIVITY_CLEAR_TOP or
