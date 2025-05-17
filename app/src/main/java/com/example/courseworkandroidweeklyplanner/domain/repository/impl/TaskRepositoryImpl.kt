@@ -3,12 +3,15 @@ package com.example.courseworkandroidweeklyplanner.domain.repository.impl
 import com.example.courseworkandroidweeklyplanner.data.dao.TaskDao
 import com.example.courseworkandroidweeklyplanner.data.entity.TaskEntity
 import com.example.courseworkandroidweeklyplanner.domain.Converter
+import com.example.courseworkandroidweeklyplanner.domain.fromLocalDateTime
 import com.example.courseworkandroidweeklyplanner.domain.localTimeOfMilliOfDay
 import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
+import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.domain.repository.TaskRepository
+import com.example.courseworkandroidweeklyplanner.domain.toLocalDateTime
 import com.example.courseworkandroidweeklyplanner.domain.toMilliOfDay
 import com.example.courseworkandroidweeklyplanner.presentation.asyncMap
 import kotlinx.coroutines.Dispatchers
@@ -63,6 +66,7 @@ class TaskRepositoryImpl @Inject constructor(
                 description = description,
                 date = date.toEpochDay(),
                 time = time.toMilliOfDay(),
+                notificationTime = fromLocalDateTime(notificationTime),
                 priority = priority.toString(),
                 difficulty = difficulty.toString(),
                 category = category.toString(),
@@ -82,6 +86,7 @@ class TaskRepositoryImpl @Inject constructor(
                 category = Category.valueOf(category),
                 date = LocalDate.ofEpochDay(entity.date),
                 time = localTimeOfMilliOfDay(time),
+                notificationTime = toLocalDateTime(notificationTime),
                 isDone = isDone,
             )
         }

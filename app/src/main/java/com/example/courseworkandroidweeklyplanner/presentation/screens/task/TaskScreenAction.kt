@@ -2,6 +2,7 @@ package com.example.courseworkandroidweeklyplanner.presentation.screens.task
 
 import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
+import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 
 sealed interface TaskScreenAction {
@@ -19,6 +20,8 @@ sealed interface TaskScreenAction {
 
     data class SetTime(val hour: Int, val minute: Int) : TaskScreenAction
 
+    data class SetNotificationTime(val notificationTime: NotificationTime) : TaskScreenAction
+
     data class SetDatePickerVisibility(val opened: Boolean) : TaskScreenAction
 
     data class SetPriorityPickerVisibility(val opened: Boolean) : TaskScreenAction
@@ -28,6 +31,8 @@ sealed interface TaskScreenAction {
     data class SetCategoryPickerVisibility(val opened: Boolean) : TaskScreenAction
 
     data class SetTimePickerVisibility(val opened: Boolean) : TaskScreenAction
+
+    data class SetNotificationTimePickerVisibility(val opened: Boolean) : TaskScreenAction
 
     data class SetTaskLimitWindowVisibility(val opened: Boolean) : TaskScreenAction
 

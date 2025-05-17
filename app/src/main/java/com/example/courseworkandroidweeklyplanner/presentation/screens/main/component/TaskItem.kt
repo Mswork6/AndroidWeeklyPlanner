@@ -35,8 +35,10 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.color
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.dateTimeToString
 import com.example.courseworkandroidweeklyplanner.presentation.timeToString
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.UUID
 
@@ -57,9 +59,11 @@ fun TaskItem(
     val stripeColor = task.difficulty.color
     val stripeWidth = 12.dp
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .height(IntrinsicSize.Min))
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+    )
     {
         // Used to write category color stripe
         Box(
@@ -77,7 +81,8 @@ fun TaskItem(
                     top = 16.dp,
                     bottom = 16.dp,
                     start = 8.dp,
-                    end = stripeWidth + 4.dp)
+                    end = stripeWidth + 4.dp
+                )
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
@@ -87,9 +92,9 @@ fun TaskItem(
                         ImageVector.vectorResource(R.drawable.baseline_check_box_outline_blank_24),
                     contentDescription = null,
                     tint = if (task.isDone) Color.Unspecified else when (task.priority) {
-                        Priority.LOW   -> colorResource(R.color.gray)
+                        Priority.LOW -> colorResource(R.color.gray)
                         Priority.BASIC -> colorResource(R.color.black)
-                        Priority.HIGH  -> colorResource(R.color.red)
+                        Priority.HIGH -> colorResource(R.color.red)
                     }
                 )
                 Spacer(Modifier.width(4.dp))
@@ -102,7 +107,8 @@ fun TaskItem(
                 )
             }
             Row(
-                verticalAlignment = Alignment.CenterVertically) {
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 if (task.category != Category.NONE) {
                     Text(
                         text = task.category.emoji,
@@ -125,6 +131,14 @@ fun TaskItem(
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold
                 )
+                if (task.notificationTime != null) {
+                    Spacer(Modifier.width(4.dp))
+                    Text(
+                        text = dateTimeToString(task.notificationTime),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
             }
         }
     }
@@ -146,6 +160,7 @@ private fun TaskCardWithIconPreview1() {
                 category = Category.VACATION,
                 date = LocalDate.of(2024, 10, 13),
                 time = LocalTime.of(17, 33),
+                notificationTime = LocalDateTime.now(),
                 isDone = true
             ),
             modifier = Modifier

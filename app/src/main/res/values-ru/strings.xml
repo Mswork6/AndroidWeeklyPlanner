@@ -41,7 +41,7 @@
     <string name="day_friday">Пятница</string>
     <string name="day_saturday">Суббота</string>
     <string name="day_sunday">Воскресенье</string>
-    <string name="postpone_for_day">Отложить на день</string>
+    <string name="postpone_for_15_minutes">Отложить на 15 минут</string>
     <string name="error_whitespaces">Пустые символы</string>
     <string name="description_difficulty_hard">Тяжелая</string>
     <string name="description_difficulty_medium">Средняя</string>
@@ -62,4 +62,17 @@
     <string name="description_none_category">Без категории</string>
     <string name="description_category">Категория</string>
     <string name="description_choose_task_category">Выберите категорию задачи</string>
+    <string name="description_notification_time">Время уведомления</string>
+    <string name="description_minutes_120_before">За 2 часа</string>
+    <string name="description_minutes_90_before">За 1.5 часа</string>
+    <string name="description_minutes_60_before">За 1 час</string>
+    <string name="description_minutes_30_before">За 30 минут</string>
+    <string name="description_minutes_15_before">За 15 минут</string>
+    <string name="description_tasktime">Во время выполнения</string>
+    <string name="description_no">Нет</string>
+    <string name="description_choose_notification_time">Выберите время уведомления</string>
+    <string name="description_notification_message">Не забудьте выполнить задачу: \"%1$s\" \nВремя выполнения: %2$s</string>
+    <string name="description_reminder">Напоминание</string>
+    <string name="description_notification_message_expired">Постарайтесь выполнить задачу \"%1$s\" как можно скорее!\nЗадача должна была быть выполнена к %2$s</string>
+    <string name="description_hurry_up">Поторопитесь!</string>
 </resources>

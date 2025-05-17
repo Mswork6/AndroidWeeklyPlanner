@@ -1,7 +1,6 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.task
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,23 +25,26 @@ import androidx.compose.ui.unit.dp
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
+import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
-import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.DatePickerModal
-import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.ErrorScreen
-import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.DialWithDialogExample
-import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.PriorityDialogWindow
-import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenDateInputField
-import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenInputField
-import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenTimeInputField
-import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenPriorityInputField
-import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenTopBar
 import com.example.courseworkandroidweeklyplanner.presentation.PastOrPresentSelectableDates
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.DatePickerModal
+import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.ErrorScreen
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.CategoryDialogWindow
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.DialWithDialogExample
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.DifficultyDialogWindow
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.NotificationTimeDialogWindow
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.PriorityDialogWindow
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskLimitWindow
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenCategoryInputField
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenDateInputField
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenDifficultyInputField
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenInputField
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenNotificationTimeInputField
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenPriorityInputField
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenTimeInputField
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenTopBar
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.LocalTime
@@ -51,7 +53,7 @@ import java.time.LocalTime
 fun TaskScreen(
     viewModel: TaskScreenViewModel,
     onNavigateBack: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     val state by viewModel.state.collectAsState()
     TaskScreenContent(
@@ -67,7 +69,7 @@ private fun TaskScreenContent(
     state: TaskScreenState,
     onAction: (TaskScreenAction) -> Unit,
     onNavigateBack: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) = when (state) {
     is TaskScreenState.Initial -> CircularProgressIndicator(modifier = modifier)
     is TaskScreenState.Content -> TaskScreenBaseContent(
@@ -76,6 +78,7 @@ private fun TaskScreenContent(
         onNavigateBack = onNavigateBack,
         modifier = modifier
     )
+
     is TaskScreenState.Error -> {
         ErrorScreen(
             title = "Something went wrong",
@@ -96,7 +99,7 @@ private fun TaskScreenBaseContent(
     state: TaskScreenState.Content,
     onAction: (TaskScreenAction) -> Unit,
     onNavigateBack: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Scaffold(
         modifier = modifier,
@@ -164,6 +167,13 @@ private fun TaskScreenBaseContent(
                 onClick = { onAction(TaskScreenAction.SetTimePickerVisibility(true)) },
                 modifier = Modifier.fillMaxWidth()
             )
+            TaskAddScreenDivider()
+            TaskScreenNotificationTimeInputField(
+                notificationTime = state.notificationTime,
+                editState = state.editable,
+                onClick = { onAction(TaskScreenAction.SetNotificationTimePickerVisibility(true)) },
+                modifier = Modifier.fillMaxWidth()
+            )
         }
 
         if (state.isDatePickerOpened) {
@@ -172,6 +182,11 @@ private fun TaskScreenBaseContent(
                 onDateSelected = { dateInMillis ->
                     if (dateInMillis != null) {
                         onAction(TaskScreenAction.SetDate(dateInMillis))
+                        onAction(
+                            TaskScreenAction.SetNotificationTime(
+                                state.notificationTimeOffset ?: NotificationTime.TASK_TIME
+                            )
+                        )
                     }
                     onAction(TaskScreenAction.SetDatePickerVisibility(false))
                 },
@@ -186,8 +201,26 @@ private fun TaskScreenBaseContent(
                 onDismiss = { onAction(TaskScreenAction.SetTimePickerVisibility(false)) },
                 onConfirm = { timePickerState ->
                     onAction(TaskScreenAction.SetTime(timePickerState.hour, timePickerState.minute))
+                    onAction(
+                        TaskScreenAction.SetNotificationTime(
+                            state.notificationTimeOffset ?: NotificationTime.TASK_TIME
+                        )
+                    )
                     onAction(TaskScreenAction.SetTimePickerVisibility(false))
                 }
+            )
+        }
+
+        if (state.isNotificationTimePickerOpened) {
+            NotificationTimeDialogWindow(
+                selectedOption = state.notificationTimeOffset,
+                onOptionSelected = { option ->
+                    onAction(TaskScreenAction.SetNotificationTime(option))
+                },
+                onDismissRequest = {
+                    onAction(TaskScreenAction.SetNotificationTimePickerVisibility(false))
+                },
+                modifier = Modifier.fillMaxWidth(0.9f)
             )
         }
 
@@ -230,7 +263,7 @@ private fun TaskScreenBaseContent(
             )
         }
 
-        if(state.isTaskLimitWindowOpened) {
+        if (state.isTaskLimitWindowOpened) {
             TaskLimitWindow(
                 onOptionSelected = {
                     onAction(TaskScreenAction.Save)
@@ -246,7 +279,7 @@ private fun TaskScreenBaseContent(
 
 @Composable
 private fun TaskAddScreenDivider(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) = HorizontalDivider(
     modifier = modifier
         .fillMaxWidth()
@@ -265,6 +298,7 @@ private fun TaskScreenContent1Preview() {
         difficulty = Difficulty.HARD,
         category = Category.WORK,
         time = LocalTime.now(),
+        notificationTime = null
     )
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenContent(
@@ -288,11 +322,14 @@ private fun TaskScreenContent2Preview() {
         difficulty = Difficulty.HARD,
         category = Category.WORK,
         time = LocalTime.now(),
+        notificationTimeOffset = NotificationTime.NONE,
+        notificationTime = null,
         isDatePickerOpened = false,
         isPriorityPickerOpened = false,
         isDifficultyPickerOpened = false,
         isCategoryPickerOpened = false,
         isTimePickerOpened = false,
+        isNotificationTimePickerOpened = false,
         isTaskLimitWindowOpened = false,
         errorMessage = null
     )
@@ -318,11 +355,14 @@ private fun TaskScreenContent3Preview() {
         difficulty = Difficulty.HARD,
         category = Category.WORK,
         time = LocalTime.now(),
+        notificationTimeOffset = NotificationTime.NONE,
+        notificationTime = null,
         isDatePickerOpened = false,
         isPriorityPickerOpened = false,
         isDifficultyPickerOpened = false,
         isCategoryPickerOpened = false,
         isTimePickerOpened = false,
+        isNotificationTimePickerOpened = false,
         isTaskLimitWindowOpened = false,
         errorMessage = null
     )

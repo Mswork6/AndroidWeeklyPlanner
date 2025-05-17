@@ -1,6 +1,7 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting
 
 import androidx.lifecycle.viewModelScope
+import com.example.courseworkandroidweeklyplanner.domain.NotificationEventBus
 import com.example.courseworkandroidweeklyplanner.domain.repository.SortRepository
 import com.example.courseworkandroidweeklyplanner.domain.repository.WeekRepository
 import com.example.courseworkandroidweeklyplanner.presentation.core.BaseViewModel
@@ -16,9 +17,11 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchScreenViewModel @Inject constructor(
     private val weekRepository: WeekRepository,
-    private val sortRepository: SortRepository
+    private val sortRepository: SortRepository,
+    private val notificationEventBus: NotificationEventBus,
 ) : BaseViewModel<SearchScreenState, SearchScreenAction>() {
-    private val _state: MutableStateFlow<SearchScreenState> = MutableStateFlow(SearchScreenState.Initial)
+    private val _state: MutableStateFlow<SearchScreenState> =
+        MutableStateFlow(SearchScreenState.Initial)
     override val state: StateFlow<SearchScreenState> = _state.asStateFlow()
 
     private val calendarVisibility: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -40,6 +43,14 @@ class SearchScreenViewModel @Inject constructor(
                         screenState
                     }
                 }
+        }
+
+        // Подписка на событие уведомления
+        viewModelScope.launch {
+            notificationEventBus.events.collect {
+                calendarVisibility.emit(false)
+                sorterVisibility.emit(false)
+            }
         }
     }
 

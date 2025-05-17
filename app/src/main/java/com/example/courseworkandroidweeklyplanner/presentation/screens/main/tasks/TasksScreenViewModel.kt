@@ -1,6 +1,7 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.main.tasks
 
 import androidx.lifecycle.viewModelScope
+import com.example.courseworkandroidweeklyplanner.domain.NotificationEventBus
 import com.example.courseworkandroidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.domain.usecase.GetDaysUseCase
@@ -19,7 +20,8 @@ import javax.inject.Inject
 class TasksScreenViewModel @Inject constructor(
     private val getDays: GetDaysUseCase,
     private val toggleTaskStatus: ToggleTaskStatusUseCase,
-    private val taskInteractor: TaskInteractor
+    private val taskInteractor: TaskInteractor,
+    private val notificationEventBus: NotificationEventBus
 ) : BaseViewModel<TasksScreenState, TasksScreenAction>() {
     private val _state: MutableStateFlow<TasksScreenState> = MutableStateFlow(TasksScreenState.Initial)
     override val state: StateFlow<TasksScreenState> = _state.asStateFlow()
@@ -39,7 +41,16 @@ class TasksScreenViewModel @Inject constructor(
             }.collect { screenState ->
                 _state.update {
                     screenState
+
                 }
+            }
+        }
+
+        // Подписка на событие уведомления
+        viewModelScope.launch {
+            notificationEventBus.events.collect {
+                // Закрытие любойго открытого диалога
+                actionDialogTask.value = null
             }
         }
     }

@@ -9,6 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import java.util.UUID
 
 fun NavController.navigateToEditScreen(taskId: UUID) = this.navigate("edit/$taskId")
@@ -52,6 +53,9 @@ fun NavGraphBuilder.installViewScreen(
             nullable = false
             type = NavType.StringType
         }
+    ),
+    deepLinks = listOf(
+        navDeepLink { uriPattern = "todo://view/{taskId}" }
     )
 ) { backStackEntry: NavBackStackEntry ->
     val taskId: UUID = backStackEntry.arguments

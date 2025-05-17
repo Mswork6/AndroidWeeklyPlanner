@@ -2,11 +2,13 @@ package com.example.courseworkandroidweeklyplanner.presentation.screens.task
 
 import androidx.lifecycle.viewModelScope
 import com.example.courseworkandroidweeklyplanner.R
+import com.example.courseworkandroidweeklyplanner.domain.NotificationEventBus
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.NameReport
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskBuilderInteractor
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskBuilderReport
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskBuilderState
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskLimitReport
+import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.core.BaseViewModel
 import dagger.assisted.Assisted
@@ -23,9 +25,11 @@ import java.util.UUID
 @HiltViewModel(assistedFactory = TaskScreenViewModel.Factory::class)
 class TaskScreenViewModel @AssistedInject constructor(
     @Assisted private val mode: Mode,
-    interactorFactory: TaskBuilderInteractor.Factory
+    interactorFactory: TaskBuilderInteractor.Factory,
+    private val notificationEventBus: NotificationEventBus,
 ) : BaseViewModel<TaskScreenState, TaskScreenAction>() {
-    private val _state: MutableStateFlow<TaskScreenState> = MutableStateFlow(TaskScreenState.Initial)
+    private val _state: MutableStateFlow<TaskScreenState> =
+        MutableStateFlow(TaskScreenState.Initial)
     override val state: StateFlow<TaskScreenState> = _state.asStateFlow()
 
     private val taskBuilderInteractor: TaskBuilderInteractor = interactorFactory.create(
@@ -45,27 +49,68 @@ class TaskScreenViewModel @AssistedInject constructor(
                                 is TaskScreenState.Add -> merge(screenState, taskState.task)
                                 is TaskScreenState.Initial,
                                 is TaskScreenState.Edit,
-                                is TaskScreenState.View -> initAddState(taskState.task)
+                                is TaskScreenState.View,
+                                -> initAddState(taskState.task)
+
                                 is TaskScreenState.Error,
-                                is TaskScreenState.Success -> screenState
+                                is TaskScreenState.Success,
+                                -> screenState
                             }
+
                             is Mode.Edit -> when (screenState) {
                                 is TaskScreenState.Edit -> merge(screenState, taskState.task)
                                 is TaskScreenState.Initial,
                                 is TaskScreenState.Add,
-                                is TaskScreenState.View -> initEditState(taskState.task)
+                                is TaskScreenState.View,
+                                -> initEditState(taskState.task)
+
                                 is TaskScreenState.Error,
-                                is TaskScreenState.Success -> screenState
+                                is TaskScreenState.Success,
+                                -> screenState
                             }
+
                             is Mode.View -> when (screenState) {
                                 is TaskScreenState.View -> merge(screenState, taskState.task)
                                 is TaskScreenState.Initial,
                                 is TaskScreenState.Edit,
-                                is TaskScreenState.Add -> initViewState(taskState.task)
+                                is TaskScreenState.Add,
+                                -> initViewState(taskState.task)
+
                                 is TaskScreenState.Error,
-                                is TaskScreenState.Success -> screenState
+                                is TaskScreenState.Success,
+                                -> screenState
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            notificationEventBus.events.collect {
+                _state.update { screenState ->
+                    when (screenState) {
+                        is TaskScreenState.Add -> screenState.copy(
+                            isPriorityPickerOpened = false,
+                            isDifficultyPickerOpened = false,
+                            isCategoryPickerOpened = false,
+                            isDatePickerOpened = false,
+                            isTimePickerOpened = false,
+                            isNotificationTimePickerOpened = false,
+                            isTaskLimitWindowOpened = false
+                        )
+
+                        is TaskScreenState.Edit -> screenState.copy(
+                            isPriorityPickerOpened = false,
+                            isDifficultyPickerOpened = false,
+                            isCategoryPickerOpened = false,
+                            isDatePickerOpened = false,
+                            isTimePickerOpened = false,
+                            isNotificationTimePickerOpened = false,
+                            isTaskLimitWindowOpened = false
+                        )
+
+                        else -> screenState
                     }
                 }
             }
@@ -78,7 +123,16 @@ class TaskScreenViewModel @AssistedInject constructor(
         is TaskScreenAction.SetDescription -> taskBuilderInteractor.setDescription(action.description)
         is TaskScreenAction.SetName -> taskBuilderInteractor.setName(action.name)
         is TaskScreenAction.SetTime -> taskBuilderInteractor.setTime(action.hour, action.minute)
-        is TaskScreenAction.SetTimePickerVisibility -> setNotificationPickerVisibility(action.opened)
+        is TaskScreenAction.SetTimePickerVisibility -> setTimePickerVisibility(action.opened)
+        is TaskScreenAction.SetNotificationTime -> {
+            taskBuilderInteractor.setNotificationTime(action.notificationTime)
+            setNotificationTimeOffset(action.notificationTime)
+        }
+
+        is TaskScreenAction.SetNotificationTimePickerVisibility -> setNotificationTimePickerVisibility(
+            action.opened
+        )
+
         is TaskScreenAction.SetPriority -> taskBuilderInteractor.setPriority(action.priority)
         is TaskScreenAction.SetPriorityPickerVisibility -> setPriorityPickerVisibility(action.opened)
         is TaskScreenAction.SetDifficulty -> taskBuilderInteractor.setDifficulty(action.difficulty)
@@ -99,6 +153,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 NameReport.UselessWhitespaces -> R.string.error_whitespaces
                 NameReport.Valid -> null
             }
+
             TaskBuilderReport.NotInitialized -> null
         }
         _state.update {
@@ -108,19 +163,22 @@ class TaskScreenViewModel @AssistedInject constructor(
                 is TaskScreenState.Initial,
                 is TaskScreenState.Error,
                 is TaskScreenState.Success,
-                is TaskScreenState.View -> it
+                is TaskScreenState.View,
+                -> it
             }
         }
 
-        if(report is TaskBuilderReport.Default
+        if (report is TaskBuilderReport.Default
             && report.nameReport is NameReport.Valid
-            && report.taskLimitReport is TaskLimitReport.Exceeded) {
+            && report.taskLimitReport is TaskLimitReport.Exceeded
+        ) {
             setTaskLimitScreenVisibility(true)
         }
 
         if (report is TaskBuilderReport.Default
             && report.nameReport is NameReport.Valid
-            && report.taskLimitReport is TaskLimitReport.Valid) {
+            && report.taskLimitReport is TaskLimitReport.Valid
+        ) {
             save()
         }
     }
@@ -140,11 +198,21 @@ class TaskScreenViewModel @AssistedInject constructor(
         }
     }
 
-    private fun setNotificationPickerVisibility(opened: Boolean) {
+    private fun setTimePickerVisibility(opened: Boolean) {
         _state.update {
             when (it) {
                 is TaskScreenState.Add -> it.copy(isTimePickerOpened = opened)
                 is TaskScreenState.Edit -> it.copy(isTimePickerOpened = opened)
+                else -> it
+            }
+        }
+    }
+
+    private fun setNotificationTimePickerVisibility(opened: Boolean) {
+        _state.update {
+            when (it) {
+                is TaskScreenState.Add -> it.copy(isNotificationTimePickerOpened = opened)
+                is TaskScreenState.Edit -> it.copy(isNotificationTimePickerOpened = opened)
                 else -> it
             }
         }
@@ -190,6 +258,16 @@ class TaskScreenViewModel @AssistedInject constructor(
         }
     }
 
+    private fun setNotificationTimeOffset(notificationTime: NotificationTime) {
+        _state.update {
+            when (it) {
+                is TaskScreenState.Add -> it.copy(notificationTimeOffset = notificationTime)
+                is TaskScreenState.Edit -> it.copy(notificationTimeOffset = notificationTime)
+                else -> it
+            }
+        }
+    }
+
     private fun merge(state: TaskScreenState.View, task: Task): TaskScreenState.View {
         return with(task) {
             state.copy(
@@ -199,7 +277,8 @@ class TaskScreenViewModel @AssistedInject constructor(
                 priority = priority,
                 difficulty = difficulty,
                 category = category,
-                time = time
+                time = time,
+                notificationTime = notificationTime
             )
         }
     }
@@ -213,7 +292,8 @@ class TaskScreenViewModel @AssistedInject constructor(
                 priority = priority,
                 difficulty = difficulty,
                 category = category,
-                time = time
+                time = time,
+                notificationTime = notificationTime
             )
         }
     }
@@ -227,7 +307,8 @@ class TaskScreenViewModel @AssistedInject constructor(
                 priority = priority,
                 difficulty = difficulty,
                 category = category,
-                time = time
+                time = time,
+                notificationTime = notificationTime
             )
         }
     }
@@ -242,8 +323,11 @@ class TaskScreenViewModel @AssistedInject constructor(
                 difficulty = difficulty,
                 category = category,
                 time = time,
+                notificationTimeOffset = NotificationTime.NONE,
+                notificationTime = notificationTime,
                 isDatePickerOpened = false,
                 isTimePickerOpened = false,
+                isNotificationTimePickerOpened = false,
                 isPriorityPickerOpened = false,
                 isDifficultyPickerOpened = false,
                 isCategoryPickerOpened = false,
@@ -263,8 +347,11 @@ class TaskScreenViewModel @AssistedInject constructor(
                 difficulty = difficulty,
                 category = category,
                 time = time,
+                notificationTimeOffset = null,
+                notificationTime = notificationTime,
                 isDatePickerOpened = false,
                 isTimePickerOpened = false,
+                isNotificationTimePickerOpened = false,
                 isPriorityPickerOpened = false,
                 isDifficultyPickerOpened = false,
                 isCategoryPickerOpened = false,
@@ -284,6 +371,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 difficulty = difficulty,
                 category = category,
                 time = time,
+                notificationTime = notificationTime
             )
         }
     }

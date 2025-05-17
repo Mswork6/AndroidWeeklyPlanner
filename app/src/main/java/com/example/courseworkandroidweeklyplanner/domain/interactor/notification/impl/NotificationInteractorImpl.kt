@@ -1,14 +1,18 @@
 package com.example.courseworkandroidweeklyplanner.domain.interactor.notification.impl
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import com.example.courseworkandroidweeklyplanner.domain.TASK_ID_KEY
+import com.example.courseworkandroidweeklyplanner.domain.fromLocalDateTime
 import com.example.courseworkandroidweeklyplanner.domain.interactor.notification.NotificationCreator
 import com.example.courseworkandroidweeklyplanner.domain.interactor.notification.NotificationInteractor
 import com.example.courseworkandroidweeklyplanner.domain.model.Notification
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.time.ZoneId
 import java.util.UUID
 import javax.inject.Inject
 
@@ -16,8 +20,12 @@ class NotificationInteractorImpl @Inject constructor(
     private val alarmManager: AlarmManager,
     @ApplicationContext private val context: Context
 ) : NotificationInteractor {
+    @SuppressLint("ScheduleExactAlarm")
     override suspend fun saveNotification(notification: Notification) {
         val trigger = notification.scheduledTime
+            .atZone(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
         val intent = Intent(
             /* packageContext = */ context,
             /* cls = */ NotificationCreator::class.java
@@ -34,9 +42,10 @@ class NotificationInteractorImpl @Inject constructor(
             /* intent = */ intent,
             /* flags = */ PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        alarmManager.setAndAllowWhileIdle(
+
+        alarmManager.setExactAndAllowWhileIdle(
             /* type = */ AlarmManager.RTC_WAKEUP,
-            /* triggerAtMillis = */ trigger.toEpochMilli(),
+            /* triggerAtMillis = */ trigger,
             /* operation = */ pending
         )
     }

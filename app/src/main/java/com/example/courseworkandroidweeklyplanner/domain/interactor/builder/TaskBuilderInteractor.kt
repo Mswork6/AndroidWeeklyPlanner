@@ -5,6 +5,7 @@ import com.example.courseworkandroidweeklyplanner.domain.Converter
 import com.example.courseworkandroidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
+import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.domain.model.TaskSchema
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.UUID
 
@@ -110,6 +112,20 @@ class TaskBuilderInteractor @AssistedInject constructor(
         }
     }
 
+    fun setNotificationTime(notificationTime: NotificationTime) {
+        _schemaState.update {
+            val currentDateTime = LocalDateTime.of(it?.day, it?.time)
+            val notifyTime: LocalDateTime?
+            val timeOffset = notificationTime.offsetMinutes
+            notifyTime = if (timeOffset != null) {
+                currentDateTime.minusMinutes(timeOffset)
+            } else {
+                null
+            }
+            it?.copy(notificationTime = notifyTime)
+        }
+    }
+
     suspend fun validate(): TaskBuilderReport {
         val stateValue = _state.value
         if (stateValue !is TaskBuilderState.Default) {
@@ -169,6 +185,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
                 category = category,
                 day = date,
                 time = time,
+                notificationTime = notificationTime,
                 isDone = isDone
             )
         }
@@ -182,6 +199,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
                 description = description,
                 date = day,
                 time = time,
+                notificationTime = notificationTime,
                 priority = priority,
                 difficulty = difficulty,
                 category = category,

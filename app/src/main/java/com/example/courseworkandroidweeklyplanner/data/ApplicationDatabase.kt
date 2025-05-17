@@ -7,7 +7,7 @@ import com.example.courseworkandroidweeklyplanner.data.entity.TaskEntity
 
 @Database(
     entities = [TaskEntity::class],
-    version = 5,
+    version = 7,
     exportSchema = false
 )
 abstract class ApplicationDatabase : RoomDatabase() {

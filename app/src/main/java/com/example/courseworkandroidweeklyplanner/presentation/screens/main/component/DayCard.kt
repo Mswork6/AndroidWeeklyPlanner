@@ -16,6 +16,7 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Day
 import com.example.courseworkandroidweeklyplanner.domain.model.DayType
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
+import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
@@ -67,6 +68,7 @@ private fun DayCardPreview() {
                 difficulty = Difficulty.MEDIUM,
                 category = Category.WORK,
                 time = LocalTime.of(17,33),
+                notificationTime = null,
                 isDone = false
             ),
 
@@ -79,6 +81,7 @@ private fun DayCardPreview() {
                 difficulty = Difficulty.MEDIUM,
                 category = Category.WORK,
                 time = LocalTime.of(17,33),
+                notificationTime = null,
                 isDone = false
             )
         )

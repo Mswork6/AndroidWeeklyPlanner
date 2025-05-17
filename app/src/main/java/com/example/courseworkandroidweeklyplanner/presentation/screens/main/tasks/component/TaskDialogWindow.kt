@@ -26,10 +26,12 @@ import androidx.compose.ui.window.Dialog
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
+import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.UUID
 
@@ -188,6 +190,7 @@ private fun DayCardPreview() {
             difficulty = Difficulty.EASY,
             category = Category.WORK,
             time = LocalTime.of(17,33),
+            notificationTime = LocalDateTime.now(),
             isDone = false
         )
 
