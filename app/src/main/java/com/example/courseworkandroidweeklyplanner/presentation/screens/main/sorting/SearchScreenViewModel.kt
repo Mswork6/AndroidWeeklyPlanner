@@ -16,7 +16,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchScreenViewModel @Inject constructor(
-    private val weekRepository: WeekRepository,
     private val sortRepository: SortRepository,
     private val notificationEventBus: NotificationEventBus,
 ) : BaseViewModel<SearchScreenState, SearchScreenAction>() {
@@ -24,40 +23,32 @@ class SearchScreenViewModel @Inject constructor(
         MutableStateFlow(SearchScreenState.Initial)
     override val state: StateFlow<SearchScreenState> = _state.asStateFlow()
 
-    private val calendarVisibility: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private val sorterVisibility: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     init {
         viewModelScope.launch {
-            calendarVisibility
-                .combine(sorterVisibility) { isCalendarVisible, isSorterVisible ->
-                    Pair(isCalendarVisible, isSorterVisible)
-                }.combine(sortRepository.getSort()) { (isCalendarVisible, isSorterVisible), sort ->
+            sorterVisibility
+                .combine(sortRepository.getSort()) { isSorterVisible, sort ->
                     SearchScreenState.Default(
                         sort = sort,
-                        isCalendarVisible = isCalendarVisible,
                         isSorterVisible = isSorterVisible
                     )
-                }.collect { screenState ->
-                    _state.update {
-                        screenState
-                    }
+                }
+                .collect { screenState ->
+                    _state.update { screenState }
                 }
         }
 
         // Подписка на событие уведомления
         viewModelScope.launch {
             notificationEventBus.events.collect {
-                calendarVisibility.emit(false)
                 sorterVisibility.emit(false)
             }
         }
     }
 
     override suspend fun execute(action: SearchScreenAction) = when (action) {
-        is SearchScreenAction.SetCalendarVisibility -> calendarVisibility.emit(action.opened)
         is SearchScreenAction.SetSorterVisibility -> sorterVisibility.emit(action.opened)
-        is SearchScreenAction.SetDate -> weekRepository.setWeek(action.date)
         is SearchScreenAction.SetSort -> sortRepository.setSort(action.sort)
     }
 }

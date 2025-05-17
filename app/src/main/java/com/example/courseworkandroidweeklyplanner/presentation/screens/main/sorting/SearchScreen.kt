@@ -54,7 +54,7 @@ private fun SearchScreenContent(
             modifier = modifier,
             horizontalArrangement = Arrangement.End
         ) {
-            IconButton(onClick = { onAction(SearchScreenAction.SetCalendarVisibility(true)) }) {
+            IconButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = stringResource(R.string.action_search)
@@ -64,19 +64,6 @@ private fun SearchScreenContent(
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.baseline_filter_alt_24),
                     contentDescription = stringResource(R.string.action_filter)
-                )
-            }
-            if (state.isCalendarVisible) {
-                DatePickerModal(
-                    onDateSelected = { dateMillis ->
-                        dateMillis?.let {
-                            onAction(SearchScreenAction.SetDate(convertToLocalDate(dateMillis)))
-                        }
-                        onAction(SearchScreenAction.SetCalendarVisibility(false))
-                    },
-                    onDismiss = {
-                        onAction(SearchScreenAction.SetCalendarVisibility(false))
-                    }
                 )
             }
             if (state.isSorterVisible) {
@@ -102,7 +89,6 @@ private fun SearchScreenContent(
 private fun SearchScreenContent1Preview() {
     val state = SearchScreenState.Default(
         sort = SortType.STANDARD,
-        isCalendarVisible = false,
         isSorterVisible = false,
     )
     CourseWorkAndroidWeeklyPlannerTheme {
@@ -120,7 +106,6 @@ private fun SearchScreenContent1Preview() {
 private fun SearchScreenContent2Preview() {
     val state = SearchScreenState.Default(
         sort = SortType.STANDARD,
-        isCalendarVisible = true,
         isSorterVisible = false,
     )
     CourseWorkAndroidWeeklyPlannerTheme {
@@ -138,7 +123,6 @@ private fun SearchScreenContent2Preview() {
 private fun SearchScreenContent3Preview() {
     val state = SearchScreenState.Default(
         sort = SortType.STANDARD,
-        isCalendarVisible = false,
         isSorterVisible = true,
     )
     CourseWorkAndroidWeeklyPlannerTheme {
