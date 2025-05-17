@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.courseworkandroidweeklyplanner.domain.NotificationEventBus
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.courseworkandroidweeklyplanner.presentation.screens.main.installMainScreen
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.installAddScreen
@@ -19,9 +20,12 @@ import com.example.courseworkandroidweeklyplanner.presentation.screens.task.navi
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.navigateToViewScreen
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var eventBus: NotificationEventBus
     private lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,5 +64,6 @@ class MainActivity : ComponentActivity() {
             ?.lastPathSegment
             ?.let { UUID.fromString(it) }
             ?.let { navController.navigateToViewScreen(it) }
+        eventBus.notifyReceived()
     }
 }

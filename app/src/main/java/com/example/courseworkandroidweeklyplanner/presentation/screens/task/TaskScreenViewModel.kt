@@ -2,6 +2,7 @@ package com.example.courseworkandroidweeklyplanner.presentation.screens.task
 
 import androidx.lifecycle.viewModelScope
 import com.example.courseworkandroidweeklyplanner.R
+import com.example.courseworkandroidweeklyplanner.domain.NotificationEventBus
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.NameReport
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskBuilderInteractor
 import com.example.courseworkandroidweeklyplanner.domain.interactor.builder.TaskBuilderReport
@@ -16,6 +17,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -23,7 +25,8 @@ import java.util.UUID
 @HiltViewModel(assistedFactory = TaskScreenViewModel.Factory::class)
 class TaskScreenViewModel @AssistedInject constructor(
     @Assisted private val mode: Mode,
-    interactorFactory: TaskBuilderInteractor.Factory
+    interactorFactory: TaskBuilderInteractor.Factory,
+    private val notificationEventBus: NotificationEventBus
 ) : BaseViewModel<TaskScreenState, TaskScreenAction>() {
     private val _state: MutableStateFlow<TaskScreenState> = MutableStateFlow(TaskScreenState.Initial)
     override val state: StateFlow<TaskScreenState> = _state.asStateFlow()
@@ -66,6 +69,34 @@ class TaskScreenViewModel @AssistedInject constructor(
                                 is TaskScreenState.Success -> screenState
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            notificationEventBus.events.collect {
+                _state.update { screenState ->
+                    when (screenState) {
+                        is TaskScreenState.Add -> screenState.copy(
+                            isPriorityPickerOpened = false,
+                            isDifficultyPickerOpened = false,
+                            isCategoryPickerOpened = false,
+                            isDatePickerOpened = false,
+                            isTimePickerOpened = false,
+                            isNotificationTimePickerOpened = false,
+                            isTaskLimitWindowOpened = false
+                        )
+                        is TaskScreenState.Edit -> screenState.copy(
+                            isPriorityPickerOpened = false,
+                            isDifficultyPickerOpened = false,
+                            isCategoryPickerOpened = false,
+                            isDatePickerOpened = false,
+                            isTimePickerOpened = false,
+                            isNotificationTimePickerOpened = false,
+                            isTaskLimitWindowOpened = false
+                        )
+                        else -> screenState
                     }
                 }
             }
