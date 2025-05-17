@@ -7,7 +7,6 @@ sealed interface SearchScreenState {
 
     data class Default(
         val sort: SortType,
-        val isCalendarVisible: Boolean,
         val isSorterVisible: Boolean
     ) : SearchScreenState
 }

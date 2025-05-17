@@ -1,12 +1,14 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.main.week
 
 import android.content.res.Configuration
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -20,8 +22,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.model.Week
-import com.example.courseworkandroidweeklyplanner.presentation.dateToString
+import com.example.courseworkandroidweeklyplanner.presentation.convertToLocalDate
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.dateToString
+import com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting.SearchScreenAction
+import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.DatePickerModal
 import java.time.LocalDate
 
 @Composable
@@ -37,6 +42,7 @@ fun WeekScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun WeekScreenContent(
     state: WeekScreenState,
@@ -56,11 +62,29 @@ private fun WeekScreenContent(
                     contentDescription = stringResource(R.string.action_previous_week)
                 )
             }
-            Text(dateToString(state.week))
+            Text(text = dateToString(state.week),
+                modifier = Modifier
+                    .clickable(
+                        onClick = { onAction(WeekScreenAction.SetCalendarVisibility(true)) }
+                    ))
             IconButton(onClick = { onAction(WeekScreenAction.SelectNextWeek) }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = stringResource(R.string.action_next_week)
+                )
+            }
+
+            if (state.isCalendarVisible) {
+                DatePickerModal(
+                    onDateSelected = { dateMillis ->
+                        dateMillis?.let {
+                            onAction(WeekScreenAction.SetDate(convertToLocalDate(dateMillis)))
+                        }
+                        onAction(WeekScreenAction.SetCalendarVisibility(false))
+                    },
+                    onDismiss = {
+                        onAction(WeekScreenAction.SetCalendarVisibility(false))
+                    }
                 )
             }
         }
@@ -85,7 +109,8 @@ private fun WeekScreenContentInitialPreview() {
 @Composable
 private fun WeekScreenContentDefaultPreview() {
     val state = WeekScreenState.Default(
-        Week.of(date = LocalDate.of(2024, 10, 7))
+        Week.of(date = LocalDate.of(2024, 10, 7)),
+        isCalendarVisible = false
     )
     CourseWorkAndroidWeeklyPlannerTheme {
         WeekScreenContent(
