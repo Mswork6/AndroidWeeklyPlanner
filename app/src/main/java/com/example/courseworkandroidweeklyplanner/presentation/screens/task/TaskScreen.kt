@@ -43,6 +43,7 @@ import com.example.courseworkandroidweeklyplanner.presentation.screens.task.comp
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenInputField
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenNotificationTimeInputField
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenPriorityInputField
+import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenRepetitionInputField
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenTimeInputField
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.TaskScreenTopBar
 import kotlinx.coroutines.delay
@@ -120,7 +121,7 @@ private fun TaskScreenBaseContent(
                 .padding(padding)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(
-                space = 16.dp, alignment = Alignment.Top
+                space = 12.dp, alignment = Alignment.Top
             ),
             horizontalAlignment = Alignment.Start
         ) {
@@ -174,6 +175,15 @@ private fun TaskScreenBaseContent(
                 onClick = { onAction(TaskScreenAction.SetNotificationTimePickerVisibility(true)) },
                 modifier = Modifier.fillMaxWidth()
             )
+            if (state is TaskScreenState.Add) {
+                TaskAddScreenDivider()
+                TaskScreenRepetitionInputField(
+                    editState = state.editable,
+                    difficulty = Unit,
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
 
         if (state.isDatePickerOpened) {

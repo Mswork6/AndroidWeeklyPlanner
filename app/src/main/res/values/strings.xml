@@ -74,4 +74,5 @@
     <string name="description_reminder">Reminder</string>
     <string name="description_notification_message_expired">Try to complete task \"%1$s\" as soon as possible!\nTask need to be completed to %2$s</string>
     <string name="description_hurry_up">Hurry up!</string>
+    <string name="description_task_repetition">Task repetition</string>
 </resources>
