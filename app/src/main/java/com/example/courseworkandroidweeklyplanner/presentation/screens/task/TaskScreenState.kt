@@ -28,6 +28,7 @@ sealed interface TaskScreenState {
         val difficulty: Difficulty
         val category: Category
         val time: LocalTime
+        val notificationTimeOffset: NotificationTime?
         val notificationTime: LocalDateTime?
         val isDatePickerOpened: Boolean
         val isPriorityPickerOpened: Boolean
@@ -62,6 +63,8 @@ sealed interface TaskScreenState {
             get() = false
         override val isTimePickerOpened: Boolean
             get() = false
+        override val notificationTimeOffset: NotificationTime
+            get() = NotificationTime.NONE
         override val isNotificationTimePickerOpened: Boolean
             get() = false
         override val isTaskLimitWindowOpened: Boolean
@@ -81,6 +84,7 @@ sealed interface TaskScreenState {
         override val difficulty: Difficulty,
         override val category: Category,
         override val time: LocalTime,
+        override val notificationTimeOffset: NotificationTime,
         override val notificationTime: LocalDateTime?,
         override val isPriorityPickerOpened: Boolean,
         override val isDifficultyPickerOpened: Boolean,
@@ -104,6 +108,7 @@ sealed interface TaskScreenState {
         override val difficulty: Difficulty,
         override val category: Category,
         override val time: LocalTime,
+        override val notificationTimeOffset: NotificationTime?,
         override val notificationTime: LocalDateTime?,
         override val isPriorityPickerOpened: Boolean,
         override val isDifficultyPickerOpened: Boolean,

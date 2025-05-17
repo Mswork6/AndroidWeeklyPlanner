@@ -182,6 +182,11 @@ private fun TaskScreenBaseContent(
                 onDateSelected = { dateInMillis ->
                     if (dateInMillis != null) {
                         onAction(TaskScreenAction.SetDate(dateInMillis))
+                        onAction(
+                            TaskScreenAction.SetNotificationTime(
+                                state.notificationTimeOffset ?: NotificationTime.TASK_TIME
+                            )
+                        )
                     }
                     onAction(TaskScreenAction.SetDatePickerVisibility(false))
                 },
@@ -196,6 +201,11 @@ private fun TaskScreenBaseContent(
                 onDismiss = { onAction(TaskScreenAction.SetTimePickerVisibility(false)) },
                 onConfirm = { timePickerState ->
                     onAction(TaskScreenAction.SetTime(timePickerState.hour, timePickerState.minute))
+                    onAction(
+                        TaskScreenAction.SetNotificationTime(
+                            state.notificationTimeOffset ?: NotificationTime.TASK_TIME
+                        )
+                    )
                     onAction(TaskScreenAction.SetTimePickerVisibility(false))
                 }
             )
@@ -203,6 +213,7 @@ private fun TaskScreenBaseContent(
 
         if (state.isNotificationTimePickerOpened) {
             NotificationTimeDialogWindow(
+                selectedOption = state.notificationTimeOffset,
                 onOptionSelected = { option ->
                     onAction(TaskScreenAction.SetNotificationTime(option))
                 },
@@ -311,6 +322,7 @@ private fun TaskScreenContent2Preview() {
         difficulty = Difficulty.HARD,
         category = Category.WORK,
         time = LocalTime.now(),
+        notificationTimeOffset = NotificationTime.NONE,
         notificationTime = null,
         isDatePickerOpened = false,
         isPriorityPickerOpened = false,
@@ -343,6 +355,7 @@ private fun TaskScreenContent3Preview() {
         difficulty = Difficulty.HARD,
         category = Category.WORK,
         time = LocalTime.now(),
+        notificationTimeOffset = NotificationTime.NONE,
         notificationTime = null,
         isDatePickerOpened = false,
         isPriorityPickerOpened = false,

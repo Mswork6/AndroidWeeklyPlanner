@@ -38,11 +38,12 @@ import com.example.courseworkandroidweeklyplanner.presentation.description
 
 @Composable
 fun NotificationTimeDialogWindow(
+    selectedOption: NotificationTime?,
     onOptionSelected: (NotificationTime) -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var tempSelectedOption by remember { mutableStateOf<NotificationTime?>(null) }
+    var tempSelectedOption by remember { mutableStateOf(selectedOption) }
 
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
@@ -154,6 +155,7 @@ fun RadioButtonGroupWithNotificationTimeEnum(
 fun NotificationTimeDialogWindowPreview() {
     CourseWorkAndroidWeeklyPlannerTheme {
         NotificationTimeDialogWindow(
+            selectedOption = NotificationTime.NONE,
             onOptionSelected = {},
             onDismissRequest = {}
         )
