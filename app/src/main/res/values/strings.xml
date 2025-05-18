@@ -76,4 +76,6 @@
     <string name="description_hurry_up">Hurry up!</string>
     <string name="description_task_repetition">Task repetition</string>
     <string name="action_complete">Complete</string>
+    <string name="action_sort">Sort</string>
+    <string name="action_all_tasks">All tasks</string>
 </resources>
