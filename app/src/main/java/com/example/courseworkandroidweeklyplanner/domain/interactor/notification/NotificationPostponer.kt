@@ -31,9 +31,9 @@ class NotificationPostponer : BroadcastReceiver() {
                     null -> Unit
                     else -> {
                         notificationManager.cancel(task.id.hashCode())
-                        val date = task.notificationTime?.plusMinutes(15)
+                        val date = task.notificationTimeOffset?.plus(15)
                         Log.d("MSWORK6", date.toString())
-                        taskInteractor.updateTask(task.copy(notificationTime = date))
+                        taskInteractor.updateTask(task.copy(notificationTimeOffset = date))
                     }
                 }
             }

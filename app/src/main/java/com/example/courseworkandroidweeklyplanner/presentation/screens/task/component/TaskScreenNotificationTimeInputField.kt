@@ -29,7 +29,7 @@ import java.time.LocalDateTime
 
 @Composable
 internal fun TaskScreenNotificationTimeInputField(
-    notificationTime: LocalDateTime?,
+    notificationTime: String?,
     editState: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -52,8 +52,7 @@ internal fun TaskScreenNotificationTimeInputField(
             style = MaterialTheme.typography.titleSmall
         )
         Text(
-            text = if (notificationTime != null) dateTimeToString(notificationTime)
-            else stringResource(R.string.description_not_defined) ,
+            text = notificationTime ?: stringResource(R.string.description_not_defined),
             style = MaterialTheme.typography.labelSmall
         )
     }

@@ -45,11 +45,11 @@ fun fromLocalDateTime(dateTime: LocalDateTime?): Long? {
 }
 
 val Task.notification: Notification?
-    get() = when (notificationTime) {
+    get() = when (notificationTimeOffset) {
         null -> null
         else -> Notification(
             taskId = id,
-            scheduledTime = notificationTime
+            scheduledTime = LocalDateTime.of(date, time).plusMinutes(notificationTimeOffset)
         )
     }
 

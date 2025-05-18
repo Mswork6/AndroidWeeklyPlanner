@@ -35,10 +35,9 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.color
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
-import com.example.courseworkandroidweeklyplanner.presentation.dateTimeToString
+import com.example.courseworkandroidweeklyplanner.presentation.notificationDateTimeString
 import com.example.courseworkandroidweeklyplanner.presentation.timeToString
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.UUID
 
@@ -131,12 +130,16 @@ fun TaskItem(
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold
                 )
-                if (task.notificationTime != null) {
+                if (task.notificationTimeOffset != null) {
                     Spacer(Modifier.width(4.dp))
                     Text(
-                        text = dateTimeToString(task.notificationTime),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.SemiBold
+                        text = notificationDateTimeString(
+                            task.date,
+                            task.time,
+                            task.notificationTimeOffset
+                        ) ?: "",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold
                     )
                 }
             }
@@ -160,7 +163,7 @@ private fun TaskCardWithIconPreview1() {
                 category = Category.VACATION,
                 date = LocalDate.of(2024, 10, 13),
                 time = LocalTime.of(17, 33),
-                notificationTime = LocalDateTime.now(),
+                notificationTimeOffset = null,
                 isDone = true
             ),
             modifier = Modifier

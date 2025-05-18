@@ -4,7 +4,6 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.TaskStackBuilder
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,6 +14,7 @@ import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.TASK_ID_KEY
 import com.example.courseworkandroidweeklyplanner.domain.getTaskId
 import com.example.courseworkandroidweeklyplanner.domain.interactor.saver.TaskInteractor
+import com.example.courseworkandroidweeklyplanner.domain.notification
 import com.example.courseworkandroidweeklyplanner.presentation.MainActivity
 import com.example.courseworkandroidweeklyplanner.presentation.dateTimeToString
 import com.example.courseworkandroidweeklyplanner.presentation.timeToString
@@ -54,7 +54,7 @@ class NotificationCreator : BroadcastReceiver() {
                             importance = NotificationManager.IMPORTANCE_HIGH
                         )
                         notificationManager.createNotificationChannel(channel)
-                        val title = if (task.notificationTime?.
+                        val title = if (task.notification?.scheduledTime?.
                             isAfter(LocalDateTime.of(task.date, task.time)) == true) {
                             context.getString(R.string.description_hurry_up)
                         } else {
@@ -73,7 +73,7 @@ class NotificationCreator : BroadcastReceiver() {
                             dateTimeToString(task.date, task.time)
                         }
 
-                        val textPattern: Int = if (task.notificationTime?.
+                        val textPattern: Int = if (task.notification?.scheduledTime?.
                             isAfter(LocalDateTime.of(task.date, task.time)) == true) {
                             R.string.description_notification_message_expired
                         } else {

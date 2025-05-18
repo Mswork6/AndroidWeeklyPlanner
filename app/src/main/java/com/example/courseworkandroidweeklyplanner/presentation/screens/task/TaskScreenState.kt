@@ -28,8 +28,8 @@ sealed interface TaskScreenState {
         val difficulty: Difficulty
         val category: Category
         val time: LocalTime
-        val notificationTimeOffset: NotificationTime?
-        val notificationTime: LocalDateTime?
+        val notificationTimeOffsetEnum: NotificationTime?
+        val notificationTimeOffset: Long?
         val isDatePickerOpened: Boolean
         val isPriorityPickerOpened: Boolean
         val isDifficultyPickerOpened: Boolean
@@ -51,7 +51,7 @@ sealed interface TaskScreenState {
         override val difficulty: Difficulty,
         override val category: Category,
         override val time: LocalTime,
-        override val notificationTime: LocalDateTime?
+        override val notificationTimeOffset: Long?
     ) : Content {
         override val isDatePickerOpened: Boolean
             get() = false
@@ -63,7 +63,7 @@ sealed interface TaskScreenState {
             get() = false
         override val isTimePickerOpened: Boolean
             get() = false
-        override val notificationTimeOffset: NotificationTime
+        override val notificationTimeOffsetEnum: NotificationTime
             get() = NotificationTime.NONE
         override val isNotificationTimePickerOpened: Boolean
             get() = false
@@ -84,8 +84,8 @@ sealed interface TaskScreenState {
         override val difficulty: Difficulty,
         override val category: Category,
         override val time: LocalTime,
-        override val notificationTimeOffset: NotificationTime,
-        override val notificationTime: LocalDateTime?,
+        override val notificationTimeOffsetEnum: NotificationTime,
+        override val notificationTimeOffset: Long?,
         override val isPriorityPickerOpened: Boolean,
         override val isDifficultyPickerOpened: Boolean,
         override val isCategoryPickerOpened: Boolean,
@@ -108,8 +108,8 @@ sealed interface TaskScreenState {
         override val difficulty: Difficulty,
         override val category: Category,
         override val time: LocalTime,
-        override val notificationTimeOffset: NotificationTime?,
-        override val notificationTime: LocalDateTime?,
+        override val notificationTimeOffsetEnum: NotificationTime?,
+        override val notificationTimeOffset: Long?,
         override val isPriorityPickerOpened: Boolean,
         override val isDifficultyPickerOpened: Boolean,
         override val isCategoryPickerOpened: Boolean,
