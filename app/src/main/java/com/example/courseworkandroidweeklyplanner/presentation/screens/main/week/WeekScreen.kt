@@ -3,8 +3,11 @@ package com.example.courseworkandroidweeklyplanner.presentation.screens.main.wee
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -52,7 +55,8 @@ private fun WeekScreenContent(
     is WeekScreenState.Initial -> Unit
     is WeekScreenState.Default -> {
         Row(
-            modifier = modifier,
+            modifier = modifier
+                .height(IntrinsicSize.Min),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -62,11 +66,17 @@ private fun WeekScreenContent(
                     contentDescription = stringResource(R.string.action_previous_week)
                 )
             }
-            Text(text = dateToString(state.week),
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .clickable(
                         onClick = { onAction(WeekScreenAction.SetCalendarVisibility(true)) }
-                    ))
+                    )
+                    .fillMaxHeight()
+            ) {
+                Text(text = dateToString(state.week))
+            }
             IconButton(onClick = { onAction(WeekScreenAction.SelectNextWeek) }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
