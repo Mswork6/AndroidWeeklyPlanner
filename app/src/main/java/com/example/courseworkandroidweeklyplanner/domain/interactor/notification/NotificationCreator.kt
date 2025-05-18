@@ -85,12 +85,14 @@ class NotificationCreator : BroadcastReceiver() {
                             taskName,
                             completionDate
                         )
+
                         val notification = buildNotification(
                             context = context,
                             icon = R.drawable.icon_checkbox_done,
                             title = title,
                             text = text,
                             onClickIntent = buildOnClickIntent(context, task.id),
+                            completeIntent = buildCompleteIntent(context, task.id),
                             cancellingIntent = buildPostponeIntent(context, task.id)
                         )
                         notificationManager.notify(task.id.hashCode(), notification)
@@ -109,7 +111,8 @@ class NotificationCreator : BroadcastReceiver() {
         title: String,
         text: String,
         onClickIntent: PendingIntent,
-        cancellingIntent: PendingIntent
+        completeIntent: PendingIntent,
+        cancellingIntent: PendingIntent,
     ): Notification = Notification.Builder(context, CHANNEL_ID)
         .setAutoCancel(true)
         .setSmallIcon(icon)
@@ -119,6 +122,14 @@ class NotificationCreator : BroadcastReceiver() {
         .setPriority(Notification.PRIORITY_HIGH)
         .setDefaults(Notification.DEFAULT_ALL)
         .setStyle(Notification.BigTextStyle().bigText(text))
+        .addAction(
+            Notification.Action.Builder(
+                Icon.createWithResource(context, R.drawable.baseline_more_time_24),
+                context.getString(R.string.action_complete),
+                completeIntent
+            ).build()
+        )
+
         .addAction(
             Notification.Action.Builder(
                 /* icon = */ Icon.createWithResource(context, R.drawable.baseline_more_time_24),
@@ -163,6 +174,17 @@ class NotificationCreator : BroadcastReceiver() {
                 )
             },
             /* flags = */ PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
+    private fun buildCompleteIntent(context: Context, id: UUID): PendingIntent {
+        return PendingIntent.getBroadcast(
+            context,
+            id.hashCode().inv(),
+            Intent(context, NotificationCompleter::class.java).apply {
+                putExtra(TASK_ID_KEY, id.toString())
+            },
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 }

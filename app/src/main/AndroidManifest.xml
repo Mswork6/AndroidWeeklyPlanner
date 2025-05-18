@@ -27,6 +27,11 @@
             android:enabled="true"
             android:exported="false" />
 
+        <receiver
+            android:name=".domain.interactor.notification.NotificationCompleter"
+            android:enabled="true"
+            android:exported="false" />
+
         <activity
             android:name=".presentation.MainActivity"
             android:screenOrientation="portrait"
