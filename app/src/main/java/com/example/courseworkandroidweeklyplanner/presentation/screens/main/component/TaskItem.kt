@@ -127,7 +127,7 @@ fun TaskItem(
                 )
                 Spacer(Modifier.width(2.dp))
                 Text(
-                    text = timeToString(task.time),
+                    text = dateTimeToString(task.date, task.time),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold
                 )
