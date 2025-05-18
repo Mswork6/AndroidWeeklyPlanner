@@ -17,7 +17,7 @@ data class Task(
     val category: Category,
     val date: LocalDate,
     val time: LocalTime,
-    val notificationTime: LocalDateTime?,
+    val notificationTimeOffset: Long?,
     val isDone: Boolean,
 )
 
@@ -44,11 +44,11 @@ enum class Category(val emoji: String) {
 
 
 enum class NotificationTime(val offsetMinutes: Long?) {
-    MINUTES_120_BEFORE(120),
-    MINUTES_90_BEFORE(90),
-    MINUTES_60_BEFORE(60),
-    MINUTES_30_BEFORE(30),
-    MINUTES_15_BEFORE(15),
+    MINUTES_120_BEFORE(-120),
+    MINUTES_90_BEFORE(-90),
+    MINUTES_60_BEFORE(-60),
+    MINUTES_30_BEFORE(-30),
+    MINUTES_15_BEFORE(-15),
     TASK_TIME(0),
     NONE(null)
 }
@@ -65,6 +65,6 @@ data class TaskSchema(
     val day: LocalDate = if (LocalDateTime.now().plusHours(1).toLocalDate()
             .equals(LocalDate.now())) LocalDate.now() else LocalDate.now().plusDays(1),
     val time: LocalTime = LocalTime.now().plusHours(1),
-    val notificationTime: LocalDateTime? = null,
+    val notificationTimeOffset: Long? = null,
     val isDone: Boolean? = null,
 )

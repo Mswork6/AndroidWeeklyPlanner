@@ -114,15 +114,8 @@ class TaskBuilderInteractor @AssistedInject constructor(
 
     fun setNotificationTime(notificationTime: NotificationTime) {
         _schemaState.update {
-            val currentDateTime = LocalDateTime.of(it?.day, it?.time)
-            val notifyTime: LocalDateTime?
             val timeOffset = notificationTime.offsetMinutes
-            notifyTime = if (timeOffset != null) {
-                currentDateTime.minusMinutes(timeOffset)
-            } else {
-                null
-            }
-            it?.copy(notificationTime = notifyTime)
+            it?.copy(notificationTimeOffset = timeOffset)
         }
     }
 
@@ -185,7 +178,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
                 category = category,
                 day = date,
                 time = time,
-                notificationTime = notificationTime,
+                notificationTimeOffset = notificationTimeOffset,
                 isDone = isDone
             )
         }
@@ -199,7 +192,7 @@ class TaskBuilderInteractor @AssistedInject constructor(
                 description = description,
                 date = day,
                 time = time,
-                notificationTime = notificationTime,
+                notificationTimeOffset = notificationTimeOffset,
                 priority = priority,
                 difficulty = difficulty,
                 category = category,

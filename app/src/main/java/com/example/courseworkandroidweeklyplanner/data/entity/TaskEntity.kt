@@ -33,7 +33,7 @@ data class TaskEntity(
     val category: String,
 
     @ColumnInfo(name = "notification_time")
-    val notificationTime: Long?,
+    val notificationTimeOffset: Long?,
 
     @ColumnInfo(name = "is_done")
     val isDone: Boolean

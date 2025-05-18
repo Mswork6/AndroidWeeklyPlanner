@@ -66,7 +66,7 @@ class TaskRepositoryImpl @Inject constructor(
                 description = description,
                 date = date.toEpochDay(),
                 time = time.toMilliOfDay(),
-                notificationTime = fromLocalDateTime(notificationTime),
+                notificationTimeOffset = notificationTimeOffset,
                 priority = priority.toString(),
                 difficulty = difficulty.toString(),
                 category = category.toString(),
@@ -86,7 +86,7 @@ class TaskRepositoryImpl @Inject constructor(
                 category = Category.valueOf(category),
                 date = LocalDate.ofEpochDay(entity.date),
                 time = localTimeOfMilliOfDay(time),
-                notificationTime = toLocalDateTime(notificationTime),
+                notificationTimeOffset = notificationTimeOffset,
                 isDone = isDone,
             )
         }

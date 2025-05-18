@@ -190,7 +190,7 @@ private fun DayCardPreview() {
             difficulty = Difficulty.EASY,
             category = Category.WORK,
             time = LocalTime.of(17,33),
-            notificationTime = LocalDateTime.now(),
+            notificationTimeOffset = null,
             isDone = false
         )
 

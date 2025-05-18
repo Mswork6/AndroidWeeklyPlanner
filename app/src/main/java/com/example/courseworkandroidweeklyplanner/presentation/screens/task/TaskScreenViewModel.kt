@@ -124,11 +124,7 @@ class TaskScreenViewModel @AssistedInject constructor(
         is TaskScreenAction.SetName -> taskBuilderInteractor.setName(action.name)
         is TaskScreenAction.SetTime -> taskBuilderInteractor.setTime(action.hour, action.minute)
         is TaskScreenAction.SetTimePickerVisibility -> setTimePickerVisibility(action.opened)
-        is TaskScreenAction.SetNotificationTime -> {
-            taskBuilderInteractor.setNotificationTime(action.notificationTime)
-            setNotificationTimeOffset(action.notificationTime)
-        }
-
+        is TaskScreenAction.SetNotificationTime -> { setNotificationTime(action.notificationTime) }
         is TaskScreenAction.SetNotificationTimePickerVisibility -> setNotificationTimePickerVisibility(
             action.opened
         )
@@ -258,15 +254,28 @@ class TaskScreenViewModel @AssistedInject constructor(
         }
     }
 
-    private fun setNotificationTimeOffset(notificationTime: NotificationTime) {
+    private fun setNotificationTime(notificationTime: NotificationTime) {
+        taskBuilderInteractor.setNotificationTime(notificationTime)
+
+        // setting notification time offset
         _state.update {
             when (it) {
-                is TaskScreenState.Add -> it.copy(notificationTimeOffset = notificationTime)
-                is TaskScreenState.Edit -> it.copy(notificationTimeOffset = notificationTime)
+                is TaskScreenState.Add -> it.copy(notificationTimeOffsetEnum = notificationTime)
+                is TaskScreenState.Edit -> it.copy(notificationTimeOffsetEnum = notificationTime)
                 else -> it
             }
         }
     }
+
+//    private fun setNotificationTimeOffset(notificationTime: NotificationTime) {
+//        _state.update {
+//            when (it) {
+//                is TaskScreenState.Add -> it.copy(notificationTimeOffset = notificationTime)
+//                is TaskScreenState.Edit -> it.copy(notificationTimeOffset = notificationTime)
+//                else -> it
+//            }
+//        }
+//    }
 
     private fun merge(state: TaskScreenState.View, task: Task): TaskScreenState.View {
         return with(task) {
@@ -278,7 +287,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 difficulty = difficulty,
                 category = category,
                 time = time,
-                notificationTime = notificationTime
+                notificationTimeOffset = notificationTimeOffset
             )
         }
     }
@@ -293,7 +302,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 difficulty = difficulty,
                 category = category,
                 time = time,
-                notificationTime = notificationTime
+                notificationTimeOffset = notificationTimeOffset
             )
         }
     }
@@ -308,7 +317,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 difficulty = difficulty,
                 category = category,
                 time = time,
-                notificationTime = notificationTime
+                notificationTimeOffset = notificationTimeOffset
             )
         }
     }
@@ -323,8 +332,8 @@ class TaskScreenViewModel @AssistedInject constructor(
                 difficulty = difficulty,
                 category = category,
                 time = time,
-                notificationTimeOffset = NotificationTime.NONE,
-                notificationTime = notificationTime,
+                notificationTimeOffsetEnum = NotificationTime.NONE,
+                notificationTimeOffset = notificationTimeOffset,
                 isDatePickerOpened = false,
                 isTimePickerOpened = false,
                 isNotificationTimePickerOpened = false,
@@ -347,8 +356,8 @@ class TaskScreenViewModel @AssistedInject constructor(
                 difficulty = difficulty,
                 category = category,
                 time = time,
-                notificationTimeOffset = null,
-                notificationTime = notificationTime,
+                notificationTimeOffsetEnum = null,
+                notificationTimeOffset = notificationTimeOffset,
                 isDatePickerOpened = false,
                 isTimePickerOpened = false,
                 isNotificationTimePickerOpened = false,
@@ -371,7 +380,7 @@ class TaskScreenViewModel @AssistedInject constructor(
                 difficulty = difficulty,
                 category = category,
                 time = time,
-                notificationTime = notificationTime
+                notificationTimeOffset = notificationTimeOffset
             )
         }
     }

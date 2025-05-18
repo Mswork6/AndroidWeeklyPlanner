@@ -50,6 +50,26 @@ fun dateToString(week: Week): String =
     "${dateToString(week.start)} - " +
             dateToString(week.end)
 
+fun notificationDateTimeString(date: LocalDate, time: LocalTime, offset: Long): String {
+    val taskDateTime: LocalDateTime = LocalDateTime.of(date, time)
+    val notificationDateTime: LocalDateTime =
+        LocalDateTime.of(date, time).plusMinutes(offset)
+    if (taskDateTime.toLocalDate().equals(notificationDateTime.toLocalDate())){
+        return timeToString(time.plusMinutes(offset))
+    } else return dateTimeToString(notificationDateTime)
+}
+
+fun notificationTimeString(date: LocalDate, time: LocalTime, offset: Long?): String? {
+    if (offset == null) return null
+    val notificationDateTime: LocalDateTime =
+    LocalDateTime.of(date, time).plusMinutes(offset)
+    return dateTimeToString(notificationDateTime)
+}
+
+fun notificationDateTime(date: LocalDate, time: LocalTime, offset: Long): LocalDateTime =
+    LocalDateTime.of(date, time).plusMinutes(offset)
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 object PastOrPresentSelectableDates : SelectableDates {
     override fun isSelectableDate(utcTimeMillis: Long): Boolean {

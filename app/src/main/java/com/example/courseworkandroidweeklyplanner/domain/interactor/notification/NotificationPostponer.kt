@@ -11,6 +11,7 @@ import com.example.courseworkandroidweeklyplanner.presentation.dateTimeToString
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,9 +32,16 @@ class NotificationPostponer : BroadcastReceiver() {
                     null -> Unit
                     else -> {
                         notificationManager.cancel(task.id.hashCode())
-                        val date = task.notificationTime?.plusMinutes(15)
-                        Log.d("MSWORK6", date.toString())
-                        taskInteractor.updateTask(task.copy(notificationTime = date))
+                        val taskTime = LocalDateTime.of(task.date, task.time)
+                        val currentTime = LocalDateTime.now()
+                        var offset = (task.notificationTimeOffset ?: 0L) + 15L
+                        var nextNotify = taskTime.plusMinutes(offset)
+                        while (!nextNotify.isAfter(currentTime)) {
+                            offset += 15L
+                            nextNotify = taskTime.plusMinutes(offset)
+                        }
+                        //Log.d("MSWORK6", date.toString())
+                        taskInteractor.updateTask(task.copy(notificationTimeOffset = offset))
                     }
                 }
             }

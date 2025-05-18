@@ -68,7 +68,7 @@ private fun DayCardPreview() {
                 difficulty = Difficulty.MEDIUM,
                 category = Category.WORK,
                 time = LocalTime.of(17,33),
-                notificationTime = null,
+                notificationTimeOffset = null,
                 isDone = false
             ),
 
@@ -81,7 +81,7 @@ private fun DayCardPreview() {
                 difficulty = Difficulty.MEDIUM,
                 category = Category.WORK,
                 time = LocalTime.of(17,33),
-                notificationTime = null,
+                notificationTimeOffset = null,
                 isDone = false
             )
         )

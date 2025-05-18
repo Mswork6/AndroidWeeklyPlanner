@@ -29,6 +29,8 @@ import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.presentation.PastOrPresentSelectableDates
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.notificationDateTimeString
+import com.example.courseworkandroidweeklyplanner.presentation.notificationTimeString
 import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.DatePickerModal
 import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.ErrorScreen
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.component.CategoryDialogWindow
@@ -170,7 +172,10 @@ private fun TaskScreenBaseContent(
             )
             TaskAddScreenDivider()
             TaskScreenNotificationTimeInputField(
-                notificationTime = state.notificationTime,
+                notificationTime =
+                if (state.notificationTimeOffset != null)
+                    notificationTimeString(state.date, state.time, state.notificationTimeOffset)
+                else null,
                 editState = state.editable,
                 onClick = { onAction(TaskScreenAction.SetNotificationTimePickerVisibility(true)) },
                 modifier = Modifier.fillMaxWidth()
@@ -192,11 +197,6 @@ private fun TaskScreenBaseContent(
                 onDateSelected = { dateInMillis ->
                     if (dateInMillis != null) {
                         onAction(TaskScreenAction.SetDate(dateInMillis))
-                        onAction(
-                            TaskScreenAction.SetNotificationTime(
-                                state.notificationTimeOffset ?: NotificationTime.TASK_TIME
-                            )
-                        )
                     }
                     onAction(TaskScreenAction.SetDatePickerVisibility(false))
                 },
@@ -211,11 +211,6 @@ private fun TaskScreenBaseContent(
                 onDismiss = { onAction(TaskScreenAction.SetTimePickerVisibility(false)) },
                 onConfirm = { timePickerState ->
                     onAction(TaskScreenAction.SetTime(timePickerState.hour, timePickerState.minute))
-                    onAction(
-                        TaskScreenAction.SetNotificationTime(
-                            state.notificationTimeOffset ?: NotificationTime.TASK_TIME
-                        )
-                    )
                     onAction(TaskScreenAction.SetTimePickerVisibility(false))
                 }
             )
@@ -223,7 +218,7 @@ private fun TaskScreenBaseContent(
 
         if (state.isNotificationTimePickerOpened) {
             NotificationTimeDialogWindow(
-                selectedOption = state.notificationTimeOffset,
+                selectedOption = state.notificationTimeOffsetEnum,
                 onOptionSelected = { option ->
                     onAction(TaskScreenAction.SetNotificationTime(option))
                 },
@@ -308,7 +303,7 @@ private fun TaskScreenContent1Preview() {
         difficulty = Difficulty.HARD,
         category = Category.WORK,
         time = LocalTime.now(),
-        notificationTime = null
+        notificationTimeOffset = null
     )
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenContent(
@@ -332,8 +327,8 @@ private fun TaskScreenContent2Preview() {
         difficulty = Difficulty.HARD,
         category = Category.WORK,
         time = LocalTime.now(),
-        notificationTimeOffset = NotificationTime.NONE,
-        notificationTime = null,
+        notificationTimeOffsetEnum = NotificationTime.NONE,
+        notificationTimeOffset = null,
         isDatePickerOpened = false,
         isPriorityPickerOpened = false,
         isDifficultyPickerOpened = false,
@@ -365,8 +360,8 @@ private fun TaskScreenContent3Preview() {
         difficulty = Difficulty.HARD,
         category = Category.WORK,
         time = LocalTime.now(),
-        notificationTimeOffset = NotificationTime.NONE,
-        notificationTime = null,
+        notificationTimeOffsetEnum = NotificationTime.NONE,
+        notificationTimeOffset = null,
         isDatePickerOpened = false,
         isPriorityPickerOpened = false,
         isDifficultyPickerOpened = false,

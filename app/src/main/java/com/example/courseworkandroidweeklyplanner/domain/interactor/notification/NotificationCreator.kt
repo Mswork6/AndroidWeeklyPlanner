@@ -4,7 +4,6 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.TaskStackBuilder
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,6 +14,7 @@ import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.TASK_ID_KEY
 import com.example.courseworkandroidweeklyplanner.domain.getTaskId
 import com.example.courseworkandroidweeklyplanner.domain.interactor.saver.TaskInteractor
+import com.example.courseworkandroidweeklyplanner.domain.notification
 import com.example.courseworkandroidweeklyplanner.presentation.MainActivity
 import com.example.courseworkandroidweeklyplanner.presentation.dateTimeToString
 import com.example.courseworkandroidweeklyplanner.presentation.timeToString
@@ -54,7 +54,7 @@ class NotificationCreator : BroadcastReceiver() {
                             importance = NotificationManager.IMPORTANCE_HIGH
                         )
                         notificationManager.createNotificationChannel(channel)
-                        val title = if (task.notificationTime?.
+                        val title = if (task.notification?.scheduledTime?.
                             isAfter(LocalDateTime.of(task.date, task.time)) == true) {
                             context.getString(R.string.description_hurry_up)
                         } else {
@@ -73,7 +73,7 @@ class NotificationCreator : BroadcastReceiver() {
                             dateTimeToString(task.date, task.time)
                         }
 
-                        val textPattern: Int = if (task.notificationTime?.
+                        val textPattern: Int = if (task.notification?.scheduledTime?.
                             isAfter(LocalDateTime.of(task.date, task.time)) == true) {
                             R.string.description_notification_message_expired
                         } else {
@@ -85,12 +85,14 @@ class NotificationCreator : BroadcastReceiver() {
                             taskName,
                             completionDate
                         )
+
                         val notification = buildNotification(
                             context = context,
                             icon = R.drawable.icon_checkbox_done,
                             title = title,
                             text = text,
                             onClickIntent = buildOnClickIntent(context, task.id),
+                            completeIntent = buildCompleteIntent(context, task.id),
                             cancellingIntent = buildPostponeIntent(context, task.id)
                         )
                         notificationManager.notify(task.id.hashCode(), notification)
@@ -109,7 +111,8 @@ class NotificationCreator : BroadcastReceiver() {
         title: String,
         text: String,
         onClickIntent: PendingIntent,
-        cancellingIntent: PendingIntent
+        completeIntent: PendingIntent,
+        cancellingIntent: PendingIntent,
     ): Notification = Notification.Builder(context, CHANNEL_ID)
         .setAutoCancel(true)
         .setSmallIcon(icon)
@@ -119,6 +122,14 @@ class NotificationCreator : BroadcastReceiver() {
         .setPriority(Notification.PRIORITY_HIGH)
         .setDefaults(Notification.DEFAULT_ALL)
         .setStyle(Notification.BigTextStyle().bigText(text))
+        .addAction(
+            Notification.Action.Builder(
+                Icon.createWithResource(context, R.drawable.baseline_more_time_24),
+                context.getString(R.string.action_complete),
+                completeIntent
+            ).build()
+        )
+
         .addAction(
             Notification.Action.Builder(
                 /* icon = */ Icon.createWithResource(context, R.drawable.baseline_more_time_24),
@@ -163,6 +174,17 @@ class NotificationCreator : BroadcastReceiver() {
                 )
             },
             /* flags = */ PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
+    private fun buildCompleteIntent(context: Context, id: UUID): PendingIntent {
+        return PendingIntent.getBroadcast(
+            context,
+            id.hashCode().inv(),
+            Intent(context, NotificationCompleter::class.java).apply {
+                putExtra(TASK_ID_KEY, id.toString())
+            },
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 }

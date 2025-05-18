@@ -76,4 +76,5 @@
     <string name="description_notification_message_expired">Постарайтесь выполнить задачу \"%1$s\" как можно скорее!\nЗадача должна была быть выполнена к %2$s</string>
     <string name="description_hurry_up">Поторопитесь!</string>
     <string name="description_task_repetition">Повторение задачи</string>
+    <string name="action_complete">Выполнить</string>
 </resources>
