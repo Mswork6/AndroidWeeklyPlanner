@@ -35,6 +35,7 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.color
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.dateTimeToString
 import com.example.courseworkandroidweeklyplanner.presentation.notificationDateTimeString
 import com.example.courseworkandroidweeklyplanner.presentation.timeToString
 import java.time.LocalDate
@@ -116,22 +117,27 @@ fun TaskItem(
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium
                     )
-                    Spacer(Modifier.width(4.dp))
+                    Spacer(Modifier.width(2.dp))
                 } else {
-                    //Spacer(Modifier.width(4.dp))
+                    Spacer(Modifier.width(4.dp))
                 }
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.baseline_access_time_16),
                     contentDescription = null
                 )
-                Spacer(Modifier.width(4.dp))
+                Spacer(Modifier.width(2.dp))
                 Text(
-                    text = timeToString(task.time),
+                    text = dateTimeToString(task.date, task.time),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold
                 )
                 if (task.notificationTimeOffset != null) {
-                    Spacer(Modifier.width(4.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.baseline_notifications_16),
+                        contentDescription = null
+                    )
+                    Spacer(Modifier.width(1.dp))
                     Text(
                         text = notificationDateTimeString(
                             task.date,
@@ -163,7 +169,7 @@ private fun TaskCardWithIconPreview1() {
                 category = Category.VACATION,
                 date = LocalDate.of(2024, 10, 13),
                 time = LocalTime.of(17, 33),
-                notificationTimeOffset = null,
+                notificationTimeOffset = -1000,
                 isDone = true
             ),
             modifier = Modifier
