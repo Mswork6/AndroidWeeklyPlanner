@@ -50,11 +50,18 @@ class GetDaysUseCase @Inject constructor(
         }
     }
 
-    private fun List<Task>.sort(sort: SortType): List<Task> {
-        return when (sort) {
-            SortType.INCREASE -> this.sortedBy { it.priority }
-            SortType.DECREASE -> this.sortedByDescending { it.priority }
-            SortType.STANDARD -> this
+    private fun List<Task>.sort(sort: SortType): List<Task> =
+        when (sort) {
+            SortType.INCREASE -> this
+                .sortedWith(
+                    compareBy<Task> { it.priority }
+                        .thenBy { it.time }
+                )
+            SortType.DECREASE -> this
+                .sortedWith(
+                    compareByDescending<Task> { it.priority }
+                        .thenBy { it.time }
+                )
+            SortType.STANDARD -> this.sortedBy { it.time }
         }
-    }
 }
