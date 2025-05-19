@@ -51,7 +51,8 @@ class MainActivity : ComponentActivity() {
                     installListScreen(
                         onNavigateToTaskAddScreen  = navController::navigateToAddScreen,
                         onNavigateToTaskEditScreen = navController::navigateToEditScreen,
-                        onNavigateToTaskOpenScreen = navController::navigateToViewScreen
+                        onNavigateToTaskOpenScreen = navController::navigateToViewScreen,
+                        onNavigateToWeekTasks = navController::atomicBack
                     )
                     installAddScreen(navController::atomicBack)
                     installEditScreen(navController::atomicBack)

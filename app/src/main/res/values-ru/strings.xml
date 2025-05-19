@@ -79,4 +79,6 @@
     <string name="action_complete">Выполнить</string>
     <string name="action_sort">Сортировка</string>
     <string name="action_all_tasks">Все задачи</string>
+    <string name="action_weekly_tasks">Задачи по неделям</string>
+    <string name="action_sort_filter">Сортировка и фильтр</string>
 </resources>

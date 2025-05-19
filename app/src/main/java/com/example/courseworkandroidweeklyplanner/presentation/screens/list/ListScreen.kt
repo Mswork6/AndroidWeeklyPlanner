@@ -13,14 +13,13 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.courseworkandroidweeklyplanner.presentation.screens.list.sorting.SearchListScreen
 import com.example.courseworkandroidweeklyplanner.presentation.screens.list.tasks.TasksListScreen
-import com.example.courseworkandroidweeklyplanner.presentation.screens.main.week.WeekScreen
 import java.util.UUID
 
 @Composable
@@ -28,17 +27,12 @@ fun ListScreen(
     onNavigateToTaskAddScreen: () -> Unit,
     onNavigateToTaskEditScreen: (taskId: UUID) -> Unit,
     onNavigateToTaskOpenScreen: (taskId: UUID) -> Unit,
+    onNavigateToWeekTasks: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         modifier = modifier,
-        topBar = {
-            WeekScreen(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .statusBarsPadding()
-            )
-        },
+        topBar = {},
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onNavigateToTaskAddScreen,
@@ -61,6 +55,12 @@ fun ListScreen(
             ),
             horizontalAlignment = Alignment.Start
         ) {
+            SearchListScreen(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding(),
+                onNavigateToWeekTasks = onNavigateToWeekTasks
+            )
             TasksListScreen(
                 onNavigateToTaskEditScreen = onNavigateToTaskEditScreen,
                 onNavigateToTaskOpenScreen = onNavigateToTaskOpenScreen,

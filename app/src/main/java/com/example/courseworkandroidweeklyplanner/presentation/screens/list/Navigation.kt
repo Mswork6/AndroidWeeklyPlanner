@@ -1,5 +1,6 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.list
 
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -12,11 +13,13 @@ fun NavGraphBuilder.installListScreen(
     onNavigateToTaskAddScreen: () -> Unit,
     onNavigateToTaskEditScreen: (UUID) -> Unit,
     onNavigateToTaskOpenScreen: (UUID) -> Unit,
-) = composable(LIST_ROUTE) {
+    onNavigateToWeekTasks: (NavBackStackEntry) -> Unit
+) = composable(LIST_ROUTE) { backStackEntry: NavBackStackEntry ->
     ListScreen(
         onNavigateToTaskAddScreen = onNavigateToTaskAddScreen,
         onNavigateToTaskEditScreen = onNavigateToTaskEditScreen,
-        onNavigateToTaskOpenScreen = onNavigateToTaskOpenScreen
+        onNavigateToTaskOpenScreen = onNavigateToTaskOpenScreen,
+        onNavigateToWeekTasks = { onNavigateToWeekTasks(backStackEntry) }
     )
 }
 

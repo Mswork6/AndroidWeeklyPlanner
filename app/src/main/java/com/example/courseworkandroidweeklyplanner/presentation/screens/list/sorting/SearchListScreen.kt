@@ -1,61 +1,52 @@
-package com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting
+package com.example.courseworkandroidweeklyplanner.presentation.screens.list.sorting
 
-import android.app.Notification.Action
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.model.SortType
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting.SearchScreenAction
+import com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting.SearchScreenState
 import com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting.component.SortDialogWindow
 import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.ActionTab
 
 @Composable
-fun SearchScreen(
-    viewModel: SearchScreenViewModel = hiltViewModel(),
-    onNavigateToAllTasks: () -> Unit,
+fun SearchListScreen(
+    viewModel: SearchListScreenViewModel = hiltViewModel(),
+    onNavigateToWeekTasks: () -> Unit,
     modifier: Modifier,
 ) {
     val state by viewModel.state.collectAsState()
-    SearchScreenContent(
+    SearchListScreenContent(
         state = state,
         onAction = viewModel::handle,
         modifier = modifier,
-        onNavigateToAllTasks = onNavigateToAllTasks
+        onNavigateToWeekTasks = onNavigateToWeekTasks
     )
 }
 
 @Composable
-private fun SearchScreenContent(
+private fun SearchListScreenContent(
     state: SearchScreenState,
     onAction: (SearchScreenAction) -> Unit,
     modifier: Modifier,
-    onNavigateToAllTasks: () -> Unit
+    onNavigateToWeekTasks: () -> Unit
 ) = when (state) {
     is SearchScreenState.Initial -> {
         CircularProgressIndicator()
@@ -68,17 +59,17 @@ private fun SearchScreenContent(
                 .height(IntrinsicSize.Min),
         ) {
             ActionTab(
-                icon = ImageVector.vectorResource(R.drawable.baseline_format_list_bulleted_24),
-                contentDescription = stringResource(R.string.action_all_tasks),
-                label = stringResource(R.string.action_all_tasks),
-                onClick = onNavigateToAllTasks,
+                icon = ImageVector.vectorResource(R.drawable.baseline_calendar_month_24),
+                contentDescription = stringResource(R.string.action_weekly_tasks),
+                label = stringResource(R.string.action_weekly_tasks),
+                onClick = onNavigateToWeekTasks,
                 modifier = Modifier.weight(1f)
             )
             SearchScreenDivider()
             ActionTab(
                 icon = ImageVector.vectorResource(R.drawable.baseline_filter_alt_24),
-                contentDescription = stringResource(R.string.action_sort),
-                label = stringResource(R.string.action_sort),
+                contentDescription = stringResource(R.string.action_sort_filter),
+                label = stringResource(R.string.action_sort_filter),
                 onClick = { onAction(SearchScreenAction.SetSorterVisibility(true)) },
                 modifier = Modifier.weight(1f)
             )
@@ -116,11 +107,11 @@ private fun SearchScreenContent1Preview() {
         isSorterVisible = false,
     )
     CourseWorkAndroidWeeklyPlannerTheme {
-        SearchScreenContent(
+        SearchListScreenContent(
             state = state,
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
-            onNavigateToAllTasks = {}
+            onNavigateToWeekTasks = {}
         )
     }
 }
@@ -134,11 +125,11 @@ private fun SearchScreenContent2Preview() {
         isSorterVisible = false,
     )
     CourseWorkAndroidWeeklyPlannerTheme {
-        SearchScreenContent(
+        SearchListScreenContent(
             state = state,
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
-            onNavigateToAllTasks = {}
+            onNavigateToWeekTasks = {}
         )
     }
 }
@@ -152,11 +143,11 @@ private fun SearchScreenContent3Preview() {
         isSorterVisible = true,
     )
     CourseWorkAndroidWeeklyPlannerTheme {
-        SearchScreenContent(
+        SearchListScreenContent(
             state = state,
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
-            onNavigateToAllTasks = {}
+            onNavigateToWeekTasks = {}
         )
     }
 }
