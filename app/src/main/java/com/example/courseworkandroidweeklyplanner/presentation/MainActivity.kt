@@ -11,6 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.courseworkandroidweeklyplanner.domain.NotificationEventBus
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.screens.list.installListScreen
+import com.example.courseworkandroidweeklyplanner.presentation.screens.list.navigateToListScreen
 import com.example.courseworkandroidweeklyplanner.presentation.screens.main.installMainScreen
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.installAddScreen
 import com.example.courseworkandroidweeklyplanner.presentation.screens.task.installEditScreen
@@ -41,6 +43,12 @@ class MainActivity : ComponentActivity() {
                     startDestination = "main"
                 ) {
                     installMainScreen(
+                        onNavigateToTaskAddScreen  = navController::navigateToAddScreen,
+                        onNavigateToTaskEditScreen = navController::navigateToEditScreen,
+                        onNavigateToTaskOpenScreen = navController::navigateToViewScreen,
+                        onNavigateToAllTasks =  navController::navigateToListScreen
+                    )
+                    installListScreen(
                         onNavigateToTaskAddScreen  = navController::navigateToAddScreen,
                         onNavigateToTaskEditScreen = navController::navigateToEditScreen,
                         onNavigateToTaskOpenScreen = navController::navigateToViewScreen

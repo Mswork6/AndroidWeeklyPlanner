@@ -35,13 +35,15 @@ import com.example.courseworkandroidweeklyplanner.presentation.screens.main.sort
 @Composable
 fun SearchScreen(
     viewModel: SearchScreenViewModel = hiltViewModel(),
+    onNavigateToAllTasks: () -> Unit,
     modifier: Modifier,
 ) {
     val state by viewModel.state.collectAsState()
     SearchScreenContent(
         state = state,
         onAction = viewModel::handle,
-        modifier = modifier
+        modifier = modifier,
+        onNavigateToAllTasks = onNavigateToAllTasks
     )
 }
 
@@ -51,6 +53,7 @@ private fun SearchScreenContent(
     state: SearchScreenState,
     onAction: (SearchScreenAction) -> Unit,
     modifier: Modifier,
+    onNavigateToAllTasks: () -> Unit
 ) = when (state) {
     is SearchScreenState.Initial -> {
         CircularProgressIndicator()
@@ -66,7 +69,7 @@ private fun SearchScreenContent(
                 modifier = Modifier
                     .weight(1f)
                     .clickable(
-                        onClick = { }
+                        onClick = onNavigateToAllTasks
                     ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -134,7 +137,8 @@ private fun SearchScreenContent1Preview() {
         SearchScreenContent(
             state = state,
             onAction = {},
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            onNavigateToAllTasks = {}
         )
     }
 }
@@ -151,7 +155,8 @@ private fun SearchScreenContent2Preview() {
         SearchScreenContent(
             state = state,
             onAction = {},
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            onNavigateToAllTasks = {}
         )
     }
 }
@@ -168,7 +173,8 @@ private fun SearchScreenContent3Preview() {
         SearchScreenContent(
             state = state,
             onAction = {},
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            onNavigateToAllTasks = {}
         )
     }
 }
