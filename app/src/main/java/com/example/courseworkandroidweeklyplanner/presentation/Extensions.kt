@@ -41,6 +41,11 @@ fun dateTimeToString(localDate: LocalDate, localTime: LocalTime): String =
         dateTimeFormatter
     )
 
+fun dateTimeToString(localDate: LocalDate, localTime: LocalTime, offset: Long): String =
+    LocalDateTime.of(localDate, localTime).plusMinutes(offset).format(
+        dateTimeFormatter
+    )
+
 fun convertToLocalDate(dateMillis: Long): LocalDate = Instant
     .ofEpochMilli(dateMillis)
     .atZone(ZoneId.systemDefault())

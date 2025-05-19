@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
+import com.example.courseworkandroidweeklyplanner.presentation.screens.list.component.ListScreenTaskItem
 import com.example.courseworkandroidweeklyplanner.presentation.screens.main.component.TaskItem
 import com.example.courseworkandroidweeklyplanner.presentation.screens.main.tasks.component.TaskDialogWindow
 import java.util.UUID
@@ -55,7 +56,7 @@ private fun TasksListScreenContent(
                 items = state.tasks,
                 key = Task::id
             ) { task ->
-                TaskItem(
+                ListScreenTaskItem(
                     task = task,
                     onClick = { onAction(TasksListScreenAction.TaskDialogAction.Open(task)) },
                     modifier = Modifier

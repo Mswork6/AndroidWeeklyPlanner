@@ -1,4 +1,4 @@
-package com.example.courseworkandroidweeklyplanner.presentation.screens.main.component
+package com.example.courseworkandroidweeklyplanner.presentation.screens.list.component
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -36,14 +36,13 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.color
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.courseworkandroidweeklyplanner.presentation.dateTimeToString
-import com.example.courseworkandroidweeklyplanner.presentation.notificationDateTimeString
-import com.example.courseworkandroidweeklyplanner.presentation.timeToString
+import com.example.courseworkandroidweeklyplanner.presentation.screens.main.component.ItemCard
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID
 
 @Composable
-fun TaskItem(
+fun ListScreenTaskItem(
     task: Task,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -109,25 +108,14 @@ fun TaskItem(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (task.category != Category.NONE) {
-                    Text(
-                        text = task.category.emoji,
-                        modifier = Modifier
-                            .width(24.dp),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Spacer(Modifier.width(2.dp))
-                } else {
-                    Spacer(Modifier.width(4.dp))
-                }
+                Spacer(modifier = Modifier.width(4.dp))
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.baseline_access_time_16),
                     contentDescription = null
                 )
                 Spacer(Modifier.width(2.dp))
                 Text(
-                    text = timeToString(task.time),
+                    text = dateTimeToString(task.date, task.time),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -139,14 +127,24 @@ fun TaskItem(
                     )
                     Spacer(Modifier.width(1.dp))
                     Text(
-                        text = notificationDateTimeString(
+                        text = dateTimeToString(
                             task.date,
                             task.time,
                             task.notificationTimeOffset
                         ),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold
                     )
+                    if (task.category != Category.NONE) {
+                        Text(
+                            text = task.category.emoji,
+                            modifier = Modifier
+                                .width(24.dp),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Spacer(Modifier.width(2.dp))
+                    }
                 }
             }
         }
@@ -158,7 +156,7 @@ fun TaskItem(
 @Composable
 private fun TaskCardWithIconPreview1() {
     CourseWorkAndroidWeeklyPlannerTheme {
-        TaskItem(
+        ListScreenTaskItem(
             onClick = { },
             task = Task(
                 id = UUID.randomUUID(),
