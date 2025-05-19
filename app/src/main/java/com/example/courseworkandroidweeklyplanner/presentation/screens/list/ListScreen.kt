@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.courseworkandroidweeklyplanner.presentation.screens.list.tasks.TasksListScreen
 import com.example.courseworkandroidweeklyplanner.presentation.screens.main.week.WeekScreen
 import java.util.UUID
 
@@ -60,7 +61,11 @@ fun ListScreen(
             ),
             horizontalAlignment = Alignment.Start
         ) {
-            Text("Test")
+            TasksListScreen(
+                onNavigateToTaskEditScreen = onNavigateToTaskEditScreen,
+                onNavigateToTaskOpenScreen = onNavigateToTaskOpenScreen,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
