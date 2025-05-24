@@ -77,4 +77,6 @@ dependencies {
     implementation(libs.room.core)
     implementation(libs.room.kotlin)
     ksp(libs.room.compiler)
+
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
 }

@@ -1,7 +1,10 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.main.component
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -20,15 +24,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.model.Day
 import com.example.courseworkandroidweeklyplanner.domain.model.DayType.MONDAY
-import com.example.courseworkandroidweeklyplanner.presentation.dateToString
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.courseworkandroidweeklyplanner.presentation.dateToString
 import com.example.courseworkandroidweeklyplanner.presentation.description
 import java.time.LocalDate
 
@@ -38,12 +44,14 @@ fun DayItem(
     isExpanded: Boolean,
     enabled: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val rotationState by animateFloatAsState(
-        targetValue = if(isExpanded) 180f else 0f,
+        targetValue = if (isExpanded) 180f else 0f,
         label = stringResource(R.string.descipition_dayitem_animation)
     )
+    val allDone = enabled && day.tasks.all { it.isDone }
+
 
     ItemCard(
         shape = MaterialTheme.shapes.large,
@@ -75,7 +83,7 @@ fun DayItem(
             modifier = Modifier.weight(2f),
             text = dateToString(day.date),
         )
-        if (day.tasks.isNotEmpty()){
+        if (enabled) {
             Icon(
                 modifier = Modifier
                     .weight(1f)
@@ -83,10 +91,11 @@ fun DayItem(
                 imageVector = Icons.Default.KeyboardArrowDown,
                 contentDescription = stringResource(R.string.description_show_hide_tasks)
             )
-        }
-        else {
-            Row(modifier = Modifier
-                .weight(1f)) {  }
+        } else {
+            Row(
+                modifier = Modifier
+                    .weight(1f)
+            ) { }
         }
 
     }
