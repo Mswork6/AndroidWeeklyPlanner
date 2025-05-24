@@ -27,7 +27,9 @@ import java.util.UUID
 @Composable
 fun DayCard(
     day: Day,
+    celebrated: Boolean,
     onTaskItemClick: (Task) -> Unit,
+    onCelebrate: (LocalDate) -> Unit,
     dayItemModifier: Modifier = Modifier,
     taskItemModifier: Modifier = Modifier
 ) = Column {
@@ -40,7 +42,9 @@ fun DayCard(
         day = day,
         isExpanded = isExpanded,
         enabled = hasTasks,
+        celebrated = celebrated,
         onClick = { if (hasTasks) isExpanded = isExpanded.not() },
+        onCelebrate = onCelebrate,
         modifier = dayItemModifier
     )
     AnimatedVisibility(isExpanded) {
@@ -96,7 +100,9 @@ private fun DayCardPreview() {
         )
         DayCard(
             day = day,
+            celebrated = false,
             onTaskItemClick = { },
+            onCelebrate = { },
             dayItemModifier = Modifier,
             taskItemModifier = Modifier
                 .padding(

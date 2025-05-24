@@ -1,10 +1,7 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.main.component
 
 import android.content.res.Configuration
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,28 +12,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.model.Day
@@ -51,7 +48,9 @@ fun DayItem(
     day: Day,
     isExpanded: Boolean,
     enabled: Boolean,
+    celebrated: Boolean,
     onClick: () -> Unit,
+    onCelebrate: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val rotationState by animateFloatAsState(
@@ -61,14 +60,24 @@ fun DayItem(
     val allDone = enabled && day.tasks.all { it.isDone }
 
     val composition by rememberLottieComposition(LottieCompositionSpec.Asset("confetti.json"))
+    val animatable = rememberLottieAnimatable()
 
-    val progress by animateLottieCompositionAsState(
-        composition,
-        isPlaying = allDone,
-        iterations = 1,          // проиграть один раз
-        speed = 1.0f
-    )
+    LaunchedEffect(allDone, celebrated, composition) {
+        if (allDone && !celebrated && composition != null) {
+            // проигрываем конфетти один раз
+            animatable.animate(
+                composition = composition,
+                iterations  = 1,
+                speed       = 1f
+            )
+            // только после того как анимация завершилась
+            onCelebrate(day.date)
+        }
+    }
 
+
+    val cardColor = if (allDone) Color(0xFF87EA8A) /* светло-зелёный */
+    else MaterialTheme.colorScheme.primary
 
     Box(
         modifier = modifier
@@ -78,7 +87,7 @@ fun DayItem(
         ItemCard(
             shape = MaterialTheme.shapes.large,
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = cardColor
             ),
             onClick = {},
             contentModifier = Modifier
@@ -121,10 +130,10 @@ fun DayItem(
 
         }
 
-        if (allDone && composition != null) {
+        if (allDone && !celebrated && composition != null) {
             LottieAnimation(
-                composition,
-                progress,
+                composition = composition,
+                progress = animatable.progress,
                 modifier = Modifier
                     .matchParentSize()
                     .clipToBounds(),    // на всю карточку
@@ -152,14 +161,18 @@ private fun DayCardPreview() {
         ) {
             DayItem(
                 enabled = true,
+                celebrated = false,
                 onClick = { },
+                onCelebrate = { },
                 day = day,
                 isExpanded = true,
                 modifier = Modifier.fillMaxWidth()
             )
             DayItem(
                 enabled = false,
+                celebrated = false,
                 onClick = { },
+                onCelebrate = { },
                 day = day,
                 isExpanded = false,
                 modifier = Modifier.fillMaxWidth()

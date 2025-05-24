@@ -50,9 +50,13 @@ private fun TasksScreenContent(
     is TasksMainScreenState.Default -> {
         LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
             items(items = state.days, key = Day::id) { day ->
+                val celebrated = state.celebratedDates.contains(day.date)
+
                 DayCard(
                     day = day,
+                    celebrated = celebrated,
                     onTaskItemClick = { onAction(TasksMainScreenAction.TaskDialogAction.Open(it)) },
+                    onCelebrate = { date -> onAction(TasksMainScreenAction.CelebrateDay(date)) },
                     dayItemModifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                     taskItemModifier = Modifier
                         .fillMaxWidth()

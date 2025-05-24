@@ -34,5 +34,12 @@ interface DataModule {
         @Provides
         @Singleton
         fun provideTaskDao(database: ApplicationDatabase): TaskDao = database.taskDao()
+
+        @Provides
+        @Singleton
+        fun provideCelebratedDatesDataStore(
+            @ApplicationContext context: Context
+        ): CelebratedDatesDataStore =
+            CelebratedDatesDataStore(context)
     }
 }

@@ -1,6 +1,7 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.main.tasks
 
 import androidx.lifecycle.viewModelScope
+import com.example.courseworkandroidweeklyplanner.data.CelebratedDatesDataStore
 import com.example.courseworkandroidweeklyplanner.domain.NotificationEventBus
 import com.example.courseworkandroidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,6 +23,7 @@ class TasksMainScreenViewModel @Inject constructor(
     private val getDays: GetDaysUseCase,
     private val toggleTaskStatus: ToggleTaskStatusUseCase,
     private val taskInteractor: TaskInteractor,
+    private val celebratedDatesDataStore: CelebratedDatesDataStore,
     private val notificationEventBus: NotificationEventBus
 ) : BaseViewModel<TasksMainScreenState, TasksMainScreenAction>() {
     private val _state: MutableStateFlow<TasksMainScreenState> = MutableStateFlow(TasksMainScreenState.Initial)
@@ -30,14 +33,19 @@ class TasksMainScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getDays().combine(actionDialogTask) { days, selectedTask ->
-                TasksMainScreenState.Default(
-                    days = days,
-                    dialogState = when (selectedTask) {
-                        null -> TasksMainScreenState.TaskScreenDialogState.None
-                        else -> TasksMainScreenState.TaskScreenDialogState.Opened(selectedTask)
-                    }
-                )
+            getDays()
+                .combine(celebratedDatesDataStore.celebratedDatesFlow) { days, celebratedSet ->
+                    days to celebratedSet
+                }
+                .combine(actionDialogTask) { (days, celebratedSet), selectedTask ->
+                    TasksMainScreenState.Default(
+                        days = days,
+                        celebratedDates = celebratedSet,
+                        dialogState = when (selectedTask) {
+                            null -> TasksMainScreenState.TaskScreenDialogState.None
+                            else -> TasksMainScreenState.TaskScreenDialogState.Opened(selectedTask)
+                        }
+                    )
             }.collect { screenState ->
                 _state.update {
                     screenState
@@ -63,7 +71,24 @@ class TasksMainScreenViewModel @Inject constructor(
                 is TasksMainScreenAction.TaskDialogAction.Open -> action.task
             }
         }
-        is TasksMainScreenAction.ToggleTaskStatus -> toggleTaskStatus(action.task)
+        is TasksMainScreenAction.ToggleTaskStatus -> {
+            // 1) Переключаем статус
+            toggleTaskStatus(action.task)
+
+            // 2) Проверяем состояние дня
+            val date = action.task.date
+            // Считаем, что getDays() возвращает Flow<List<Day>>
+            val daysNow = getDays().first()
+            val dayNow = daysNow.find { it.date == date }
+            val allDone = dayNow?.tasks?.all { it.isDone } ?: false
+
+            // 3) Если день НЕ полностью выполнен — убираем отметку
+            if (!allDone) {
+                celebratedDatesDataStore.unmarkDateCelebrated(date)
+            } else {}
+        }
         is TasksMainScreenAction.DeleteTask -> taskInteractor.deleteTask(action.task)
+        is TasksMainScreenAction.CelebrateDay ->
+            celebratedDatesDataStore.markDateCelebrated(action.date)
     }
 }
