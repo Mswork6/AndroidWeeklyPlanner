@@ -34,10 +34,13 @@ fun DayCard(
     var isExpanded: Boolean by remember {
         mutableStateOf(false)
     }
+    val hasTasks = day.tasks.isNotEmpty()
+
     DayItem(
         day = day,
         isExpanded = isExpanded,
-        onClick = { isExpanded = isExpanded.not() },
+        enabled = hasTasks,
+        onClick = { if (hasTasks) isExpanded = isExpanded.not() },
         modifier = dayItemModifier
     )
     AnimatedVisibility(isExpanded) {

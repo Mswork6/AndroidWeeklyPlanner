@@ -2,8 +2,10 @@ package com.example.courseworkandroidweeklyplanner.presentation.screens.main.com
 
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,6 +36,7 @@ import java.time.LocalDate
 fun DayItem(
     day: Day,
     isExpanded: Boolean,
+    enabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -47,14 +50,19 @@ fun DayItem(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary
         ),
-        onClick = onClick,
+        onClick = {},
         modifier = modifier,
         contentModifier = Modifier
+            .clickable(
+                enabled = enabled,
+                onClick = onClick
+            )
             .padding(
                 top = 16.dp,
                 bottom = 16.dp,
                 start = 8.dp,
-                end = 8.dp),
+                end = 8.dp
+            ),
     ) {
         Spacer(modifier = Modifier.width(16.dp))
         Text(
@@ -67,13 +75,20 @@ fun DayItem(
             modifier = Modifier.weight(2f),
             text = dateToString(day.date),
         )
-        Icon(
-            modifier = Modifier
-                .weight(1f)
-                .rotate(rotationState),
-            imageVector = Icons.Default.KeyboardArrowDown,
-            contentDescription = stringResource(R.string.description_show_hide_tasks)
-        )
+        if (day.tasks.isNotEmpty()){
+            Icon(
+                modifier = Modifier
+                    .weight(1f)
+                    .rotate(rotationState),
+                imageVector = Icons.Default.KeyboardArrowDown,
+                contentDescription = stringResource(R.string.description_show_hide_tasks)
+            )
+        }
+        else {
+            Row(modifier = Modifier
+                .weight(1f)) {  }
+        }
+
     }
 }
 
@@ -93,12 +108,14 @@ private fun DayCardPreview() {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             DayItem(
+                enabled = true,
                 onClick = { },
                 day = day,
                 isExpanded = true,
                 modifier = Modifier.fillMaxWidth()
             )
             DayItem(
+                enabled = false,
                 onClick = { },
                 day = day,
                 isExpanded = false,
