@@ -20,11 +20,11 @@ import com.example.courseworkandroidweeklyplanner.presentation.screens.main.task
 import java.util.UUID
 
 @Composable
-fun TasksScreen(
+fun TasksMainScreen(
     onNavigateToTaskEditScreen: (taskId: UUID) -> Unit,
     onNavigateToTaskOpenScreen: (taskId: UUID) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: TasksScreenViewModel = hiltViewModel(),
+    viewModel: TasksMainScreenViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
     TasksScreenContent(
@@ -38,21 +38,21 @@ fun TasksScreen(
 
 @Composable
 private fun TasksScreenContent(
-    state: TasksScreenState,
-    onAction: (TasksScreenAction) -> Unit,
+    state: TasksMainScreenState,
+    onAction: (TasksMainScreenAction) -> Unit,
     onNavigateToTaskEditScreen: (taskId: UUID) -> Unit,
     onNavigateToTaskOpenScreen: (taskId: UUID) -> Unit,
     modifier: Modifier
 ) = when (state) {
-    is TasksScreenState.Initial -> {
+    is TasksMainScreenState.Initial -> {
         CircularProgressIndicator()
     }
-    is TasksScreenState.Default -> {
+    is TasksMainScreenState.Default -> {
         LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
             items(items = state.days, key = Day::id) { day ->
                 DayCard(
                     day = day,
-                    onTaskItemClick = { onAction(TasksScreenAction.TaskDialogAction.Open(it)) },
+                    onTaskItemClick = { onAction(TasksMainScreenAction.TaskDialogAction.Open(it)) },
                     dayItemModifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                     taskItemModifier = Modifier
                         .fillMaxWidth()
@@ -65,16 +65,16 @@ private fun TasksScreenContent(
         }
 
         when (state.dialogState) {
-            is TasksScreenState.TaskScreenDialogState.None -> Unit
-            is TasksScreenState.TaskScreenDialogState.Opened -> {
+            is TasksMainScreenState.TaskScreenDialogState.None -> Unit
+            is TasksMainScreenState.TaskScreenDialogState.Opened -> {
                 val task = state.dialogState.task
                 TaskDialogWindow(
                     task = task,
-                    onDismissRequest = { onAction(TasksScreenAction.TaskDialogAction.Close) },
-                    onCompleteTask = { onAction(TasksScreenAction.ToggleTaskStatus(it)) },
+                    onDismissRequest = { onAction(TasksMainScreenAction.TaskDialogAction.Close) },
+                    onCompleteTask = { onAction(TasksMainScreenAction.ToggleTaskStatus(it)) },
                     onOpenTask = { onNavigateToTaskOpenScreen(task.id) },
                     onEditTask = { onNavigateToTaskEditScreen(task.id) },
-                    onDeleteTask = { onAction(TasksScreenAction.DeleteTask(task)) }
+                    onDeleteTask = { onAction(TasksMainScreenAction.DeleteTask(task)) }
                 )
             }
         }

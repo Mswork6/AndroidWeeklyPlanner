@@ -21,14 +21,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.courseworkandroidweeklyplanner.R
 import com.example.courseworkandroidweeklyplanner.domain.model.SortType
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
-import com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting.SearchScreenAction
-import com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting.SearchScreenState
+import com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting.MainScreenAction
+import com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting.MainScreenActionsState
 import com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting.component.SortDialogWindow
 import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.ActionTab
 
 @Composable
-fun SearchListScreen(
-    viewModel: SearchListScreenViewModel = hiltViewModel(),
+fun ListActionsScreen(
+    viewModel: ListScreenActionsViewModel = hiltViewModel(),
     onNavigateToWeekTasks: () -> Unit,
     modifier: Modifier,
 ) {
@@ -43,16 +43,16 @@ fun SearchListScreen(
 
 @Composable
 private fun SearchListScreenContent(
-    state: SearchScreenState,
-    onAction: (SearchScreenAction) -> Unit,
+    state: MainScreenActionsState,
+    onAction: (MainScreenAction) -> Unit,
     modifier: Modifier,
     onNavigateToWeekTasks: () -> Unit
 ) = when (state) {
-    is SearchScreenState.Initial -> {
+    is MainScreenActionsState.Initial -> {
         CircularProgressIndicator()
     }
 
-    is SearchScreenState.Default -> {
+    is MainScreenActionsState.Default -> {
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -70,18 +70,18 @@ private fun SearchListScreenContent(
                 icon = ImageVector.vectorResource(R.drawable.baseline_filter_alt_24),
                 contentDescription = stringResource(R.string.action_sort_filter),
                 label = stringResource(R.string.action_sort_filter),
-                onClick = { onAction(SearchScreenAction.SetSorterVisibility(true)) },
+                onClick = { onAction(MainScreenAction.SetSorterVisibility(true)) },
                 modifier = Modifier.weight(1f)
             )
             if (state.isSorterVisible) {
                 SortDialogWindow(
                     selectedOption = state.sort,
                     onOptionSelected = { option ->
-                        onAction(SearchScreenAction.SetSort(option))
-                        onAction(SearchScreenAction.SetSorterVisibility(false))
+                        onAction(MainScreenAction.SetSort(option))
+                        onAction(MainScreenAction.SetSorterVisibility(false))
                     },
                     onDismissRequest = {
-                        onAction(SearchScreenAction.SetSorterVisibility(false))
+                        onAction(MainScreenAction.SetSorterVisibility(false))
                     },
                     modifier = Modifier.fillMaxWidth(0.9f)
                 )
@@ -102,7 +102,7 @@ private fun SearchScreenDivider(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SearchScreenContent1Preview() {
-    val state = SearchScreenState.Default(
+    val state = MainScreenActionsState.Default(
         sort = SortType.STANDARD,
         isSorterVisible = false,
     )
@@ -120,7 +120,7 @@ private fun SearchScreenContent1Preview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SearchScreenContent2Preview() {
-    val state = SearchScreenState.Default(
+    val state = MainScreenActionsState.Default(
         sort = SortType.STANDARD,
         isSorterVisible = false,
     )
@@ -138,7 +138,7 @@ private fun SearchScreenContent2Preview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SearchScreenContent3Preview() {
-    val state = SearchScreenState.Default(
+    val state = MainScreenActionsState.Default(
         sort = SortType.STANDARD,
         isSorterVisible = true,
     )

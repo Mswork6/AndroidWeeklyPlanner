@@ -2,11 +2,11 @@ package com.example.courseworkandroidweeklyplanner.presentation.screens.list.sor
 
 import com.example.courseworkandroidweeklyplanner.domain.model.SortType
 
-sealed interface SearchListScreenState {
-    data object Initial : SearchListScreenState
+sealed interface ListScreenActionsState {
+    data object Initial : ListScreenActionsState
 
     data class Default(
         val sort: SortType,
         val isSorterVisible: Boolean
-    ) : SearchListScreenState
+    ) : ListScreenActionsState
 }

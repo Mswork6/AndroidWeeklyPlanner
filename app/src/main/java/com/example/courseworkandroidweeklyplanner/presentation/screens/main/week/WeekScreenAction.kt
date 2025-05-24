@@ -1,6 +1,5 @@
 package com.example.courseworkandroidweeklyplanner.presentation.screens.main.week
 
-import com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting.SearchScreenAction
 import java.time.LocalDate
 
 sealed interface WeekScreenAction {

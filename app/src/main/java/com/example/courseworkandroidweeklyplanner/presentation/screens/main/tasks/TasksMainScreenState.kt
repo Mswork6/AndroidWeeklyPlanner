@@ -3,13 +3,13 @@ package com.example.courseworkandroidweeklyplanner.presentation.screens.main.tas
 import com.example.courseworkandroidweeklyplanner.domain.model.Day
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 
-sealed interface TasksScreenState {
-    data object Initial : TasksScreenState
+sealed interface TasksMainScreenState {
+    data object Initial : TasksMainScreenState
 
     data class Default(
         val days: List<Day>,
         val dialogState: TaskScreenDialogState
-    ) : TasksScreenState
+    ) : TasksMainScreenState
 
     sealed interface TaskScreenDialogState {
         data object None : TaskScreenDialogState

@@ -28,7 +28,6 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Week
 import com.example.courseworkandroidweeklyplanner.presentation.convertToLocalDate
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.courseworkandroidweeklyplanner.presentation.dateToString
-import com.example.courseworkandroidweeklyplanner.presentation.screens.main.sorting.SearchScreenAction
 import com.example.courseworkandroidweeklyplanner.presentation.screens.shared.DatePickerModal
 import java.time.LocalDate
 

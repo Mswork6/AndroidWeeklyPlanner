@@ -17,25 +17,25 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TasksScreenViewModel @Inject constructor(
+class TasksMainScreenViewModel @Inject constructor(
     private val getDays: GetDaysUseCase,
     private val toggleTaskStatus: ToggleTaskStatusUseCase,
     private val taskInteractor: TaskInteractor,
     private val notificationEventBus: NotificationEventBus
-) : BaseViewModel<TasksScreenState, TasksScreenAction>() {
-    private val _state: MutableStateFlow<TasksScreenState> = MutableStateFlow(TasksScreenState.Initial)
-    override val state: StateFlow<TasksScreenState> = _state.asStateFlow()
+) : BaseViewModel<TasksMainScreenState, TasksMainScreenAction>() {
+    private val _state: MutableStateFlow<TasksMainScreenState> = MutableStateFlow(TasksMainScreenState.Initial)
+    override val state: StateFlow<TasksMainScreenState> = _state.asStateFlow()
 
     private val actionDialogTask: MutableStateFlow<Task?> = MutableStateFlow(null)
 
     init {
         viewModelScope.launch {
             getDays().combine(actionDialogTask) { days, selectedTask ->
-                TasksScreenState.Default(
+                TasksMainScreenState.Default(
                     days = days,
                     dialogState = when (selectedTask) {
-                        null -> TasksScreenState.TaskScreenDialogState.None
-                        else -> TasksScreenState.TaskScreenDialogState.Opened(selectedTask)
+                        null -> TasksMainScreenState.TaskScreenDialogState.None
+                        else -> TasksMainScreenState.TaskScreenDialogState.Opened(selectedTask)
                     }
                 )
             }.collect { screenState ->
@@ -55,15 +55,15 @@ class TasksScreenViewModel @Inject constructor(
         }
     }
 
-    override suspend fun execute(action: TasksScreenAction) = when (action) {
-        is TasksScreenAction.ExpandDay -> {}
-        is TasksScreenAction.TaskDialogAction -> actionDialogTask.update {
+    override suspend fun execute(action: TasksMainScreenAction) = when (action) {
+        is TasksMainScreenAction.ExpandDay -> {}
+        is TasksMainScreenAction.TaskDialogAction -> actionDialogTask.update {
             when (action) {
-                is TasksScreenAction.TaskDialogAction.Close -> null
-                is TasksScreenAction.TaskDialogAction.Open -> action.task
+                is TasksMainScreenAction.TaskDialogAction.Close -> null
+                is TasksMainScreenAction.TaskDialogAction.Open -> action.task
             }
         }
-        is TasksScreenAction.ToggleTaskStatus -> toggleTaskStatus(action.task)
-        is TasksScreenAction.DeleteTask -> taskInteractor.deleteTask(action.task)
+        is TasksMainScreenAction.ToggleTaskStatus -> toggleTaskStatus(action.task)
+        is TasksMainScreenAction.DeleteTask -> taskInteractor.deleteTask(action.task)
     }
 }

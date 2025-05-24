@@ -3,7 +3,6 @@ package com.example.courseworkandroidweeklyplanner.presentation.screens.main.sor
 import androidx.lifecycle.viewModelScope
 import com.example.courseworkandroidweeklyplanner.domain.NotificationEventBus
 import com.example.courseworkandroidweeklyplanner.domain.repository.SortRepository
-import com.example.courseworkandroidweeklyplanner.domain.repository.WeekRepository
 import com.example.courseworkandroidweeklyplanner.presentation.core.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,13 +14,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchScreenViewModel @Inject constructor(
+class MainScreenActionsViewModel @Inject constructor(
     private val sortRepository: SortRepository,
     private val notificationEventBus: NotificationEventBus,
-) : BaseViewModel<SearchScreenState, SearchScreenAction>() {
-    private val _state: MutableStateFlow<SearchScreenState> =
-        MutableStateFlow(SearchScreenState.Initial)
-    override val state: StateFlow<SearchScreenState> = _state.asStateFlow()
+) : BaseViewModel<MainScreenActionsState, MainScreenAction>() {
+    private val _state: MutableStateFlow<MainScreenActionsState> =
+        MutableStateFlow(MainScreenActionsState.Initial)
+    override val state: StateFlow<MainScreenActionsState> = _state.asStateFlow()
 
     private val sorterVisibility: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
@@ -29,7 +28,7 @@ class SearchScreenViewModel @Inject constructor(
         viewModelScope.launch {
             sorterVisibility
                 .combine(sortRepository.getSort()) { isSorterVisible, sort ->
-                    SearchScreenState.Default(
+                    MainScreenActionsState.Default(
                         sort = sort,
                         isSorterVisible = isSorterVisible
                     )
@@ -47,8 +46,8 @@ class SearchScreenViewModel @Inject constructor(
         }
     }
 
-    override suspend fun execute(action: SearchScreenAction) = when (action) {
-        is SearchScreenAction.SetSorterVisibility -> sorterVisibility.emit(action.opened)
-        is SearchScreenAction.SetSort -> sortRepository.setSort(action.sort)
+    override suspend fun execute(action: MainScreenAction) = when (action) {
+        is MainScreenAction.SetSorterVisibility -> sorterVisibility.emit(action.opened)
+        is MainScreenAction.SetSort -> sortRepository.setSort(action.sort)
     }
 }

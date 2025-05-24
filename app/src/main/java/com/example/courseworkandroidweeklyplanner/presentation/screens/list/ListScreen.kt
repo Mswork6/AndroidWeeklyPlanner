@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.courseworkandroidweeklyplanner.presentation.screens.list.sorting.SearchListScreen
+import com.example.courseworkandroidweeklyplanner.presentation.screens.list.sorting.ListActionsScreen
 import com.example.courseworkandroidweeklyplanner.presentation.screens.list.tasks.TasksListScreen
 import java.util.UUID
 
@@ -55,7 +55,7 @@ fun ListScreen(
             ),
             horizontalAlignment = Alignment.Start
         ) {
-            SearchListScreen(
+            ListActionsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .statusBarsPadding(),
