@@ -19,10 +19,10 @@ import javax.inject.Inject
 class ListScreenActionsViewModel @Inject constructor(
     private val sortRepository: SortRepository,
     private val notificationEventBus: NotificationEventBus,
-) : BaseViewModel<MainScreenActionsState, MainScreenAction>() {
-    private val _state: MutableStateFlow<MainScreenActionsState> =
-        MutableStateFlow(MainScreenActionsState.Initial)
-    override val state: StateFlow<MainScreenActionsState> = _state.asStateFlow()
+) : BaseViewModel<ListScreenActionsState, ListScreenAction>() {
+    private val _state: MutableStateFlow<ListScreenActionsState> =
+        MutableStateFlow(ListScreenActionsState.Initial)
+    override val state: StateFlow<ListScreenActionsState> = _state.asStateFlow()
 
     private val sorterVisibility: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
@@ -30,7 +30,7 @@ class ListScreenActionsViewModel @Inject constructor(
         viewModelScope.launch {
             sorterVisibility
                 .combine(sortRepository.getSort()) { isSorterVisible, sort ->
-                    MainScreenActionsState.Default(
+                    ListScreenActionsState.Default(
                         sort = sort,
                         isSorterVisible = isSorterVisible
                     )
@@ -48,8 +48,8 @@ class ListScreenActionsViewModel @Inject constructor(
         }
     }
 
-    override suspend fun execute(action: MainScreenAction) = when (action) {
-        is MainScreenAction.SetSorterVisibility -> sorterVisibility.emit(action.opened)
-        is MainScreenAction.SetSort -> sortRepository.setSort(action.sort)
+    override suspend fun execute(action: ListScreenAction) = when (action) {
+        is ListScreenAction.SetSorterVisibility -> sorterVisibility.emit(action.opened)
+        is ListScreenAction.SetSort -> sortRepository.setSort(action.sort)
     }
 }

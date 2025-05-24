@@ -43,16 +43,16 @@ fun ListActionsScreen(
 
 @Composable
 private fun SearchListScreenContent(
-    state: MainScreenActionsState,
-    onAction: (MainScreenAction) -> Unit,
+    state: ListScreenActionsState,
+    onAction: (ListScreenAction) -> Unit,
     modifier: Modifier,
     onNavigateToWeekTasks: () -> Unit
 ) = when (state) {
-    is MainScreenActionsState.Initial -> {
+    is ListScreenActionsState.Initial -> {
         CircularProgressIndicator()
     }
 
-    is MainScreenActionsState.Default -> {
+    is ListScreenActionsState.Default -> {
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -70,18 +70,18 @@ private fun SearchListScreenContent(
                 icon = ImageVector.vectorResource(R.drawable.baseline_filter_alt_24),
                 contentDescription = stringResource(R.string.action_sort_filter),
                 label = stringResource(R.string.action_sort_filter),
-                onClick = { onAction(MainScreenAction.SetSorterVisibility(true)) },
+                onClick = { onAction(ListScreenAction.SetSorterVisibility(true)) },
                 modifier = Modifier.weight(1f)
             )
             if (state.isSorterVisible) {
                 SortDialogWindow(
                     selectedOption = state.sort,
                     onOptionSelected = { option ->
-                        onAction(MainScreenAction.SetSort(option))
-                        onAction(MainScreenAction.SetSorterVisibility(false))
+                        onAction(ListScreenAction.SetSort(option))
+                        onAction(ListScreenAction.SetSorterVisibility(false))
                     },
                     onDismissRequest = {
-                        onAction(MainScreenAction.SetSorterVisibility(false))
+                        onAction(ListScreenAction.SetSorterVisibility(false))
                     },
                     modifier = Modifier.fillMaxWidth(0.9f)
                 )
@@ -102,7 +102,7 @@ private fun SearchScreenDivider(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SearchScreenContent1Preview() {
-    val state = MainScreenActionsState.Default(
+    val state = ListScreenActionsState.Default(
         sort = SortType.STANDARD,
         isSorterVisible = false,
     )
@@ -120,7 +120,7 @@ private fun SearchScreenContent1Preview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SearchScreenContent2Preview() {
-    val state = MainScreenActionsState.Default(
+    val state = ListScreenActionsState.Default(
         sort = SortType.STANDARD,
         isSorterVisible = false,
     )
@@ -138,7 +138,7 @@ private fun SearchScreenContent2Preview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun SearchScreenContent3Preview() {
-    val state = MainScreenActionsState.Default(
+    val state = ListScreenActionsState.Default(
         sort = SortType.STANDARD,
         isSorterVisible = true,
     )
