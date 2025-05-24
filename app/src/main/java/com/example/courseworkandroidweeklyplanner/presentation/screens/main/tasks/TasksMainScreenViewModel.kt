@@ -72,17 +72,13 @@ class TasksMainScreenViewModel @Inject constructor(
             }
         }
         is TasksMainScreenAction.ToggleTaskStatus -> {
-            // 1) Переключаем статус
             toggleTaskStatus(action.task)
 
-            // 2) Проверяем состояние дня
             val date = action.task.date
-            // Считаем, что getDays() возвращает Flow<List<Day>>
             val daysNow = getDays().first()
             val dayNow = daysNow.find { it.date == date }
             val allDone = dayNow?.tasks?.all { it.isDone } ?: false
 
-            // 3) Если день НЕ полностью выполнен — убираем отметку
             if (!allDone) {
                 celebratedDatesDataStore.unmarkDateCelebrated(date)
             } else {}
@@ -90,5 +86,8 @@ class TasksMainScreenViewModel @Inject constructor(
         is TasksMainScreenAction.DeleteTask -> taskInteractor.deleteTask(action.task)
         is TasksMainScreenAction.CelebrateDay ->
             celebratedDatesDataStore.markDateCelebrated(action.date)
+        is TasksMainScreenAction.UncelebrateDay -> {
+            celebratedDatesDataStore.unmarkDateCelebrated(action.date)
+        }
     }
 }

@@ -17,5 +17,7 @@ sealed interface TasksMainScreenAction {
 
     data class CelebrateDay(val date: LocalDate) : TasksMainScreenAction
 
+    data class UncelebrateDay(val date: LocalDate) : TasksMainScreenAction
+
     data class DeleteTask(val task: Task) : TasksMainScreenAction
 }

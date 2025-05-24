@@ -16,7 +16,6 @@ import com.example.courseworkandroidweeklyplanner.domain.model.Category
 import com.example.courseworkandroidweeklyplanner.domain.model.Day
 import com.example.courseworkandroidweeklyplanner.domain.model.DayType
 import com.example.courseworkandroidweeklyplanner.domain.model.Difficulty
-import com.example.courseworkandroidweeklyplanner.domain.model.NotificationTime
 import com.example.courseworkandroidweeklyplanner.domain.model.Priority
 import com.example.courseworkandroidweeklyplanner.domain.model.Task
 import com.example.courseworkandroidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
@@ -30,6 +29,7 @@ fun DayCard(
     celebrated: Boolean,
     onTaskItemClick: (Task) -> Unit,
     onCelebrate: (LocalDate) -> Unit,
+    onUnCelebrate: (LocalDate) -> Unit,
     dayItemModifier: Modifier = Modifier,
     taskItemModifier: Modifier = Modifier
 ) = Column {
@@ -45,6 +45,7 @@ fun DayCard(
         celebrated = celebrated,
         onClick = { if (hasTasks) isExpanded = isExpanded.not() },
         onCelebrate = onCelebrate,
+        onUnCelebrate = onUnCelebrate,
         modifier = dayItemModifier
     )
     AnimatedVisibility(isExpanded) {
@@ -103,6 +104,7 @@ private fun DayCardPreview() {
             celebrated = false,
             onTaskItemClick = { },
             onCelebrate = { },
+            onUnCelebrate = { },
             dayItemModifier = Modifier,
             taskItemModifier = Modifier
                 .padding(

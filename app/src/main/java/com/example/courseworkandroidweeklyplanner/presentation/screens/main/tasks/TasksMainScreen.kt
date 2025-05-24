@@ -57,6 +57,7 @@ private fun TasksScreenContent(
                     celebrated = celebrated,
                     onTaskItemClick = { onAction(TasksMainScreenAction.TaskDialogAction.Open(it)) },
                     onCelebrate = { date -> onAction(TasksMainScreenAction.CelebrateDay(date)) },
+                    onUnCelebrate = { date -> onAction(TasksMainScreenAction.UncelebrateDay(date))},
                     dayItemModifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                     taskItemModifier = Modifier
                         .fillMaxWidth()

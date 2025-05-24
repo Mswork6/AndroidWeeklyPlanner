@@ -51,6 +51,7 @@ fun DayItem(
     celebrated: Boolean,
     onClick: () -> Unit,
     onCelebrate: (LocalDate) -> Unit,
+    onUnCelebrate: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val rotationState by animateFloatAsState(
@@ -72,6 +73,10 @@ fun DayItem(
             )
             // только после того как анимация завершилась
             onCelebrate(day.date)
+        }
+        // 2) если стало !allDone, но праздновали==true — сбрасываем
+        else if (!allDone && celebrated) {
+            onUnCelebrate(day.date)
         }
     }
 
@@ -164,6 +169,7 @@ private fun DayCardPreview() {
                 celebrated = false,
                 onClick = { },
                 onCelebrate = { },
+                onUnCelebrate = { },
                 day = day,
                 isExpanded = true,
                 modifier = Modifier.fillMaxWidth()
@@ -173,6 +179,7 @@ private fun DayCardPreview() {
                 celebrated = false,
                 onClick = { },
                 onCelebrate = { },
+                onUnCelebrate = { },
                 day = day,
                 isExpanded = false,
                 modifier = Modifier.fillMaxWidth()
