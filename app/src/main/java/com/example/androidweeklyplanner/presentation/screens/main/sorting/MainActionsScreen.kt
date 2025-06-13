@@ -19,6 +19,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.androidweeklyplanner.R
+import com.example.androidweeklyplanner.domain.model.SortConfig
 import com.example.androidweeklyplanner.domain.model.SortType
 import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.screens.main.sorting.component.SortDialogWindow
@@ -71,19 +72,19 @@ private fun SearchScreenContent(
                 onClick = { onAction(MainScreenAction.SetSorterVisibility(true)) },
                 modifier = Modifier.weight(1f)
             )
-            if (state.isSorterVisible) {
-                SortDialogWindow(
-                    selectedOption = state.sort,
-                    onOptionSelected = { option ->
-                        onAction(MainScreenAction.SetSort(option))
-                        onAction(MainScreenAction.SetSorterVisibility(false))
-                    },
-                    onDismissRequest = {
-                        onAction(MainScreenAction.SetSorterVisibility(false))
-                    },
-                    modifier = Modifier.fillMaxWidth(0.9f)
-                )
-            }
+//            if (state.isSorterVisible) {
+//                SortDialogWindow(
+//                    selectedOption = state.sort,
+//                    onOptionSelected = { option ->
+//                        onAction(MainScreenAction.SetSort(option))
+//                        onAction(MainScreenAction.SetSorterVisibility(false))
+//                    },
+//                    onDismissRequest = {
+//                        onAction(MainScreenAction.SetSorterVisibility(false))
+//                    },
+//                    modifier = Modifier.fillMaxWidth(0.9f)
+//                )
+//            }
         }
     }
 }
@@ -101,7 +102,7 @@ private fun SearchScreenDivider(
 @Composable
 private fun SearchScreenContent1Preview() {
     val state = MainScreenActionsState.Default(
-        sort = SortType.STANDARD,
+        sortConfig = SortConfig(),
         isSorterVisible = false,
     )
     CourseWorkAndroidWeeklyPlannerTheme {
@@ -119,7 +120,7 @@ private fun SearchScreenContent1Preview() {
 @Composable
 private fun SearchScreenContent2Preview() {
     val state = MainScreenActionsState.Default(
-        sort = SortType.STANDARD,
+        sortConfig = SortConfig(),
         isSorterVisible = false,
     )
     CourseWorkAndroidWeeklyPlannerTheme {
@@ -137,7 +138,7 @@ private fun SearchScreenContent2Preview() {
 @Composable
 private fun SearchScreenContent3Preview() {
     val state = MainScreenActionsState.Default(
-        sort = SortType.STANDARD,
+        sortConfig = SortConfig(),
         isSorterVisible = true,
     )
     CourseWorkAndroidWeeklyPlannerTheme {

@@ -27,9 +27,9 @@ class MainScreenActionsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             sorterVisibility
-                .combine(sortRepository.getSort()) { isSorterVisible, sort ->
+                .combine(sortRepository.getSortConfig()) { isSorterVisible, config ->
                     MainScreenActionsState.Default(
-                        sort = sort,
+                        sortConfig = config,
                         isSorterVisible = isSorterVisible
                     )
                 }
@@ -48,6 +48,6 @@ class MainScreenActionsViewModel @Inject constructor(
 
     override suspend fun execute(action: MainScreenAction) = when (action) {
         is MainScreenAction.SetSorterVisibility -> sorterVisibility.emit(action.opened)
-        is MainScreenAction.SetSort -> sortRepository.setSort(action.sort)
+        is MainScreenAction.SetSort -> sortRepository.setSortConfig(action.sortConfig)
     }
 }

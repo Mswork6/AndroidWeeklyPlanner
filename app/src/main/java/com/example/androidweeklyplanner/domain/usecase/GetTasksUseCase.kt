@@ -16,25 +16,25 @@ class GetTasksUseCase @Inject constructor(
 ) {
     /** Возвращает все задачи, отсортированные согласно текущему SortType */
     operator fun invoke(): Flow<List<Task>> =
-        taskRepository.getTasks()
-            .combine(sortRepository.getSort()) { tasks, sort ->
-                when (sort) {
-                    SortType.INCREASE -> tasks.sortedWith(
-                        compareBy<Task> { it.priority }
-                            .thenBy { it.date }
-                            .thenBy { it.time }
-                    )
-                    SortType.DECREASE -> tasks.sortedWith(
-                        compareByDescending<Task>
-                        { it.priority }
-                            .thenBy { it.date }
-                            .thenBy { it.time }
-                    )
-                    SortType.STANDARD -> tasks.sortedWith(
-                        compareBy<Task> { it.date }
-                            .thenBy { it.time }
-                    )
-                }
-            }
-            .flowOn(Dispatchers.Default)
+        taskRepository.getTasks().flowOn(Dispatchers.Default)
+//            .combine(sortRepository.getSort()) { tasks, sort ->
+//                when (sort) {
+//                    SortType.INCREASE -> tasks.sortedWith(
+//                        compareBy<Task> { it.priority }
+//                            .thenBy { it.date }
+//                            .thenBy { it.time }
+//                    )
+//                    SortType.DECREASE -> tasks.sortedWith(
+//                        compareByDescending<Task>
+//                        { it.priority }
+//                            .thenBy { it.date }
+//                            .thenBy { it.time }
+//                    )
+//                    SortType.STANDARD -> tasks.sortedWith(
+//                        compareBy<Task> { it.date }
+//                            .thenBy { it.time }
+//                    )
+//                }
+//            }
+
 }
