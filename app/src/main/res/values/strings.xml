@@ -78,4 +78,6 @@
     <string name="action_complete">Complete</string>
     <string name="action_sort">Sort</string>
     <string name="action_all_tasks">All tasks</string>
+    <string name="action_weekly_tasks">Weekly tasks</string>
+    <string name="action_sort_filter">Sort and filter</string>
 </resources>

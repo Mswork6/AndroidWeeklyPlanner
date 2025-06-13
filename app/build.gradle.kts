@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.courseworkandroidweeklyplanner"
+    namespace = "com.example.androidweeklyplanner"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.courseworkandroidweeklyplanner"
+        applicationId = "com.example.androidweeklyplanner"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -77,4 +77,7 @@ dependencies {
     implementation(libs.room.core)
     implementation(libs.room.kotlin)
     ksp(libs.room.compiler)
+
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
+    implementation("androidx.datastore:datastore-preferences:1.1.0")
 }
