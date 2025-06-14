@@ -12,7 +12,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SortRepositoryImpl @Inject constructor(): SortRepository {
+class SortRepositoryImpl @Inject constructor() : SortRepository {
     private val _config = MutableStateFlow(SortConfig())
     override fun getSortConfig(): StateFlow<SortConfig> = _config
 
