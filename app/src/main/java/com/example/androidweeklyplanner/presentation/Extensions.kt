@@ -110,8 +110,8 @@ val Priority.description: Int
 @get:StringRes
 val SortType.description: Int
     get() = when (this) {
-        SortType.INCREASE -> R.string.description_sort_priority_ascending
-        SortType.DECREASE -> R.string.description_sort_priority_descending
+        SortType.INCREASE -> R.string.description_sort_ascending
+        SortType.DECREASE -> R.string.description_sort_descending
         SortType.STANDARD -> R.string.description_no_sorting
     }
 

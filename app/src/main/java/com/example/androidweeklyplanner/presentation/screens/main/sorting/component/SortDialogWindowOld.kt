@@ -1,23 +1,22 @@
 package com.example.androidweeklyplanner.presentation.screens.main.sorting.component
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -25,28 +24,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.androidweeklyplanner.R
-import com.example.androidweeklyplanner.domain.model.SortConfig
 import com.example.androidweeklyplanner.domain.model.SortType
 import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.description
 
 @Composable
-fun SortDialogWindow(
-    selectedConfig: SortConfig,
-    onOptionSelected: (SortConfig) -> Unit,
+fun SortDialogWindowOld(
+    selectedOption: SortType,
+    onOptionSelected: (SortType) -> Unit,
     onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
-    // Локальная копия, чтобы юзер мог отменить изменения
-    var tempConfig by remember { mutableStateOf(selectedConfig) }
+    var tempSelectedOption by remember(selectedOption) { mutableStateOf(selectedOption) }
 
     Dialog(onDismissRequest = onDismissRequest) {
         Card(
@@ -56,37 +53,26 @@ fun SortDialogWindow(
                 containerColor = MaterialTheme.colorScheme.primary,
             )
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.Start,
+            ) {
                 Text(
                     text = stringResource(R.string.description_choose_sorting_type),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                Spacer(Modifier.height(16.dp))
-
-                // Группа по приоритету
-                SortByChips(
-                    title = stringResource(R.string.description_task_priority)
-                            + ": " + stringResource(tempConfig.priorityOrder.description),
-                    selectedOrder = tempConfig.priorityOrder,
-                    onOrderChange = { newOrder ->
-                        tempConfig = tempConfig.copy(priorityOrder = newOrder)
+                // Группа радиокнопок
+                RadioButtonGroupWithEnum1(
+                    selectedOption = tempSelectedOption,
+                    onOptionSelected = { option ->
+                        tempSelectedOption = option
                     }
                 )
 
-                Spacer(Modifier.height(16.dp))
-
-                // Группа по сложности
-                SortByChips(
-                    title = stringResource(R.string.description_task_difficulty)
-                            + ": " + stringResource(tempConfig.difficultyOrder.description),
-                    selectedOrder = tempConfig.difficultyOrder,
-                    onOrderChange = { newOrder ->
-                        tempConfig = tempConfig.copy(difficultyOrder = newOrder)
-                    }
-                )
-
-                Spacer(Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 // Кнопки подтверждения и отмены
                 Row(
@@ -108,7 +94,7 @@ fun SortDialogWindow(
 
                     TextButton(
                         onClick = {
-                            onOptionSelected(tempConfig)
+                            onOptionSelected(tempSelectedOption)
                             onDismissRequest()
                         },
                         colors = ButtonDefaults.buttonColors(
@@ -126,39 +112,32 @@ fun SortDialogWindow(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun SortByChips(
-    title: String,
-    selectedOrder: SortType,
-    onOrderChange: (SortType) -> Unit,
+fun RadioButtonGroupWithEnum1(
+    selectedOption: SortType,
+    onOptionSelected: (SortType) -> Unit
 ) {
     Column {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodyMedium
-        )
-        Row(
-            modifier = Modifier.padding(top = 8.dp)
-        ) {
-            SortType.entries.forEach { order ->
-                FilterChip(
-                    selected = order == selectedOrder,
-                    onClick = { onOrderChange(order) },
-                    modifier = Modifier
-                        .sizeIn(minWidth = 32.dp, minHeight = 32.dp)
-                        .weight(1f),
-                    label = {
-                        Text(
-                            text = stringResource(order.description),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = MaterialTheme.colorScheme.tertiary,
-                        selectedLabelColor = Color.White
-                    )// без текста
+        SortType.entries.forEach { option ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onOptionSelected(option) }
+                    .padding(vertical = 8.dp)
+            ) {
+                RadioButton(
+                    selected = (option == selectedOption),
+                    onClick = { onOptionSelected(option) },
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = MaterialTheme.colorScheme.tertiary,
+                        unselectedColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+                Text(
+                    text = stringResource(option.description)   ,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 8.dp)
                 )
             }
         }
@@ -168,10 +147,10 @@ private fun SortByChips(
 @Preview(showBackground = true)
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun RadioDialogWindowPreview() {
+fun RadioDialogWindowPreview1() {
     CourseWorkAndroidWeeklyPlannerTheme {
-        SortDialogWindow(
-            selectedConfig = SortConfig(),
+        SortDialogWindowOld(
+            selectedOption = SortType.STANDARD,
             onOptionSelected = {},
             onDismissRequest = {}
         )

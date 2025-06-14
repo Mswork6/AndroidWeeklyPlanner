@@ -30,8 +30,8 @@
     <string name="description_low">Low</string>
     <string name="error_empty_title">Title cannot be empty</string>
     <string name="error_long_title">Title cannot exceed 100 characters</string>
-    <string name="description_sort_priority_ascending">Priority ascending</string>
-    <string name="description_sort_priority_descending">Priority descending</string>
+    <string name="description_sort_ascending">Ascending</string>
+    <string name="description_sort_descending">Descending</string>
     <string name="description_no_sorting">No sorting</string>
     <string name="day_monday">Monday</string>
     <string name="day_tuesday">Tuesday</string>
@@ -80,4 +80,6 @@
     <string name="action_all_tasks">All tasks</string>
     <string name="action_weekly_tasks">Weekly tasks</string>
     <string name="action_sort_filter">Sort and filter</string>
+    <string name="description_task_priority">Task priority</string>
+    <string name="description_task_difficulty">Task difficulty</string>
 </resources>
