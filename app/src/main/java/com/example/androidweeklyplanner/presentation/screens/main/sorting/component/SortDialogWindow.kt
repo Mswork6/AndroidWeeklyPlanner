@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -126,7 +127,6 @@ fun SortDialogWindow(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SortByChips(
     title: String,
@@ -141,7 +141,24 @@ private fun SortByChips(
         Row(
             modifier = Modifier.padding(top = 8.dp)
         ) {
-            SortType.entries.forEach { order ->
+            SortType.entries.forEachIndexed { index, order ->
+
+                val shape = when (index) {
+                    0 -> RoundedCornerShape(
+                        topStart = 16.dp,
+                        bottomStart = 16.dp,
+                        topEnd = 0.dp,
+                        bottomEnd = 0.dp
+                    )
+                    SortType.entries.lastIndex -> RoundedCornerShape(
+                        topStart = 0.dp,
+                        bottomStart = 0.dp,
+                        topEnd = 16.dp,
+                        bottomEnd = 16.dp
+                    )
+                    else -> RectangleShape
+                }
+
                 FilterChip(
                     selected = order == selectedOrder,
                     onClick = { onOrderChange(order) },
@@ -155,10 +172,11 @@ private fun SortByChips(
                             overflow = TextOverflow.Ellipsis
                         )
                     },
+                    shape = shape,
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = MaterialTheme.colorScheme.tertiary,
                         selectedLabelColor = Color.White
-                    )// без текста
+                    )
                 )
             }
         }

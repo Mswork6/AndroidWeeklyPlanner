@@ -72,19 +72,19 @@ private fun SearchScreenContent(
                 onClick = { onAction(MainScreenAction.SetSorterVisibility(true)) },
                 modifier = Modifier.weight(1f)
             )
-//            if (state.isSorterVisible) {
-//                SortDialogWindow(
-//                    selectedOption = state.sort,
-//                    onOptionSelected = { option ->
-//                        onAction(MainScreenAction.SetSort(option))
-//                        onAction(MainScreenAction.SetSorterVisibility(false))
-//                    },
-//                    onDismissRequest = {
-//                        onAction(MainScreenAction.SetSorterVisibility(false))
-//                    },
-//                    modifier = Modifier.fillMaxWidth(0.9f)
-//                )
-//            }
+            if (state.isSorterVisible) {
+                SortDialogWindow(
+                    selectedConfig = state.sortConfig,
+                    onOptionSelected = { newConfig ->
+                        onAction(MainScreenAction.SetSort(newConfig))
+                        onAction(MainScreenAction.SetSorterVisibility(false))
+                    },
+                    onDismissRequest = {
+                        onAction(MainScreenAction.SetSorterVisibility(false))
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
     }
 }
