@@ -1,7 +1,9 @@
 package com.example.androidweeklyplanner.presentation.screens.main.sorting.component
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
@@ -17,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -25,10 +28,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,6 +44,7 @@ import com.example.androidweeklyplanner.domain.model.SortConfig
 import com.example.androidweeklyplanner.domain.model.SortType
 import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.description
+import com.example.androidweeklyplanner.presentation.icon
 
 @Composable
 fun SortDialogWindow(
@@ -127,6 +134,7 @@ fun SortDialogWindow(
     }
 }
 
+@SuppressLint("ResourceType")
 @Composable
 private fun SortByChips(
     title: String,
@@ -166,11 +174,15 @@ private fun SortByChips(
                         .sizeIn(minWidth = 32.dp, minHeight = 32.dp)
                         .weight(1f),
                     label = {
-                        Text(
-                            text = stringResource(order.description),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(order.icon),
+                                contentDescription = null
+                            )
+                        }
                     },
                     shape = shape,
                     colors = FilterChipDefaults.filterChipColors(

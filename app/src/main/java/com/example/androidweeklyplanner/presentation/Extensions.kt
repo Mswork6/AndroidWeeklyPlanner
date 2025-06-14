@@ -116,6 +116,14 @@ val SortType.description: Int
     }
 
 @get:StringRes
+val SortType.icon: Int
+    get() = when (this) {
+        SortType.INCREASE -> R.drawable.baseline_ascending_24
+        SortType.DECREASE -> R.drawable.baseline_descending_24
+        SortType.STANDARD -> R.drawable.baseline_no_sort_24
+    }
+
+@get:StringRes
 val DayType.description: Int
     get() = when (this) {
         DayType.MONDAY -> R.string.day_monday
