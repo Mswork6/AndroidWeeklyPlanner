@@ -2,7 +2,7 @@ package com.example.androidweeklyplanner.presentation.screens.main.tasks
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidweeklyplanner.data.CelebratedDatesDataStore
-import com.example.androidweeklyplanner.domain.NotificationEventBus
+import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.androidweeklyplanner.domain.model.Task
 import com.example.androidweeklyplanner.domain.usecase.GetDaysUseCase

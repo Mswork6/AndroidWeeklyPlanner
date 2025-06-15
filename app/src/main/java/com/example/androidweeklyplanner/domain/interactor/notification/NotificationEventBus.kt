@@ -1,5 +1,4 @@
-// NotificationEventBus.kt
-package com.example.androidweeklyplanner.domain
+package com.example.androidweeklyplanner.domain.interactor.notification
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

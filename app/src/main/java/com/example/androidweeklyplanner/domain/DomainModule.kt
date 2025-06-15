@@ -7,9 +7,11 @@ import com.example.androidweeklyplanner.domain.interactor.notification.Notificat
 import com.example.androidweeklyplanner.domain.interactor.notification.impl.NotificationInteractorImpl
 import com.example.androidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.androidweeklyplanner.domain.interactor.saver.TaskInteractorImpl
+import com.example.androidweeklyplanner.domain.repository.FilterRepository
 import com.example.androidweeklyplanner.domain.repository.SortRepository
 import com.example.androidweeklyplanner.domain.repository.TaskRepository
 import com.example.androidweeklyplanner.domain.repository.WeekRepository
+import com.example.androidweeklyplanner.domain.repository.impl.FilterRepositoryImpl
 import com.example.androidweeklyplanner.domain.repository.impl.SortRepositoryImpl
 import com.example.androidweeklyplanner.domain.repository.impl.TaskRepositoryImpl
 import com.example.androidweeklyplanner.domain.repository.impl.WeekRepositoryImpl
@@ -34,6 +36,9 @@ interface DomainModule {
 
     @Binds
     fun bindSortRepository(impl: SortRepositoryImpl): SortRepository
+
+    @Binds
+    fun bindFilterRepository(impl: FilterRepositoryImpl): FilterRepository
 
     @Binds
     fun bindTaskInteractor(impl: TaskInteractorImpl): TaskInteractor

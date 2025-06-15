@@ -1,7 +1,7 @@
 package com.example.androidweeklyplanner.presentation.screens.main.sorting
 
 import androidx.lifecycle.viewModelScope
-import com.example.androidweeklyplanner.domain.NotificationEventBus
+import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.domain.repository.SortRepository
 import com.example.androidweeklyplanner.presentation.core.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

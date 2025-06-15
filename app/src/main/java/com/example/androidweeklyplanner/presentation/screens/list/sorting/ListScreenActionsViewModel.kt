@@ -1,7 +1,7 @@
 package com.example.androidweeklyplanner.presentation.screens.list.sorting
 
 import androidx.lifecycle.viewModelScope
-import com.example.androidweeklyplanner.domain.NotificationEventBus
+import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.domain.model.Category
 import com.example.androidweeklyplanner.domain.model.Difficulty
 import com.example.androidweeklyplanner.domain.model.Priority

@@ -2,7 +2,7 @@ package com.example.androidweeklyplanner.presentation.screens.task
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidweeklyplanner.R
-import com.example.androidweeklyplanner.domain.NotificationEventBus
+import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.domain.interactor.builder.NameReport
 import com.example.androidweeklyplanner.domain.interactor.builder.TaskBuilderInteractor
 import com.example.androidweeklyplanner.domain.interactor.builder.TaskBuilderReport

@@ -29,6 +29,7 @@ import com.example.androidweeklyplanner.presentation.convertToLocalDate
 import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.dateToString
 import com.example.androidweeklyplanner.presentation.screens.shared.DatePickerModal
+import com.example.androidweeklyplanner.presentation.screens.shared.DateRangePickerDialog
 import java.time.LocalDate
 
 @Composable
@@ -96,6 +97,10 @@ private fun WeekScreenContent(
                     }
                 )
             }
+
+
+
+
         }
     }
 }
