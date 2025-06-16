@@ -1,6 +1,7 @@
 package com.example.androidweeklyplanner.presentation.screens.shared
 
 import android.content.res.Configuration
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
@@ -10,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -60,13 +62,26 @@ fun DatePickerModal(
             state = datePickerState,
             colors = DatePickerDefaults.colors(
                 todayDateBorderColor = MaterialTheme.colorScheme.tertiary,
-                todayContentColor = MaterialTheme.colorScheme.tertiary,
+                todayContentColor = MaterialTheme.colorScheme.onPrimary,
                 selectedDayContainerColor = MaterialTheme.colorScheme.tertiary,
                 selectedYearContainerColor = MaterialTheme.colorScheme.tertiary,
-                selectedDayContentColor = Color.White,
-                selectedYearContentColor = Color.White,
-                currentYearContentColor = Color.Black,
-                yearContentColor = Color.Black
+                selectedDayContentColor = MaterialTheme.colorScheme.onTertiary,
+                selectedYearContentColor = MaterialTheme.colorScheme.onTertiary,
+                currentYearContentColor = MaterialTheme.colorScheme.onPrimary,
+                yearContentColor = MaterialTheme.colorScheme.onPrimary,
+                dateTextFieldColors = TextFieldDefaults.colors(
+                    focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
+                    unfocusedContainerColor = DatePickerDefaults.colors().containerColor,
+                    focusedContainerColor = DatePickerDefaults.colors().containerColor,
+                    cursorColor = MaterialTheme.colorScheme.tertiary,
+                    errorContainerColor = DatePickerDefaults.colors().containerColor,
+                    focusedPrefixColor = MaterialTheme.colorScheme.tertiary,
+                    selectionColors = TextSelectionColors(
+                        handleColor = MaterialTheme.colorScheme.tertiary,
+                        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
+                    ),
+                )
             )
         )
     }

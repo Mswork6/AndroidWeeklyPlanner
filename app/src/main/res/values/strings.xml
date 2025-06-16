@@ -82,4 +82,8 @@
     <string name="action_sort_filter">Sort and filter</string>
     <string name="description_task_priority">Task priority</string>
     <string name="description_task_difficulty">Task difficulty</string>
+    <string name="description_reset_dates">Reset dates</string>
+    <string name="description_choose_date_range">Choose date range</string>
+    <string name="description_start_date">Start date</string>
+    <string name="description_end_date">End date</string>
 </resources>

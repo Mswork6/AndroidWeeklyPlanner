@@ -12,7 +12,7 @@ fun NavGraphBuilder.installListScreen(
     onNavigateToTaskAddScreen: () -> Unit,
     onNavigateToTaskEditScreen: (UUID) -> Unit,
     onNavigateToTaskOpenScreen: (UUID) -> Unit,
-    onNavigateToWeekTasks: (NavBackStackEntry) -> Unit,
+    onNavigateToWeekTasks: (NavBackStackEntry) -> Unit
 ) = composable(LIST_ROUTE) { backStackEntry: NavBackStackEntry ->
     ListScreen(
         onNavigateToTaskAddScreen = onNavigateToTaskAddScreen,

@@ -1,9 +1,13 @@
 package com.example.androidweeklyplanner.presentation.screens.shared
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CalendarLocale
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
@@ -14,15 +18,17 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 
 
@@ -51,26 +57,33 @@ fun DateRangePickerDialog(
                         pickerState.selectedEndDateMillis
                     )
                     onDismiss()
-                }
-            ) { Text("OK") }
+                },
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.tertiary,
+                )
+            ) { Text(stringResource(R.string.description_confirm)) }
         },
+
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancel")
+            TextButton(
+                onClick = onDismiss,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.tertiary,
+                )
+            ) {
+                Text(stringResource(R.string.description_cancel))
             }
         },
-        modifier = Modifier
-            .height(500.dp)
     ) {
         DateRangePicker(
             state = pickerState,
             showModeToggle = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(400.dp),
+                .height(450.dp),
             title = {
                 Text(
-                    text = "Выберите временной диапазон",
+                    text = stringResource(R.string.description_choose_date_range),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(
@@ -79,13 +92,42 @@ fun DateRangePickerDialog(
                         )
                 )
             },
-            headline = {
-                CustomDateRangeHeadline(state = pickerState)
-            }
+            headline = { CustomDateRangeHeadline(state = pickerState) },
+            colors = DatePickerDefaults.colors(
+                todayDateBorderColor = MaterialTheme.colorScheme.tertiary,
+                todayContentColor = MaterialTheme.colorScheme.onPrimary,
+                selectedDayContainerColor = MaterialTheme.colorScheme.tertiary,
+                selectedDayContentColor = MaterialTheme.colorScheme.onTertiary,
+                dayInSelectionRangeContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                dateTextFieldColors = TextFieldDefaults.colors(
+                    focusedLabelColor = MaterialTheme.colorScheme.tertiary,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
+                    unfocusedContainerColor = DatePickerDefaults.colors().containerColor,
+                    focusedContainerColor = DatePickerDefaults.colors().containerColor,
+                    cursorColor = MaterialTheme.colorScheme.tertiary,
+                    errorContainerColor = DatePickerDefaults.colors().containerColor,
+                    focusedPrefixColor = MaterialTheme.colorScheme.tertiary,
+                    selectionColors = TextSelectionColors(
+                        handleColor = MaterialTheme.colorScheme.tertiary,
+                        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
+                    ),
+                )
+
+            )
         )
-        TextButton(
-            onClick = { }
-        ) { Text("Hello there") }
+        Row(
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 8.dp)
+        ) {
+            TextButton(
+                onClick = onReset,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.tertiary,
+                )
+            ) { Text(stringResource(R.string.description_reset_dates)) }
+        }
     }
 
 }
@@ -102,15 +144,16 @@ private fun CustomDateRangeHeadline(
 
     val locale = CalendarLocale.getDefault()
 
-    // Вычисляем тексты для начала и конца
     val startText = state.selectedStartDateMillis
-        ?.let { millis -> defaultFormatter.formatDate(millis, locale) } ?: "Начальная дата"
+        ?.let { millis -> defaultFormatter.formatDate(millis, locale) }
+        ?: stringResource(R.string.description_start_date)
     val endText = state.selectedEndDateMillis
-        ?.let { millis -> defaultFormatter.formatDate(millis, locale) } ?: "Конечная дата"
+        ?.let { millis -> defaultFormatter.formatDate(millis, locale) }
+        ?: stringResource(R.string.description_end_date)
 
     Text(
         text = "$startText — $endText",
-        style = MaterialTheme.typography.titleMedium, // уменьшенный шрифт
+        style = MaterialTheme.typography.titleMedium,
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 8.dp, bottom = 12.dp),

@@ -83,4 +83,8 @@
     <string name="action_sort_filter">Сортировка и фильтр</string>
     <string name="description_task_priority">Приоритет задачи</string>
     <string name="description_task_difficulty">Сложность задачи</string>
+    <string name="description_reset_dates">Сбросить даты</string>
+    <string name="description_choose_date_range">Выберите временной диапазон</string>
+    <string name="description_start_date">Начальная дата</string>
+    <string name="description_end_date">Конечная дата</string>
 </resources>
