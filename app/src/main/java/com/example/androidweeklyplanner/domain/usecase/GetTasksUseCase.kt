@@ -31,35 +31,35 @@ class GetTasksUseCase @Inject constructor(
 
     private fun applyFilter(tasks: List<Task>, cfg: FilterConfig): List<Task> {
         return tasks.filter { task ->
-            // 2.1 Диапазон дат
+            // Диапазон дат
             (cfg.startDate == null || !task.date.isBefore(cfg.startDate)) &&
                     (cfg.endDate == null || !task.date.isAfter(cfg.endDate)) &&
-                    // 2.2 Приоритет
+                    // Приоритет
                     (cfg.priorityFilter.isEmpty() || cfg.priorityFilter.contains(task.priority)) &&
-                    // 2.3 Сложность
+                    // Сложность
                     (cfg.difficultyFilter.isEmpty() || cfg.difficultyFilter.contains(task.difficulty)) &&
-                    // 2.4 Категории
+                    // Категории
                     (cfg.categoryFilter.isEmpty() || cfg.categoryFilter.contains(task.category))
         }
     }
 
     private fun applySort(tasks: List<Task>, cfg: SortConfig): List<Task> {
-        // Строим компаратор так же, как в GetDaysUseCase
         val comparator = buildComparator(cfg)
         return tasks.sortedWith(comparator)
     }
 
     private fun buildComparator(cfg: SortConfig): Comparator<Task> {
-        var comparator: Comparator<Task> = compareBy { it.time }
+        var comparator: Comparator<Task> = compareBy<Task> { it.date }
+            .thenBy { it.time }
 
-        // Вторичный ключ — сложность
+        // Сложность
         when (cfg.difficultyOrder) {
             SortType.INCREASE -> comparator = compareBy<Task> { it.difficulty }.then(comparator)
             SortType.DECREASE -> comparator = compareByDescending<Task> { it.difficulty }.then(comparator)
             else -> { }
         }
 
-        // Первичный ключ — приоритет
+        // Приоритет
         when (cfg.priorityOrder) {
             SortType.INCREASE -> comparator = compareBy<Task> { it.priority }.then(comparator)
             SortType.DECREASE -> comparator = compareByDescending<Task> { it.priority }.then(comparator)

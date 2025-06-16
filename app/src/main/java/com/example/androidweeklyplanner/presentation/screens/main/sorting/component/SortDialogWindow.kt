@@ -5,7 +5,6 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,7 +34,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -45,6 +43,7 @@ import com.example.androidweeklyplanner.domain.model.SortType
 import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.description
 import com.example.androidweeklyplanner.presentation.icon
+import com.example.androidweeklyplanner.presentation.screens.shared.SortingChipGroup
 
 @Composable
 fun SortDialogWindow(
@@ -73,7 +72,7 @@ fun SortDialogWindow(
                 Spacer(Modifier.height(16.dp))
 
                 // Группа по приоритету
-                SortByChips(
+                SortingChipGroup(
                     title = stringResource(R.string.description_task_priority)
                             + ": " + stringResource(tempConfig.priorityOrder.description),
                     selectedOrder = tempConfig.priorityOrder,
@@ -85,7 +84,7 @@ fun SortDialogWindow(
                 Spacer(Modifier.height(16.dp))
 
                 // Группа по сложности
-                SortByChips(
+                SortingChipGroup(
                     title = stringResource(R.string.description_task_difficulty)
                             + ": " + stringResource(tempConfig.difficultyOrder.description),
                     selectedOrder = tempConfig.difficultyOrder,
@@ -129,67 +128,6 @@ fun SortDialogWindow(
                         Text(text = stringResource(R.string.description_confirm))
                     }
                 }
-            }
-        }
-    }
-}
-
-@SuppressLint("ResourceType")
-@Composable
-private fun SortByChips(
-    title: String,
-    selectedOrder: SortType,
-    onOrderChange: (SortType) -> Unit,
-) {
-    Column {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.bodyMedium
-        )
-        Row(
-            modifier = Modifier.padding(top = 8.dp)
-        ) {
-            SortType.entries.forEachIndexed { index, order ->
-
-                val shape = when (index) {
-                    0 -> RoundedCornerShape(
-                        topStart = 16.dp,
-                        bottomStart = 16.dp,
-                        topEnd = 0.dp,
-                        bottomEnd = 0.dp
-                    )
-                    SortType.entries.lastIndex -> RoundedCornerShape(
-                        topStart = 0.dp,
-                        bottomStart = 0.dp,
-                        topEnd = 16.dp,
-                        bottomEnd = 16.dp
-                    )
-                    else -> RectangleShape
-                }
-
-                FilterChip(
-                    selected = order == selectedOrder,
-                    onClick = { onOrderChange(order) },
-                    modifier = Modifier
-                        .sizeIn(minWidth = 32.dp, minHeight = 32.dp)
-                        .weight(1f),
-                    label = {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(order.icon),
-                                contentDescription = null
-                            )
-                        }
-                    },
-                    shape = shape,
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = MaterialTheme.colorScheme.tertiary,
-                        selectedLabelColor = Color.White
-                    )
-                )
             }
         }
     }

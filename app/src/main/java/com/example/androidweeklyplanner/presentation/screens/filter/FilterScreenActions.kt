@@ -17,5 +17,6 @@ sealed interface FilterScreenActions {
     data class SetPriorityPickerVisibility(val opened: Boolean) : FilterScreenActions
     data class SetDifficultyPickerVisibility(val opened: Boolean) : FilterScreenActions
     data class SetCategoryPickerVisibility(val opened: Boolean) : FilterScreenActions
+    data object ResetValues : FilterScreenActions
     data object Save : FilterScreenActions
 }

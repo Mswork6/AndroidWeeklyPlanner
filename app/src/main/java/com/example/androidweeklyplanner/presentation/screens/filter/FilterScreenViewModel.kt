@@ -4,7 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.domain.model.Category
 import com.example.androidweeklyplanner.domain.model.Difficulty
+import com.example.androidweeklyplanner.domain.model.FilterConfig
 import com.example.androidweeklyplanner.domain.model.Priority
+import com.example.androidweeklyplanner.domain.model.SortConfig
 import com.example.androidweeklyplanner.domain.model.SortType
 import com.example.androidweeklyplanner.domain.repository.FilterRepository
 import com.example.androidweeklyplanner.domain.repository.SortRepository
@@ -77,6 +79,7 @@ class FilterScreenViewModel @Inject constructor(
         is FilterScreenActions.SetPriorityPickerVisibility -> setPriorityPickerVisibility(action.opened)
         is FilterScreenActions.SetDifficultyPickerVisibility -> setDifficultyPickerVisibility(action.opened)
         is FilterScreenActions.SetCategoryPickerVisibility -> setCategoryPickerVisibility(action.opened)
+        is FilterScreenActions.ResetValues -> resetValues()
         is FilterScreenActions.Save -> save()
 
     }
@@ -175,7 +178,41 @@ class FilterScreenViewModel @Inject constructor(
         }
     }
 
-    private suspend fun save() {}
+    private fun resetValues() {
+        _state.update {
+            when (it) {
+                is FilterScreenState.Default -> it.copy(
+                    startDate = null,
+                    endDate = null,
+                    selectedPriorities = emptySet(),
+                    selectedDifficulties = emptySet(),
+                    selectedCategories = emptySet(),
+                    sortPriorityOrder = SortType.STANDARD,
+                    sortDifficultyOrder = SortType.STANDARD
+                )
 
+                else -> it
+            }
+        }
+    }
 
+    private suspend fun save() {
+        val state = state.value
+        if (state is FilterScreenState.Default) {
+            val filterConfig = FilterConfig(
+                startDate = state.startDate,
+                endDate = state.endDate,
+                priorityFilter = state.selectedPriorities,
+                difficultyFilter = state.selectedDifficulties,
+                categoryFilter = state.selectedCategories
+            )
+            val sortConfig = SortConfig(
+                priorityOrder = state.sortPriorityOrder,
+                difficultyOrder = state.sortDifficultyOrder
+            )
+            filterRepository.setFilterConfig(filterConfig)
+            sortRepository.setSortConfig(sortConfig)
+        }
+    }
 }
+
