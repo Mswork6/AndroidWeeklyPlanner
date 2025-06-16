@@ -87,9 +87,8 @@ private fun WeekScreenContent(
                 DatePickerModal(
                     onDateSelected = { dateMillis ->
                         dateMillis?.let {
-                            onAction(WeekScreenAction.SetDate(convertToLocalDate(dateMillis)))
+                            onAction(WeekScreenAction.SetDate(dateMillis))
                         }
-                        onAction(WeekScreenAction.SetCalendarVisibility(false))
                     },
                     onDismiss = {
                         onAction(WeekScreenAction.SetCalendarVisibility(false))

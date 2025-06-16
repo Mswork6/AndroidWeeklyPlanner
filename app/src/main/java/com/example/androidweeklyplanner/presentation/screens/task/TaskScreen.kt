@@ -198,7 +198,6 @@ private fun TaskScreenBaseContent(
                     if (dateInMillis != null) {
                         onAction(TaskScreenAction.SetDate(dateInMillis))
                     }
-                    onAction(TaskScreenAction.SetDatePickerVisibility(false))
                 },
                 onDismiss = {
                     onAction(TaskScreenAction.SetDatePickerVisibility(false))

@@ -9,5 +9,5 @@ sealed interface WeekScreenAction {
 
     data class SetCalendarVisibility(val opened: Boolean) : WeekScreenAction
 
-    data class SetDate(val date: LocalDate) : WeekScreenAction
+    data class SetDate(val dateInMillis: Long) : WeekScreenAction
 }
