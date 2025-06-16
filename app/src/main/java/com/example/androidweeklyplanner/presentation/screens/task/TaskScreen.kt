@@ -192,12 +192,6 @@ private fun TaskScreenBaseContent(
         }
 
         if (state.isDatePickerOpened) {
-
-//            DateRangePickerDialog(
-//                onConfirm = { _, _ -> onAction(TaskScreenAction.SetDatePickerVisibility(false)) },
-//                onReset = { onAction(TaskScreenAction.SetDatePickerVisibility(false)) },
-//                onDismiss = { onAction(TaskScreenAction.SetDatePickerVisibility(false)) },
-//            )
             DatePickerModal(
                 selectableDates = PastOrPresentSelectableDates,
                 onDateSelected = { dateInMillis ->

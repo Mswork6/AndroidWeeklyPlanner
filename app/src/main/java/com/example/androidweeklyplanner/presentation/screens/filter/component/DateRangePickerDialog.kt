@@ -1,4 +1,4 @@
-package com.example.androidweeklyplanner.presentation.screens.shared
+package com.example.androidweeklyplanner.presentation.screens.filter.component
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -168,7 +168,7 @@ private fun CustomDateRangeHeadline(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun TaskAddScreenDateInputFieldPreview() {
+private fun DateRangePickerDialogPreview() {
     CourseWorkAndroidWeeklyPlannerTheme {
         DateRangePickerDialog(
             initialStart = null,
