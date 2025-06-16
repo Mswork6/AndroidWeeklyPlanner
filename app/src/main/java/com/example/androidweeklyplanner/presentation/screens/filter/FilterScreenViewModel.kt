@@ -8,6 +8,7 @@ import com.example.androidweeklyplanner.domain.model.Priority
 import com.example.androidweeklyplanner.domain.model.SortType
 import com.example.androidweeklyplanner.domain.repository.FilterRepository
 import com.example.androidweeklyplanner.domain.repository.SortRepository
+import com.example.androidweeklyplanner.presentation.convertToLocalDate
 import com.example.androidweeklyplanner.presentation.core.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -67,34 +67,28 @@ class FilterScreenViewModel @Inject constructor(
     }
 
     override suspend fun execute(action: FilterScreenActions) = when (action) {
-        is FilterScreenActions.SetStartDate -> setStartDate(action.startDate)
-        is FilterScreenActions.SetEndDate -> setEndDate(action.endDate)
+        is FilterScreenActions.SetDateFilter -> setDateFilter(action.startDate, action.endDate)
         is FilterScreenActions.SetPriorityFilter -> setPriorityFilter(action.priorityFilter)
         is FilterScreenActions.SetDifficultyFilter -> setDifficultyFilter(action.difficultyFilter)
         is FilterScreenActions.SetCategoryFilter -> setCategoryFilter(action.categoryFilter)
         is FilterScreenActions.SetPriorityOrder -> setPriorityOrder(action.priorityOrder)
         is FilterScreenActions.SetDifficultyOrder -> setDifficultyOrder(action.difficultyOrder)
+        is FilterScreenActions.SetDatePickerVisibility -> setDatePickerVisibility(action.opened)
         is FilterScreenActions.SetPriorityPickerVisibility -> setPriorityPickerVisibility(action.opened)
         is FilterScreenActions.SetDifficultyPickerVisibility -> setDifficultyPickerVisibility(action.opened)
         is FilterScreenActions.SetCategoryPickerVisibility -> setCategoryPickerVisibility(action.opened)
         is FilterScreenActions.Save -> save()
 
-
     }
 
-    private fun setStartDate(startDate: LocalDate?) {
+    private fun setDateFilter(startDate: Long?, endDate: Long?) {
         _state.update {
             when (it) {
-                is FilterScreenState.Default -> it.copy(startDate = startDate)
-                else -> it
-            }
-        }
-    }
+                is FilterScreenState.Default -> it.copy(
+                    startDate = startDate?.let { convertToLocalDate(startDate) },
+                    endDate = endDate?.let { convertToLocalDate(endDate) }
+                )
 
-    private fun setEndDate(endDate: LocalDate?) {
-        _state.update {
-            when (it) {
-                is FilterScreenState.Default -> it.copy(endDate = endDate)
                 else -> it
             }
         }
@@ -140,6 +134,15 @@ class FilterScreenViewModel @Inject constructor(
         _state.update {
             when (it) {
                 is FilterScreenState.Default -> it.copy(sortDifficultyOrder = difficultyOrder)
+                else -> it
+            }
+        }
+    }
+
+    private fun setDatePickerVisibility(opened: Boolean) {
+        _state.update {
+            when (it) {
+                is FilterScreenState.Default -> it.copy(isDatePickerOpened = opened)
                 else -> it
             }
         }

@@ -27,8 +27,10 @@ import com.example.androidweeklyplanner.domain.model.Category
 import com.example.androidweeklyplanner.domain.model.Difficulty
 import com.example.androidweeklyplanner.domain.model.NotificationTime
 import com.example.androidweeklyplanner.domain.model.Priority
+import com.example.androidweeklyplanner.presentation.PastOrPresentSelectableDates
 import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.notificationTimeString
+import com.example.androidweeklyplanner.presentation.screens.shared.DatePickerModal
 import com.example.androidweeklyplanner.presentation.screens.shared.DateRangePickerDialog
 import com.example.androidweeklyplanner.presentation.screens.shared.ErrorScreen
 import com.example.androidweeklyplanner.presentation.screens.task.component.CategoryDialogWindow
@@ -191,23 +193,23 @@ private fun TaskScreenBaseContent(
 
         if (state.isDatePickerOpened) {
 
-            DateRangePickerDialog(
-                onConfirm = { _, _ -> onAction(TaskScreenAction.SetDatePickerVisibility(false)) },
-                onReset = { onAction(TaskScreenAction.SetDatePickerVisibility(false)) },
-                onDismiss = { onAction(TaskScreenAction.SetDatePickerVisibility(false)) },
-            )
-//            DatePickerModal(
-//                selectableDates = PastOrPresentSelectableDates,
-//                onDateSelected = { dateInMillis ->
-//                    if (dateInMillis != null) {
-//                        onAction(TaskScreenAction.SetDate(dateInMillis))
-//                    }
-//                    onAction(TaskScreenAction.SetDatePickerVisibility(false))
-//                },
-//                onDismiss = {
-//                    onAction(TaskScreenAction.SetDatePickerVisibility(false))
-//                }
+//            DateRangePickerDialog(
+//                onConfirm = { _, _ -> onAction(TaskScreenAction.SetDatePickerVisibility(false)) },
+//                onReset = { onAction(TaskScreenAction.SetDatePickerVisibility(false)) },
+//                onDismiss = { onAction(TaskScreenAction.SetDatePickerVisibility(false)) },
 //            )
+            DatePickerModal(
+                selectableDates = PastOrPresentSelectableDates,
+                onDateSelected = { dateInMillis ->
+                    if (dateInMillis != null) {
+                        onAction(TaskScreenAction.SetDate(dateInMillis))
+                    }
+                    onAction(TaskScreenAction.SetDatePickerVisibility(false))
+                },
+                onDismiss = {
+                    onAction(TaskScreenAction.SetDatePickerVisibility(false))
+                }
+            )
         }
 
         if (state.isTimePickerOpened) {

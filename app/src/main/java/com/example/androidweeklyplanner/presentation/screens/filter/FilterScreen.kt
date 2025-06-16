@@ -1,6 +1,7 @@
 package com.example.androidweeklyplanner.presentation.screens.filter
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,8 +22,11 @@ import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.SortType
 import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterDifficultyDialogWindow
+import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenDateRangeInputField
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenDifficultiesInputField
+import com.example.androidweeklyplanner.presentation.screens.shared.DateRangePickerDialog
 import com.example.androidweeklyplanner.presentation.screens.shared.TopBar
+import com.example.androidweeklyplanner.presentation.screens.task.TaskScreenAction
 
 @Composable
 fun FilterScreen(
@@ -81,8 +86,20 @@ fun FilterScreenBaseContent(
             modifier = modifier
                 .padding(padding)
                 .padding(16.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(
+                space = 12.dp, alignment = Alignment.Top
+            ),
+            horizontalAlignment = Alignment.Start
         ) {
+            FilterScreenDateRangeInputField(
+                startDate = state.startDate,
+                endDate = state.endDate,
+                onClick = { onAction(FilterScreenActions.SetDatePickerVisibility(true)) },
+                modifier = Modifier.fillMaxWidth()
+
+            )
+
             FilterScreenDifficultiesInputField(
                 difficulties = state.selectedDifficulties,
                 onClick = { onAction(FilterScreenActions.SetDifficultyPickerVisibility(true)) },
@@ -95,17 +112,23 @@ fun FilterScreenBaseContent(
             FilterDifficultyDialogWindow(
                 selectedOptions = state.selectedDifficulties,
                 onOptionsSelected = { options ->
-                    onAction(
-                        FilterScreenActions.SetDifficultyFilter(
-                            options
-                        )
-                    )
+                    onAction(FilterScreenActions.SetDifficultyFilter(options))
                 },
                 onDismissRequest = {
-                    onAction(
-                        FilterScreenActions.SetDifficultyPickerVisibility(false)
-                    )
+                    onAction(FilterScreenActions.SetDifficultyPickerVisibility(false))
                 }
+            )
+        }
+
+        if (state.isDatePickerOpened) {
+            DateRangePickerDialog(
+                initialStart = state.startDate,
+                initialEnd = state.endDate,
+                onConfirm = { start, end ->
+                    onAction(FilterScreenActions.SetDateFilter(start, end))
+                    onAction(FilterScreenActions.SetDatePickerVisibility(false))
+                },
+                onDismiss = { onAction(FilterScreenActions.SetDatePickerVisibility(false)) }
             )
         }
     }

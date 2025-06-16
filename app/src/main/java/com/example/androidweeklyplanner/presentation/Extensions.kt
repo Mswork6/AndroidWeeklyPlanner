@@ -23,6 +23,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 private val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
@@ -50,6 +51,11 @@ fun convertToLocalDate(dateMillis: Long): LocalDate = Instant
     .ofEpochMilli(dateMillis)
     .atZone(ZoneId.systemDefault())
     .toLocalDate()
+
+fun convertToMillis(date: LocalDate?): Long? = date
+    ?.atStartOfDay(ZoneOffset.UTC)
+    ?.toInstant()
+    ?.toEpochMilli()
 
 fun dateToString(week: Week): String =
     "${dateToString(week.start)} - " +

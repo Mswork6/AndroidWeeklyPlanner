@@ -87,4 +87,7 @@
     <string name="description_start_date">Start date</string>
     <string name="description_end_date">End date</string>
     <string name="description_apply">Apply</string>
+    <string name="description_start_date_extended">Start date: %1$s</string>
+    <string name="description_end_date_extended">End date: %1$s</string>
+    <string name="description_date_range">Date range</string>
 </resources>

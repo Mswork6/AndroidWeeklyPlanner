@@ -29,21 +29,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.example.androidweeklyplanner.R
+import com.example.androidweeklyplanner.presentation.convertToMillis
 import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import java.time.LocalDate
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateRangePickerDialog(
-    initialStart: Long? = null,
-    initialEnd: Long? = null,
+    initialStart: LocalDate?,
+    initialEnd: LocalDate?,
     onConfirm: (start: Long?, end: Long?) -> Unit,
-    onReset: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val startDate = convertToMillis(initialStart)
+    val endDate = convertToMillis(initialEnd)
+
     val pickerState = rememberDateRangePickerState(
-        initialSelectedStartDateMillis = initialStart,
-        initialSelectedEndDateMillis = initialEnd
+        initialSelectedStartDateMillis = startDate,
+        initialSelectedEndDateMillis = endDate
     )
 
     DatePickerDialog(
@@ -122,7 +126,7 @@ fun DateRangePickerDialog(
                 .padding(end = 8.dp)
         ) {
             TextButton(
-                onClick = onReset,
+                onClick = { pickerState.setSelection(startDateMillis = null, endDateMillis = null) } ,
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = MaterialTheme.colorScheme.tertiary,
                 )
@@ -167,8 +171,9 @@ private fun CustomDateRangeHeadline(
 private fun TaskAddScreenDateInputFieldPreview() {
     CourseWorkAndroidWeeklyPlannerTheme {
         DateRangePickerDialog(
+            initialStart = null,
+            initialEnd = null,
             onConfirm = { _, _ -> },
-            onReset = { },
             onDismiss = { }
         )
     }
