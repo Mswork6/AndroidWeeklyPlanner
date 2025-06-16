@@ -19,10 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.androidweeklyplanner.R
+import com.example.androidweeklyplanner.domain.model.Category
 import com.example.androidweeklyplanner.domain.model.SortType
 import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterCategoryDialogWindow
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterDifficultyDialogWindow
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterPriorityDialogWindow
+import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenCategoryInputField
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenDateRangeInputField
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenDifficultyInputField
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenPriorityInputField
@@ -113,6 +116,12 @@ fun FilterScreenBaseContent(
                 modifier = Modifier.fillMaxWidth()
             )
 
+            FilterScreenCategoryInputField(
+                categories = state.selectedCategories,
+                onClick = { onAction(FilterScreenActions.SetCategoryPickerVisibility(true)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
         }
 
         if (state.isDifficultyFilterDialogOpened) {
@@ -135,6 +144,17 @@ fun FilterScreenBaseContent(
                 },
                 onDismissRequest = {
                     onAction(FilterScreenActions.SetPriorityPickerVisibility(false))
+                })
+        }
+
+        if (state.isCategoryFilterDialogOpened) {
+            FilterCategoryDialogWindow(
+                selectedOptions = state.selectedCategories,
+                onOptionsSelected = { options ->
+                    onAction(FilterScreenActions.SetCategoryFilter(options))
+                },
+                onDismissRequest = {
+                    onAction(FilterScreenActions.SetCategoryPickerVisibility(false))
                 })
         }
 

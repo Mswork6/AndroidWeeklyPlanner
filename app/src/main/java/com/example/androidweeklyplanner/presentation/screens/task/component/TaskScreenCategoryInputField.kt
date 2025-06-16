@@ -41,14 +41,7 @@ internal fun TaskScreenCategoryInputField(
             style = MaterialTheme.typography.titleSmall
         )
         Text(
-            text = when (category) {
-                Category.WORK -> stringResource(Category.WORK.description)
-                Category.STUDY -> stringResource(Category.STUDY.description)
-                Category.SPORT -> stringResource(Category.SPORT.description)
-                Category.HOUSEHOLD_CHORES -> stringResource(Category.HOUSEHOLD_CHORES.description)
-                Category.VACATION -> stringResource(Category.VACATION.description)
-                Category.NONE -> stringResource(Category.NONE.description)
-            },
+            text = stringResource(category.description),
             style = MaterialTheme.typography.labelSmall
         )
     }
