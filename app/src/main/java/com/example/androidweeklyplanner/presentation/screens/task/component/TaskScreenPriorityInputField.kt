@@ -41,11 +41,7 @@ internal fun TaskScreenPriorityInputField(
             style = MaterialTheme.typography.titleSmall
         )
         Text(
-            text = when (priority) {
-                Priority.HIGH -> stringResource(Priority.HIGH.description)
-                Priority.BASIC -> stringResource(Priority.BASIC.description)
-                Priority.LOW -> stringResource(Priority.LOW.description)
-            },
+            text = stringResource(priority.description),
             style = MaterialTheme.typography.labelSmall
         )
     }

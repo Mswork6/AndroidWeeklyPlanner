@@ -1,4 +1,4 @@
-package com.example.androidweeklyplanner.presentation.screens.list.sorting
+package com.example.androidweeklyplanner.presentation.screens.filter
 
 import com.example.androidweeklyplanner.domain.model.Category
 import com.example.androidweeklyplanner.domain.model.Difficulty
@@ -6,8 +6,8 @@ import com.example.androidweeklyplanner.domain.model.Priority
 import com.example.androidweeklyplanner.domain.model.SortType
 import java.time.LocalDate
 
-sealed interface ListScreenActionsState {
-    data object Initial : ListScreenActionsState
+sealed interface FilterScreenState {
+    data object Initial : FilterScreenState
 
     data class Default(
         val startDate: LocalDate?,
@@ -22,5 +22,5 @@ sealed interface ListScreenActionsState {
         val isDifficultyFilterDialogOpened: Boolean,
         val isCategoryFilterDialogOpened: Boolean,
         val isSortDialogOpened: Boolean,
-    ) : ListScreenActionsState
+    ) : FilterScreenState
 }

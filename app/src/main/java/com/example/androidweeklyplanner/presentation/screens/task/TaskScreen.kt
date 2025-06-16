@@ -45,7 +45,7 @@ import com.example.androidweeklyplanner.presentation.screens.task.component.Task
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenPriorityInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenRepetitionInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenTimeInputField
-import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenTopBar
+import com.example.androidweeklyplanner.presentation.screens.shared.TopBar
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.LocalTime
@@ -105,7 +105,7 @@ private fun TaskScreenBaseContent(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TaskScreenTopBar(
+            TopBar(
                 actionName = when (state) {
                     is TaskScreenState.Add -> stringResource(id = R.string.action_add_task)
                     is TaskScreenState.Edit -> stringResource(id = R.string.action_edit_task)

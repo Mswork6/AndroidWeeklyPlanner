@@ -86,4 +86,5 @@
     <string name="description_choose_date_range">Choose date range</string>
     <string name="description_start_date">Start date</string>
     <string name="description_end_date">End date</string>
+    <string name="description_apply">Apply</string>
 </resources>

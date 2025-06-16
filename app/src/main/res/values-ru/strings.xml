@@ -87,4 +87,5 @@
     <string name="description_choose_date_range">Выберите временной диапазон</string>
     <string name="description_start_date">Начальная дата</string>
     <string name="description_end_date">Конечная дата</string>
+    <string name="description_apply">Применить</string>
 </resources>

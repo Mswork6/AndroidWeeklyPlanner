@@ -1,4 +1,4 @@
-package com.example.androidweeklyplanner.presentation.screens.task.component
+package com.example.androidweeklyplanner.presentation.screens.shared
 
 import android.content.res.Configuration
 import androidx.compose.material.icons.Icons
@@ -19,7 +19,7 @@ import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeekl
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun TaskScreenTopBar(
+internal fun TopBar(
     actionName: String?,
     navigateBackAction: () -> Unit,
     confirmAction: () -> Unit,
@@ -54,7 +54,7 @@ internal fun TaskScreenTopBar(
 @Composable
 private fun TaskAddScreenTopBarPreview() {
     CourseWorkAndroidWeeklyPlannerTheme {
-        TaskScreenTopBar(
+        TopBar(
             actionName = "Execute",
             navigateBackAction = {},
             confirmAction = {},
