@@ -19,7 +19,7 @@ import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeekl
 import com.example.androidweeklyplanner.presentation.description
 
 @Composable
-internal fun FilterScreenDifficultiesInputField(
+internal fun FilterScreenDifficultyInputField(
     difficulties: Set<Difficulty>,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -60,7 +60,7 @@ internal fun FilterScreenDifficultiesInputField(
 @Composable
 private fun FilterScreenDifficultiesInputFieldPreview() {
     CourseWorkAndroidWeeklyPlannerTheme {
-        FilterScreenDifficultiesInputField(
+        FilterScreenDifficultyInputField(
             difficulties = emptySet(),
             onClick = {},
             modifier = Modifier.fillMaxWidth()

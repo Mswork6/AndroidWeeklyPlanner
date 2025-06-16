@@ -22,11 +22,12 @@ import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.SortType
 import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterDifficultyDialogWindow
+import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterPriorityDialogWindow
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenDateRangeInputField
-import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenDifficultiesInputField
+import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenDifficultyInputField
+import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenPriorityInputField
 import com.example.androidweeklyplanner.presentation.screens.shared.DateRangePickerDialog
 import com.example.androidweeklyplanner.presentation.screens.shared.TopBar
-import com.example.androidweeklyplanner.presentation.screens.task.TaskScreenAction
 
 @Composable
 fun FilterScreen(
@@ -100,7 +101,13 @@ fun FilterScreenBaseContent(
 
             )
 
-            FilterScreenDifficultiesInputField(
+            FilterScreenPriorityInputField(
+                priorities = state.selectedPriorities,
+                onClick = { onAction(FilterScreenActions.SetPriorityPickerVisibility(true)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            FilterScreenDifficultyInputField(
                 difficulties = state.selectedDifficulties,
                 onClick = { onAction(FilterScreenActions.SetDifficultyPickerVisibility(true)) },
                 modifier = Modifier.fillMaxWidth()
@@ -118,6 +125,17 @@ fun FilterScreenBaseContent(
                     onAction(FilterScreenActions.SetDifficultyPickerVisibility(false))
                 }
             )
+        }
+
+        if (state.isPriorityFilterDialogOpened) {
+            FilterPriorityDialogWindow(
+                selectedOptions = state.selectedPriorities,
+                onOptionSelected = { options ->
+                    onAction(FilterScreenActions.SetPriorityFilter(options))
+                },
+                onDismissRequest = {
+                    onAction(FilterScreenActions.SetPriorityPickerVisibility(false))
+                })
         }
 
         if (state.isDatePickerOpened) {
