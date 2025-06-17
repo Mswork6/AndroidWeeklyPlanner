@@ -20,7 +20,9 @@ private val LightColorScheme = lightColorScheme(
     primary = Grey40,
     secondary = PurpleGrey40,
     tertiary = Blue40,
-    onPrimary = Color.Black
+    tertiaryContainer = LightBlue40,
+    onPrimary = Color.Black,
+    onTertiary = Color.White
 )
 
 @Composable

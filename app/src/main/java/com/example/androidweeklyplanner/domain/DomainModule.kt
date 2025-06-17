@@ -7,9 +7,11 @@ import com.example.androidweeklyplanner.domain.interactor.notification.Notificat
 import com.example.androidweeklyplanner.domain.interactor.notification.impl.NotificationInteractorImpl
 import com.example.androidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.androidweeklyplanner.domain.interactor.saver.TaskInteractorImpl
+import com.example.androidweeklyplanner.domain.repository.FilterRepository
 import com.example.androidweeklyplanner.domain.repository.SortRepository
 import com.example.androidweeklyplanner.domain.repository.TaskRepository
 import com.example.androidweeklyplanner.domain.repository.WeekRepository
+import com.example.androidweeklyplanner.domain.repository.impl.FilterRepositoryImpl
 import com.example.androidweeklyplanner.domain.repository.impl.SortRepositoryImpl
 import com.example.androidweeklyplanner.domain.repository.impl.TaskRepositoryImpl
 import com.example.androidweeklyplanner.domain.repository.impl.WeekRepositoryImpl
@@ -21,7 +23,16 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import javax.inject.Qualifier
 import javax.inject.Singleton
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class MainScreenSortRepo
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class FilterScreenSortRepo
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -33,7 +44,7 @@ interface DomainModule {
     fun bindWeekRepository(impl: WeekRepositoryImpl): WeekRepository
 
     @Binds
-    fun bindSortRepository(impl: SortRepositoryImpl): SortRepository
+    fun bindFilterRepository(impl: FilterRepositoryImpl): FilterRepository
 
     @Binds
     fun bindTaskInteractor(impl: TaskInteractorImpl): TaskInteractor
@@ -54,7 +65,18 @@ interface DomainModule {
             return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         }
 
+        @MainScreenSortRepo
+        @Singleton
+        @Provides
+        fun provideMainScreenSortRepository(): SortRepository = SortRepositoryImpl()
+
+        @FilterScreenSortRepo
+        @Singleton
+        @Provides
+        fun provideFilterScreenSortRepository(): SortRepository = SortRepositoryImpl()
+
         @Provides
         fun provideScope(): CoroutineScope = CoroutineScope(SupervisorJob())
     }
 }
+

@@ -32,6 +32,7 @@ import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeekl
 import com.example.androidweeklyplanner.presentation.notificationTimeString
 import com.example.androidweeklyplanner.presentation.screens.shared.DatePickerModal
 import com.example.androidweeklyplanner.presentation.screens.shared.ErrorScreen
+import com.example.androidweeklyplanner.presentation.screens.shared.ScreenHorizontalDivider
 import com.example.androidweeklyplanner.presentation.screens.task.component.CategoryDialogWindow
 import com.example.androidweeklyplanner.presentation.screens.task.component.DialWithDialogExample
 import com.example.androidweeklyplanner.presentation.screens.task.component.DifficultyDialogWindow
@@ -46,7 +47,7 @@ import com.example.androidweeklyplanner.presentation.screens.task.component.Task
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenPriorityInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenRepetitionInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenTimeInputField
-import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenTopBar
+import com.example.androidweeklyplanner.presentation.screens.shared.TopBar
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.LocalTime
@@ -106,7 +107,7 @@ private fun TaskScreenBaseContent(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TaskScreenTopBar(
+            TopBar(
                 actionName = when (state) {
                     is TaskScreenState.Add -> stringResource(id = R.string.action_add_task)
                     is TaskScreenState.Edit -> stringResource(id = R.string.action_edit_task)
@@ -141,35 +142,35 @@ private fun TaskScreenBaseContent(
                 onClick = { onAction(TaskScreenAction.SetPriorityPickerVisibility(true)) },
                 modifier = Modifier.fillMaxWidth()
             )
-            TaskAddScreenDivider()
+            ScreenHorizontalDivider()
             TaskScreenDifficultyInputField(
                 editState = state.editable,
                 difficulty = state.difficulty,
                 onClick = { onAction(TaskScreenAction.SetDifficultyPickerVisibility(true)) },
                 modifier = Modifier.fillMaxWidth()
             )
-            TaskAddScreenDivider()
+            ScreenHorizontalDivider()
             TaskScreenCategoryInputField(
                 editState = state.editable,
                 category = state.category,
                 onClick = { onAction(TaskScreenAction.SetCategoryPickerVisibility(true)) },
                 modifier = Modifier.fillMaxWidth()
             )
-            TaskAddScreenDivider()
+            ScreenHorizontalDivider()
             TaskScreenDateInputField(
                 selectedDate = state.date,
                 editState = state.editable,
                 onClick = { onAction(TaskScreenAction.SetDatePickerVisibility(true)) },
                 modifier = Modifier.fillMaxWidth()
             )
-            TaskAddScreenDivider()
+            ScreenHorizontalDivider()
             TaskScreenTimeInputField(
                 selectedTime = state.time,
                 editState = state.editable,
                 onClick = { onAction(TaskScreenAction.SetTimePickerVisibility(true)) },
                 modifier = Modifier.fillMaxWidth()
             )
-            TaskAddScreenDivider()
+            ScreenHorizontalDivider()
             TaskScreenNotificationTimeInputField(
                 notificationTime =
                 if (state.notificationTimeOffset != null)
@@ -180,7 +181,7 @@ private fun TaskScreenBaseContent(
                 modifier = Modifier.fillMaxWidth()
             )
             if (state is TaskScreenState.Add) {
-                TaskAddScreenDivider()
+                ScreenHorizontalDivider()
                 TaskScreenRepetitionInputField(
                     editState = state.editable,
                     difficulty = Unit,
@@ -197,7 +198,6 @@ private fun TaskScreenBaseContent(
                     if (dateInMillis != null) {
                         onAction(TaskScreenAction.SetDate(dateInMillis))
                     }
-                    onAction(TaskScreenAction.SetDatePickerVisibility(false))
                 },
                 onDismiss = {
                     onAction(TaskScreenAction.SetDatePickerVisibility(false))
@@ -280,15 +280,6 @@ private fun TaskScreenBaseContent(
         }
     }
 }
-
-@Composable
-private fun TaskAddScreenDivider(
-    modifier: Modifier = Modifier,
-) = HorizontalDivider(
-    modifier = modifier
-        .fillMaxWidth()
-        .background(color = Color.Gray)
-)
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)

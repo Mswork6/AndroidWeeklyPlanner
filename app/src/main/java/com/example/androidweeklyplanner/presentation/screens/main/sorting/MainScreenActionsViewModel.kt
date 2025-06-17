@@ -1,7 +1,8 @@
 package com.example.androidweeklyplanner.presentation.screens.main.sorting
 
 import androidx.lifecycle.viewModelScope
-import com.example.androidweeklyplanner.domain.NotificationEventBus
+import com.example.androidweeklyplanner.domain.MainScreenSortRepo
+import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.domain.repository.SortRepository
 import com.example.androidweeklyplanner.presentation.core.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScreenActionsViewModel @Inject constructor(
-    private val sortRepository: SortRepository,
+    @MainScreenSortRepo private val sortRepository: SortRepository,
     private val notificationEventBus: NotificationEventBus,
 ) : BaseViewModel<MainScreenActionsState, MainScreenAction>() {
     private val _state: MutableStateFlow<MainScreenActionsState> =
@@ -27,9 +28,9 @@ class MainScreenActionsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             sorterVisibility
-                .combine(sortRepository.getSort()) { isSorterVisible, sort ->
+                .combine(sortRepository.getSortConfig()) { isSorterVisible, config ->
                     MainScreenActionsState.Default(
-                        sort = sort,
+                        sortConfig = config,
                         isSorterVisible = isSorterVisible
                     )
                 }
@@ -48,6 +49,6 @@ class MainScreenActionsViewModel @Inject constructor(
 
     override suspend fun execute(action: MainScreenAction) = when (action) {
         is MainScreenAction.SetSorterVisibility -> sorterVisibility.emit(action.opened)
-        is MainScreenAction.SetSort -> sortRepository.setSort(action.sort)
+        is MainScreenAction.SetSort -> sortRepository.setSortConfig(action.sortConfig)
     }
 }

@@ -9,8 +9,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.androidweeklyplanner.domain.NotificationEventBus
+import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.screens.filter.installFilterScreen
+import com.example.androidweeklyplanner.presentation.screens.filter.navigateToFilterScreen
 import com.example.androidweeklyplanner.presentation.screens.list.installListScreen
 import com.example.androidweeklyplanner.presentation.screens.list.navigateToListScreen
 import com.example.androidweeklyplanner.presentation.screens.main.installMainScreen
@@ -52,7 +54,11 @@ class MainActivity : ComponentActivity() {
                         onNavigateToTaskAddScreen  = navController::navigateToAddScreen,
                         onNavigateToTaskEditScreen = navController::navigateToEditScreen,
                         onNavigateToTaskOpenScreen = navController::navigateToViewScreen,
+                        onNavigateToFilterScreen = navController::navigateToFilterScreen,
                         onNavigateToWeekTasks = navController::atomicBack
+                    )
+                    installFilterScreen(
+                        onNavigateToListScreen = navController::atomicBack
                     )
                     installAddScreen(navController::atomicBack)
                     installEditScreen(navController::atomicBack)

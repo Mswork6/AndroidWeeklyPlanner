@@ -3,7 +3,6 @@ package com.example.androidweeklyplanner.presentation.screens.list.tasks
 import com.example.androidweeklyplanner.domain.model.Task
 
 sealed interface TasksListScreenAction {
-    /** Открыть/закрыть диалог по задаче */
     sealed interface TaskDialogAction : TasksListScreenAction {
         data class Open(val task: Task) : TaskDialogAction
         object Close : TaskDialogAction

@@ -23,6 +23,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 private val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
@@ -50,6 +51,11 @@ fun convertToLocalDate(dateMillis: Long): LocalDate = Instant
     .ofEpochMilli(dateMillis)
     .atZone(ZoneId.systemDefault())
     .toLocalDate()
+
+fun convertToMillis(date: LocalDate?): Long? = date
+    ?.atStartOfDay(ZoneOffset.UTC)
+    ?.toInstant()
+    ?.toEpochMilli()
 
 fun dateToString(week: Week): String =
     "${dateToString(week.start)} - " +
@@ -110,9 +116,17 @@ val Priority.description: Int
 @get:StringRes
 val SortType.description: Int
     get() = when (this) {
-        SortType.INCREASE -> R.string.description_sort_priority_ascending
-        SortType.DECREASE -> R.string.description_sort_priority_descending
+        SortType.INCREASE -> R.string.description_sort_ascending
+        SortType.DECREASE -> R.string.description_sort_descending
         SortType.STANDARD -> R.string.description_no_sorting
+    }
+
+@get:StringRes
+val SortType.icon: Int
+    get() = when (this) {
+        SortType.INCREASE -> R.drawable.baseline_ascending_24
+        SortType.DECREASE -> R.drawable.baseline_descending_24
+        SortType.STANDARD -> R.drawable.baseline_no_sort_24
     }
 
 @get:StringRes

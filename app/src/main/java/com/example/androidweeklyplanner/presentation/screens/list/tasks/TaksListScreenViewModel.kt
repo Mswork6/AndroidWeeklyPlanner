@@ -1,7 +1,7 @@
 package com.example.androidweeklyplanner.presentation.screens.list.tasks
 
 import androidx.lifecycle.viewModelScope
-import com.example.androidweeklyplanner.domain.NotificationEventBus
+import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.androidweeklyplanner.domain.model.Task
 import com.example.androidweeklyplanner.domain.usecase.GetTasksUseCase

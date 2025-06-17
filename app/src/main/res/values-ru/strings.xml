@@ -31,8 +31,8 @@
     <string name="description_low">Низкий</string>
     <string name="error_empty_title">Заголовок не может быть пустым</string>
     <string name="error_long_title">Заголовок не может превышать 100 символов</string>
-    <string name="description_sort_priority_ascending">По возрастанию приоритета</string>
-    <string name="description_sort_priority_descending">По убыванию приоритета</string>
+    <string name="description_sort_ascending">По возрастанию</string>
+    <string name="description_sort_descending">По убыванию</string>
     <string name="description_no_sorting">Без сортировки</string>
     <string name="day_monday">Понедельник</string>
     <string name="day_tuesday">Вторник</string>
@@ -81,4 +81,14 @@
     <string name="action_all_tasks">Все задачи</string>
     <string name="action_weekly_tasks">Задачи по неделям</string>
     <string name="action_sort_filter">Сортировка и фильтр</string>
+    <string name="description_task_priority">Приоритет задачи</string>
+    <string name="description_task_difficulty">Сложность задачи</string>
+    <string name="description_reset_dates">Сбросить даты</string>
+    <string name="description_choose_date_range">Выберите временной диапазон</string>
+    <string name="description_start_date">Начальная дата</string>
+    <string name="description_end_date">Конечная дата</string>
+    <string name="description_apply">Применить</string>
+    <string name="description_start_date_extended">Начальная дата: %1$s</string>
+    <string name="description_end_date_extended">Конечная дата: %1$s</string>
+    <string name="description_date_range">Временной диапазон</string>
 </resources>

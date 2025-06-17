@@ -1,8 +1,9 @@
 package com.example.androidweeklyplanner.presentation.screens.main.week
 
 import androidx.lifecycle.viewModelScope
-import com.example.androidweeklyplanner.domain.NotificationEventBus
+import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.domain.repository.WeekRepository
+import com.example.androidweeklyplanner.presentation.convertToLocalDate
 import com.example.androidweeklyplanner.presentation.core.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WeekScreenViewModel @Inject constructor(
     private val weekRepository: WeekRepository,
-    private val notificationEventBus: NotificationEventBus
+    private val notificationEventBus: NotificationEventBus,
 ) : BaseViewModel<WeekScreenState, WeekScreenAction>() {
 
     private val _state = MutableStateFlow<WeekScreenState>(WeekScreenState.Initial)
@@ -51,7 +52,8 @@ class WeekScreenViewModel @Inject constructor(
             WeekScreenAction.SelectPreviousWeek -> weekRepository.setPreviousWeek()
             is WeekScreenAction.SetCalendarVisibility ->
                 calendarVisibility.emit(action.opened)
-            is WeekScreenAction.SetDate -> weekRepository.setWeek(action.date)
+            is WeekScreenAction.SetDate ->
+                weekRepository.setWeek(convertToLocalDate(action.dateInMillis))
         }
     }
 }

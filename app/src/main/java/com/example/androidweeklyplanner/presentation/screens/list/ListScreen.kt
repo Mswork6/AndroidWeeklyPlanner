@@ -27,8 +27,9 @@ fun ListScreen(
     onNavigateToTaskAddScreen: () -> Unit,
     onNavigateToTaskEditScreen: (taskId: UUID) -> Unit,
     onNavigateToTaskOpenScreen: (taskId: UUID) -> Unit,
+    onNavigateToFilterScreen: () -> Unit,
     onNavigateToWeekTasks: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier
 ) {
     Scaffold(
         modifier = modifier,
@@ -59,6 +60,7 @@ fun ListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .statusBarsPadding(),
+                onNavigateToFilterScreen = onNavigateToFilterScreen,
                 onNavigateToWeekTasks = onNavigateToWeekTasks
             )
             TasksListScreen(
