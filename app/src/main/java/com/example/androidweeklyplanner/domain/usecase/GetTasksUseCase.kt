@@ -1,5 +1,6 @@
 package com.example.androidweeklyplanner.domain.usecase
 
+import com.example.androidweeklyplanner.domain.FilterScreenSortRepo
 import com.example.androidweeklyplanner.domain.model.FilterConfig
 import com.example.androidweeklyplanner.domain.model.SortConfig
 import com.example.androidweeklyplanner.domain.model.SortType
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class GetTasksUseCase @Inject constructor(
     private val taskRepository: TaskRepository,
     private val filterRepository: FilterRepository,
-    private val sortRepository: SortRepository,
+    @FilterScreenSortRepo private val sortRepository: SortRepository,
 ) {
     operator fun invoke(): Flow<List<Task>> =
         taskRepository.getTasks()

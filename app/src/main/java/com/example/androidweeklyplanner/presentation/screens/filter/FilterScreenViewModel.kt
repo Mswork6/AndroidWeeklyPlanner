@@ -1,6 +1,7 @@
 package com.example.androidweeklyplanner.presentation.screens.filter
 
 import androidx.lifecycle.viewModelScope
+import com.example.androidweeklyplanner.domain.FilterScreenSortRepo
 import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.domain.model.Category
 import com.example.androidweeklyplanner.domain.model.Difficulty
@@ -24,7 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FilterScreenViewModel @Inject constructor(
     private val filterRepository: FilterRepository,
-    private val sortRepository: SortRepository,
+    @FilterScreenSortRepo private val sortRepository: SortRepository,
     private val notificationEventBus: NotificationEventBus,
 ) : BaseViewModel<FilterScreenState, FilterScreenActions>() {
     private val _state: MutableStateFlow<FilterScreenState> =

@@ -23,7 +23,16 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import javax.inject.Qualifier
 import javax.inject.Singleton
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class MainScreenSortRepo
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class FilterScreenSortRepo
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -33,9 +42,6 @@ interface DomainModule {
 
     @Binds
     fun bindWeekRepository(impl: WeekRepositoryImpl): WeekRepository
-
-    @Binds
-    fun bindSortRepository(impl: SortRepositoryImpl): SortRepository
 
     @Binds
     fun bindFilterRepository(impl: FilterRepositoryImpl): FilterRepository
@@ -59,7 +65,18 @@ interface DomainModule {
             return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         }
 
+        @MainScreenSortRepo
+        @Singleton
+        @Provides
+        fun provideMainScreenSortRepository(): SortRepository = SortRepositoryImpl()
+
+        @FilterScreenSortRepo
+        @Singleton
+        @Provides
+        fun provideFilterScreenSortRepository(): SortRepository = SortRepositoryImpl()
+
         @Provides
         fun provideScope(): CoroutineScope = CoroutineScope(SupervisorJob())
     }
 }
+

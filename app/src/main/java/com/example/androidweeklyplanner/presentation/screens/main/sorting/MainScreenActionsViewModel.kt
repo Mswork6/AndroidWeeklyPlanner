@@ -1,6 +1,7 @@
 package com.example.androidweeklyplanner.presentation.screens.main.sorting
 
 import androidx.lifecycle.viewModelScope
+import com.example.androidweeklyplanner.domain.MainScreenSortRepo
 import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.domain.repository.SortRepository
 import com.example.androidweeklyplanner.presentation.core.BaseViewModel
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScreenActionsViewModel @Inject constructor(
-    private val sortRepository: SortRepository,
+    @MainScreenSortRepo private val sortRepository: SortRepository,
     private val notificationEventBus: NotificationEventBus,
 ) : BaseViewModel<MainScreenActionsState, MainScreenAction>() {
     private val _state: MutableStateFlow<MainScreenActionsState> =

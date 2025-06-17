@@ -1,5 +1,6 @@
 package com.example.androidweeklyplanner.domain.usecase
 
+import com.example.androidweeklyplanner.domain.MainScreenSortRepo
 import com.example.androidweeklyplanner.domain.assignedToWeek
 import com.example.androidweeklyplanner.domain.model.Day
 import com.example.androidweeklyplanner.domain.model.SortConfig
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 class GetDaysUseCase @Inject constructor(
     private val taskRepository: TaskRepository,
-    private val sortRepository: SortRepository,
+    @MainScreenSortRepo private val sortRepository: SortRepository,
     private val weekRepository: WeekRepository,
 ) {
     //Получает таски с репозитория, формирует дни, потом сортирует таски
