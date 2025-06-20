@@ -51,12 +51,10 @@ private fun TasksScreenContent(
     is TasksMainScreenState.Default -> {
         LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
             items(items = state.days, key = Day::date) { day ->
-                val celebrated = state.celebratedDates.contains(day.date)
                 val needAnimation = state.playingDates.contains(day.date)
 
                 DayCard(
                     day = day,
-                    celebrated = celebrated,
                     needAnimation = needAnimation,
                     onTaskItemClick = { onAction(TasksMainScreenAction.TaskDialogAction.Open(it)) },
                     onStopEncouragingAnimation = { date ->

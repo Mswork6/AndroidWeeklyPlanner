@@ -51,7 +51,6 @@ fun DayItem(
     day: Day,
     isExpanded: Boolean,
     enabled: Boolean,
-    celebrated: Boolean,
     needAnimation: Boolean,
     onClick: () -> Unit,
     onStopEncouragingAnimation: (LocalDate) -> Unit,
@@ -62,7 +61,8 @@ fun DayItem(
         label = stringResource(R.string.descipition_dayitem_animation)
     )
 
-    val cardColor = if (celebrated) Color(0xFF87EA8A) /* светло-зелёный */
+    val allDone = enabled && day.tasks.all { it.isDone }
+    val cardColor = if (allDone) Color(0xFF87EA8A) /* светло-зелёный */
     else MaterialTheme.colorScheme.primary
 
     val composition by rememberLottieComposition(LottieCompositionSpec.Asset("confetti.json"))
@@ -169,7 +169,6 @@ private fun DayCardPreview() {
         ) {
             DayItem(
                 enabled = true,
-                celebrated = false,
                 onClick = { },
                 needAnimation = false,
                 onStopEncouragingAnimation = { },
@@ -179,7 +178,6 @@ private fun DayCardPreview() {
             )
             DayItem(
                 enabled = false,
-                celebrated = false,
                 onClick = { },
                 needAnimation = false,
                 onStopEncouragingAnimation = { },

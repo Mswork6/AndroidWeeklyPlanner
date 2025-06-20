@@ -26,7 +26,6 @@ import java.util.UUID
 @Composable
 fun DayCard(
     day: Day,
-    celebrated: Boolean,
     needAnimation: Boolean,
     onTaskItemClick: (Task) -> Unit,
     onStopEncouragingAnimation: (LocalDate) -> Unit,
@@ -42,7 +41,6 @@ fun DayCard(
         day = day,
         isExpanded = isExpanded,
         enabled = hasTasks,
-        celebrated = celebrated,
         needAnimation = needAnimation,
         onStopEncouragingAnimation = { date ->
             onStopEncouragingAnimation(date)
@@ -103,7 +101,6 @@ private fun DayCardPreview() {
         )
         DayCard(
             day = day,
-            celebrated = false,
             needAnimation = false,
             onTaskItemClick = { },
             onStopEncouragingAnimation = { },
