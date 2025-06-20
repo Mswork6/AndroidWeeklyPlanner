@@ -42,23 +42,30 @@ private fun TasksScreenContent(
     onAction: (TasksMainScreenAction) -> Unit,
     onNavigateToTaskEditScreen: (taskId: UUID) -> Unit,
     onNavigateToTaskOpenScreen: (taskId: UUID) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) = when (state) {
     is TasksMainScreenState.Initial -> {
         CircularProgressIndicator()
     }
+
     is TasksMainScreenState.Default -> {
         LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
             items(items = state.days, key = Day::date) { day ->
                 val celebrated = state.celebratedDates.contains(day.date)
+                val needAnimation = state.playingDates.contains(day.date)
 
                 DayCard(
                     day = day,
                     celebrated = celebrated,
+                    needAnimation = needAnimation,
                     onTaskItemClick = { onAction(TasksMainScreenAction.TaskDialogAction.Open(it)) },
-                    onCelebrate = { date -> onAction(TasksMainScreenAction.CelebrateDay(date)) },
-                    onUnCelebrate = { date -> onAction(TasksMainScreenAction.UncelebrateDay(date))},
-                    dayItemModifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+                    onStopEncouragingAnimation = { date ->
+                        onAction(
+                            TasksMainScreenAction.StopEncouragingAnimation(date))
+                    },
+                    dayItemModifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
                     taskItemModifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp, top = 16.dp)

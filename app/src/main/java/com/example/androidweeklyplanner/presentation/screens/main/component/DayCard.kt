@@ -27,9 +27,9 @@ import java.util.UUID
 fun DayCard(
     day: Day,
     celebrated: Boolean,
+    needAnimation: Boolean,
     onTaskItemClick: (Task) -> Unit,
-    onCelebrate: (LocalDate) -> Unit,
-    onUnCelebrate: (LocalDate) -> Unit,
+    onStopEncouragingAnimation: (LocalDate) -> Unit,
     dayItemModifier: Modifier = Modifier,
     taskItemModifier: Modifier = Modifier
 ) = Column {
@@ -43,9 +43,11 @@ fun DayCard(
         isExpanded = isExpanded,
         enabled = hasTasks,
         celebrated = celebrated,
+        needAnimation = needAnimation,
+        onStopEncouragingAnimation = { date ->
+            onStopEncouragingAnimation(date)
+        },
         onClick = { if (hasTasks) isExpanded = isExpanded.not() },
-        onCelebrate = onCelebrate,
-        onUnCelebrate = onUnCelebrate,
         modifier = dayItemModifier
     )
     AnimatedVisibility(isExpanded) {
@@ -102,9 +104,9 @@ private fun DayCardPreview() {
         DayCard(
             day = day,
             celebrated = false,
+            needAnimation = false,
             onTaskItemClick = { },
-            onCelebrate = { },
-            onUnCelebrate = { },
+            onStopEncouragingAnimation = { },
             dayItemModifier = Modifier,
             taskItemModifier = Modifier
                 .padding(

@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,18 +30,22 @@ class TasksMainScreenViewModel @Inject constructor(
     private val _state: MutableStateFlow<TasksMainScreenState> = MutableStateFlow(TasksMainScreenState.Initial)
     override val state: StateFlow<TasksMainScreenState> = _state.asStateFlow()
 
+    private val _playingDates = MutableStateFlow<Set<LocalDate>>(emptySet())
+
     private val actionDialogTask: MutableStateFlow<Task?> = MutableStateFlow(null)
 
     init {
         viewModelScope.launch {
-            getDays()
-                .combine(celebratedDatesDataStore.celebratedDatesFlow) { days, celebratedSet ->
-                    days to celebratedSet
-                }
-                .combine(actionDialogTask) { (days, celebratedSet), selectedTask ->
+            combine(
+                getDays(),
+                celebratedDatesDataStore.celebratedDatesFlow,
+                _playingDates,
+                actionDialogTask
+            ) { days, celebratedSet, playingSet, selectedTask ->
                     TasksMainScreenState.Default(
                         days = days,
                         celebratedDates = celebratedSet,
+                        playingDates = playingSet,
                         dialogState = when (selectedTask) {
                             null -> TasksMainScreenState.TaskScreenDialogState.None
                             else -> TasksMainScreenState.TaskScreenDialogState.Opened(selectedTask)
@@ -49,7 +54,6 @@ class TasksMainScreenViewModel @Inject constructor(
             }.collect { screenState ->
                 _state.update {
                     screenState
-
                 }
             }
         }
@@ -71,23 +75,27 @@ class TasksMainScreenViewModel @Inject constructor(
                 is TasksMainScreenAction.TaskDialogAction.Open -> action.task
             }
         }
-        is TasksMainScreenAction.ToggleTaskStatus -> {
-            toggleTaskStatus(action.task)
-
-            val date = action.task.date
-            val daysNow = getDays().first()
-            val dayNow = daysNow.find { it.date == date }
-            val allDone = dayNow?.tasks?.all { it.isDone } ?: false
-
-            if (!allDone) {
-                celebratedDatesDataStore.unmarkDateCelebrated(date)
-            } else {}
-        }
+        is TasksMainScreenAction.ToggleTaskStatus -> toggleTaskStatus(action.task)
         is TasksMainScreenAction.DeleteTask -> taskInteractor.deleteTask(action.task)
-        is TasksMainScreenAction.CelebrateDay ->
-            celebratedDatesDataStore.markDateCelebrated(action.date)
-        is TasksMainScreenAction.UncelebrateDay -> {
-            celebratedDatesDataStore.unmarkDateCelebrated(action.date)
+        is TasksMainScreenAction.StopEncouragingAnimation -> {
+            _playingDates.update { it - action.date }
+        }
+    }
+
+    private suspend fun toggleTaskStatus(task: Task) {
+        toggleTaskStatus.invoke(task)
+
+        val date = task.date
+        val daysNow = getDays().first()
+        val dayNow = daysNow.find { it.date == date }
+        val allDone = dayNow?.tasks?.all { it.isDone } ?: false
+
+        if (allDone) {
+            celebratedDatesDataStore.markDateCelebrated(date)
+            _playingDates.update { it + date }
+        } else {
+            celebratedDatesDataStore.unmarkDateCelebrated(date)
+            _playingDates.update { it - date }
         }
     }
 }

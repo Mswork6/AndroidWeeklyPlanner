@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -51,49 +52,40 @@ fun DayItem(
     isExpanded: Boolean,
     enabled: Boolean,
     celebrated: Boolean,
+    needAnimation: Boolean,
     onClick: () -> Unit,
-    onCelebrate: (LocalDate) -> Unit,
-    onUnCelebrate: (LocalDate) -> Unit,
+    onStopEncouragingAnimation: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val rotationState by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
         label = stringResource(R.string.descipition_dayitem_animation)
     )
-    val allDone = enabled && day.tasks.all { it.isDone }
 
-    var shouldPlayAnimation by remember { mutableStateOf(false) }
+    val cardColor = if (celebrated) Color(0xFF87EA8A) /* светло-зелёный */
+    else MaterialTheme.colorScheme.primary
 
     val composition by rememberLottieComposition(LottieCompositionSpec.Asset("confetti.json"))
     val animatable = rememberLottieAnimatable()
 
-    LaunchedEffect(allDone, composition) {
-        if (allDone && !celebrated) {
-            onCelebrate(day.date)
-            shouldPlayAnimation = true
-        }
-    }
 
-    LaunchedEffect(shouldPlayAnimation, composition) {
-        if (shouldPlayAnimation && composition != null) {
+    LaunchedEffect(needAnimation, composition) {
+        if (needAnimation && composition != null) {
             animatable.animate(
                 composition = composition,
-                iterations  = 1,
-                speed       = 1f
+                iterations = 1,
+                speed = 1f
             )
-            shouldPlayAnimation = false
+            onStopEncouragingAnimation(day.date)
         }
     }
 
-    LaunchedEffect(allDone, celebrated) {
-        if (!allDone && celebrated) {
-            onUnCelebrate(day.date)
+    DisposableEffect(key1 = day.date) {
+        onDispose {
+            // гарантированно убираем флаг, даже если анимация не успела отработать
+            onStopEncouragingAnimation(day.date)
         }
     }
-
-
-    val cardColor = if (allDone) Color(0xFF87EA8A) /* светло-зелёный */
-    else MaterialTheme.colorScheme.primary
 
     Box(
         modifier = modifier
@@ -146,7 +138,7 @@ fun DayItem(
 
         }
 
-        if (shouldPlayAnimation) {
+        if (needAnimation) {
             LottieAnimation(
                 composition = composition,
                 progress = animatable.progress,
@@ -179,8 +171,8 @@ private fun DayCardPreview() {
                 enabled = true,
                 celebrated = false,
                 onClick = { },
-                onCelebrate = { },
-                onUnCelebrate = { },
+                needAnimation = false,
+                onStopEncouragingAnimation = { },
                 day = day,
                 isExpanded = true,
                 modifier = Modifier.fillMaxWidth()
@@ -189,8 +181,8 @@ private fun DayCardPreview() {
                 enabled = false,
                 celebrated = false,
                 onClick = { },
-                onCelebrate = { },
-                onUnCelebrate = { },
+                needAnimation = false,
+                onStopEncouragingAnimation = { },
                 day = day,
                 isExpanded = false,
                 modifier = Modifier.fillMaxWidth()

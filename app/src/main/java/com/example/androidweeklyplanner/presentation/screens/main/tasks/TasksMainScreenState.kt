@@ -10,6 +10,7 @@ sealed interface TasksMainScreenState {
     data class Default(
         val days: List<Day>,
         val celebratedDates: Set<LocalDate>,
+        val playingDates: Set<LocalDate>,
         val dialogState: TaskScreenDialogState
     ) : TasksMainScreenState
 
