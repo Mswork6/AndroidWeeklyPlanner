@@ -1,7 +1,6 @@
 package com.example.androidweeklyplanner.presentation.screens.task
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +30,7 @@ import com.example.androidweeklyplanner.presentation.notificationTimeString
 import com.example.androidweeklyplanner.presentation.screens.shared.DatePickerModal
 import com.example.androidweeklyplanner.presentation.screens.shared.ErrorScreen
 import com.example.androidweeklyplanner.presentation.screens.shared.ScreenHorizontalDivider
+import com.example.androidweeklyplanner.presentation.screens.shared.TopBar
 import com.example.androidweeklyplanner.presentation.screens.task.component.CategoryDialogWindow
 import com.example.androidweeklyplanner.presentation.screens.task.component.DialWithDialogExample
 import com.example.androidweeklyplanner.presentation.screens.task.component.DifficultyDialogWindow
@@ -45,9 +43,7 @@ import com.example.androidweeklyplanner.presentation.screens.task.component.Task
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenNotificationTimeInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenPriorityInputField
-import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenRepetitionInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenTimeInputField
-import com.example.androidweeklyplanner.presentation.screens.shared.TopBar
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.LocalTime
@@ -180,15 +176,6 @@ private fun TaskScreenBaseContent(
                 onClick = { onAction(TaskScreenAction.SetNotificationTimePickerVisibility(true)) },
                 modifier = Modifier.fillMaxWidth()
             )
-            if (state is TaskScreenState.Add) {
-                ScreenHorizontalDivider()
-                TaskScreenRepetitionInputField(
-                    editState = state.editable,
-                    difficulty = Unit,
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
         }
 
         if (state.isDatePickerOpened) {
