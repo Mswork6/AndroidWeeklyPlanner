@@ -20,6 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
@@ -59,22 +62,31 @@ fun DayItem(
     )
     val allDone = enabled && day.tasks.all { it.isDone }
 
+    var shouldPlayAnimation by remember { mutableStateOf(false) }
+
     val composition by rememberLottieComposition(LottieCompositionSpec.Asset("confetti.json"))
     val animatable = rememberLottieAnimatable()
 
-    LaunchedEffect(allDone, celebrated, composition) {
-        if (allDone && !celebrated && composition != null) {
-            // проигрываем конфетти один раз
+    LaunchedEffect(allDone, composition) {
+        if (allDone && !celebrated) {
+            onCelebrate(day.date)
+            shouldPlayAnimation = true
+        }
+    }
+
+    LaunchedEffect(shouldPlayAnimation, composition) {
+        if (shouldPlayAnimation && composition != null) {
             animatable.animate(
                 composition = composition,
                 iterations  = 1,
                 speed       = 1f
             )
-            // только после того как анимация завершилась
-            onCelebrate(day.date)
+            shouldPlayAnimation = false
         }
-        // 2) если стало !allDone, но праздновали==true — сбрасываем
-        else if (!allDone && celebrated) {
+    }
+
+    LaunchedEffect(allDone, celebrated) {
+        if (!allDone && celebrated) {
             onUnCelebrate(day.date)
         }
     }
@@ -134,7 +146,7 @@ fun DayItem(
 
         }
 
-        if (allDone && !celebrated && composition != null) {
+        if (shouldPlayAnimation) {
             LottieAnimation(
                 composition = composition,
                 progress = animatable.progress,

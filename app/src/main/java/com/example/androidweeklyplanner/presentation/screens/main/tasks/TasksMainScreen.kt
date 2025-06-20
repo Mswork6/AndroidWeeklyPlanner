@@ -49,7 +49,7 @@ private fun TasksScreenContent(
     }
     is TasksMainScreenState.Default -> {
         LazyColumn(modifier = modifier, contentPadding = PaddingValues(horizontal = 16.dp)) {
-            items(items = state.days, key = Day::id) { day ->
+            items(items = state.days, key = Day::date) { day ->
                 val celebrated = state.celebratedDates.contains(day.date)
 
                 DayCard(
