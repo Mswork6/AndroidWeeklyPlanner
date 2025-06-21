@@ -41,7 +41,7 @@ internal fun TaskScreenCategoryInputField(
             style = MaterialTheme.typography.titleSmall
         )
         Text(
-            text = stringResource(category.description),
+            text = stringResource(category.description) + " " + category.emoji,
             style = MaterialTheme.typography.labelSmall
         )
     }
@@ -54,7 +54,7 @@ private fun TaskAddScreenDifficultyInputFieldPreview() {
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenCategoryInputField(
             editState = true,
-            category = Category.NONE,
+            category = Category.WORK,
             onClick = {},
             modifier = Modifier.fillMaxWidth()
         )

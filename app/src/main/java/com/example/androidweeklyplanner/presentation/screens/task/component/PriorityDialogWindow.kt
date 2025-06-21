@@ -33,8 +33,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.Priority
+import com.example.androidweeklyplanner.presentation.color
 import com.example.androidweeklyplanner.presentation.description
 import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.screens.main.component.DifficultyCircle
 
 @Composable
 fun PriorityDialogWindow(
@@ -137,8 +139,15 @@ fun RadioButtonGroupWithPriorityEnum(
                 Text(
                     text = stringResource(option.description),
                     style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(start = 8.dp)
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .weight(3f)
                 )
+                Row(modifier = Modifier.weight(1f)) {
+                    DifficultyCircle(
+                        color = option.color
+                    )
+                }
             }
         }
     }
