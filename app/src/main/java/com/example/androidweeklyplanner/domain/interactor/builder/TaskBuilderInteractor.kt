@@ -125,25 +125,36 @@ class TaskBuilderInteractor @AssistedInject constructor(
 
         val task = stateValue.task
 
-        // 1) Проверяем имя
+        val nameTrimmed = task.name.trim()
+        val descriptionTrimmed = task.description?.trim()
+
+        // Проверка имени
         val nameReport = when {
-            task.name.isBlank() -> NameReport.Empty
-            task.name.length > 100 -> NameReport.TooLong
-            task.name.trim() != task.name -> NameReport.UselessWhitespaces
+            nameTrimmed.isBlank() -> NameReport.Empty
+            nameTrimmed.length > 100 -> NameReport.TooLong
             else -> NameReport.Valid
         }
 
-        // 2) Проверяем лимит 1-3-5, но только если имя валидно
-        val taskLimitReport = if (nameReport == NameReport.Valid) {
+        // Проверка описания
+        val descriptionReport = when {
+            descriptionTrimmed.isNullOrEmpty() -> DescriptionReport.Valid
+            descriptionTrimmed.length > 300 -> DescriptionReport.TooLong
+            else -> DescriptionReport.Valid
+        }
+
+        // Проверка лимита 1-3-5, но только если имя и описание валидно
+        val taskLimitReport = if (nameReport == NameReport.Valid
+            && descriptionReport == DescriptionReport.Valid) {
             val canAdd = checkDailyTaskLimitUseCase(task.date, task.difficulty, taskId)
             if (canAdd) TaskLimitReport.Valid else TaskLimitReport.Exceeded
         } else {
-            // если имя невалидно, нам не важно, сколько там задач
+            // если невалидно, нам не важно, сколько там задач
             TaskLimitReport.Valid
         }
 
         return TaskBuilderReport.Default(
-            nameReport       = nameReport,
+            nameReport = nameReport,
+            descriptionReport = descriptionReport,
             taskLimitReport  = taskLimitReport
         )
     }
@@ -151,7 +162,11 @@ class TaskBuilderInteractor @AssistedInject constructor(
     suspend fun save() {
         val taskState = _state.value
         if (taskState is TaskBuilderState.Default){
-            val task = taskState.task
+            val task = taskState.task.copy(
+                name = taskState.task.name.trim(),
+                description = taskState.task.description?.trim()
+            )
+
 
             when (taskId) {
                 null -> taskInteractor.addTask(task)

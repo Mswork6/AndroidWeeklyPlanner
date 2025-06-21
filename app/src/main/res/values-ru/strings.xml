@@ -42,7 +42,6 @@
     <string name="day_saturday">Суббота</string>
     <string name="day_sunday">Воскресенье</string>
     <string name="postpone_for_15_minutes">Отложить на 15 минут</string>
-    <string name="error_whitespaces">Пустые символы</string>
     <string name="description_difficulty_hard">Тяжелая</string>
     <string name="description_difficulty_medium">Средняя</string>
     <string name="description_difficulty_easy">Легкая</string>
@@ -91,4 +90,5 @@
     <string name="description_start_date_extended">Начальная дата: %1$s</string>
     <string name="description_end_date_extended">Конечная дата: %1$s</string>
     <string name="description_date_range">Временной диапазон</string>
+    <string name="error_long_description">Описание не может превышать 300 символов</string>
 </resources>

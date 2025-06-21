@@ -41,7 +41,6 @@
     <string name="day_saturday">Saturday</string>
     <string name="day_sunday">Sunday</string>
     <string name="postpone_for_15_minutes">Postpone for 15 minutes</string>
-    <string name="error_whitespaces">Title has useless whitespaces</string>
     <string name="description_difficulty_hard">Hard</string>
     <string name="description_difficulty_medium">Medium</string>
     <string name="description_difficulty_easy">Easy</string>
@@ -90,4 +89,5 @@
     <string name="description_start_date_extended">Start date: %1$s</string>
     <string name="description_end_date_extended">End date: %1$s</string>
     <string name="description_date_range">Date range</string>
+    <string name="error_long_description">Description cannot exceed 300 characters</string>
 </resources>

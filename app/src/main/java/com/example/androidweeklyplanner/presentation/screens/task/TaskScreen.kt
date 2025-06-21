@@ -2,7 +2,6 @@ package com.example.androidweeklyplanner.presentation.screens.task
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,6 +39,7 @@ import com.example.androidweeklyplanner.presentation.screens.task.component.Prio
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskLimitWindow
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenCategoryInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenDateInputField
+import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenDescriptionInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenDifficultyInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenNotificationTimeInputField
@@ -127,10 +127,17 @@ private fun TaskScreenBaseContent(
             item {
                 TaskScreenInputField(
                     nameText = state.name,
-                    taskNameError = state.errorMessage?.let { stringResource(id = it) },
-                    descriptionText = state.description,
+                    taskNameError = state.nameErrorMessage?.let { stringResource(id = it) },
                     editState = state.editable,
                     onTaskTitleValueChange = { onAction(TaskScreenAction.SetName(it)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item {
+                TaskScreenDescriptionInputField(
+                    text = state.description,
+                    descriptionErrorString = state.descriptionErrorMessage?.let { stringResource(id = it) },
+                    editState = state.editable,
                     onTaskDescriptionValueChange = { onAction(TaskScreenAction.SetDescription(it)) },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -327,7 +334,8 @@ private fun TaskScreenContent2Preview() {
         isTimePickerOpened = false,
         isNotificationTimePickerOpened = false,
         isTaskLimitWindowOpened = false,
-        errorMessage = null
+        nameErrorMessage = null,
+        descriptionErrorMessage = null
     )
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenContent(
@@ -360,7 +368,8 @@ private fun TaskScreenContent3Preview() {
         isTimePickerOpened = false,
         isNotificationTimePickerOpened = false,
         isTaskLimitWindowOpened = false,
-        errorMessage = null
+        nameErrorMessage = null,
+        descriptionErrorMessage = null
     )
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenContent(

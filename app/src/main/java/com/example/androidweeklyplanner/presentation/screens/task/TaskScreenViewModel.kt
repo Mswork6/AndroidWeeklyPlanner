@@ -2,6 +2,7 @@ package com.example.androidweeklyplanner.presentation.screens.task
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidweeklyplanner.R
+import com.example.androidweeklyplanner.domain.interactor.builder.DescriptionReport
 import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.domain.interactor.builder.NameReport
 import com.example.androidweeklyplanner.domain.interactor.builder.TaskBuilderInteractor
@@ -142,20 +143,31 @@ class TaskScreenViewModel @AssistedInject constructor(
 
     private suspend fun validateAndReact() {
         val report: TaskBuilderReport = taskBuilderInteractor.validate()
-        val errorMessage: Int? = when (report) {
+        val nameErrorMessage: Int? = when (report) {
             is TaskBuilderReport.Default -> when (report.nameReport) {
                 NameReport.Empty -> R.string.error_empty_title
                 NameReport.TooLong -> R.string.error_long_title
-                NameReport.UselessWhitespaces -> R.string.error_whitespaces
                 NameReport.Valid -> null
             }
 
             TaskBuilderReport.NotInitialized -> null
         }
+
+        val descriptionErrorMessage: Int? = when (report) {
+            is TaskBuilderReport.Default -> when (report.descriptionReport) {
+                DescriptionReport.TooLong -> R.string.error_long_description
+                DescriptionReport.Valid -> null
+            }
+            TaskBuilderReport.NotInitialized -> null
+        }
         _state.update {
             when (it) {
-                is TaskScreenState.Add -> it.copy(errorMessage = errorMessage)
-                is TaskScreenState.Edit -> it.copy(errorMessage = errorMessage)
+                is TaskScreenState.Add -> it.copy(
+                    nameErrorMessage = nameErrorMessage,
+                    descriptionErrorMessage = descriptionErrorMessage)
+                is TaskScreenState.Edit -> it.copy(
+                    nameErrorMessage = nameErrorMessage,
+                    descriptionErrorMessage = descriptionErrorMessage)
                 is TaskScreenState.Initial,
                 is TaskScreenState.Error,
                 is TaskScreenState.Success,
@@ -166,6 +178,7 @@ class TaskScreenViewModel @AssistedInject constructor(
 
         if (report is TaskBuilderReport.Default
             && report.nameReport is NameReport.Valid
+            && report.descriptionReport is DescriptionReport.Valid
             && report.taskLimitReport is TaskLimitReport.Exceeded
         ) {
             setTaskLimitScreenVisibility(true)
@@ -173,6 +186,7 @@ class TaskScreenViewModel @AssistedInject constructor(
 
         if (report is TaskBuilderReport.Default
             && report.nameReport is NameReport.Valid
+            && report.descriptionReport is DescriptionReport.Valid
             && report.taskLimitReport is TaskLimitReport.Valid
         ) {
             save()
@@ -257,7 +271,6 @@ class TaskScreenViewModel @AssistedInject constructor(
     private fun setNotificationTime(notificationTime: NotificationTime) {
         taskBuilderInteractor.setNotificationTime(notificationTime)
 
-        // setting notification time offset
         _state.update {
             when (it) {
                 is TaskScreenState.Add -> it.copy(notificationTimeOffsetEnum = notificationTime)
@@ -267,15 +280,6 @@ class TaskScreenViewModel @AssistedInject constructor(
         }
     }
 
-//    private fun setNotificationTimeOffset(notificationTime: NotificationTime) {
-//        _state.update {
-//            when (it) {
-//                is TaskScreenState.Add -> it.copy(notificationTimeOffset = notificationTime)
-//                is TaskScreenState.Edit -> it.copy(notificationTimeOffset = notificationTime)
-//                else -> it
-//            }
-//        }
-//    }
 
     private fun merge(state: TaskScreenState.View, task: Task): TaskScreenState.View {
         return with(task) {
@@ -341,7 +345,8 @@ class TaskScreenViewModel @AssistedInject constructor(
                 isDifficultyPickerOpened = false,
                 isCategoryPickerOpened = false,
                 isTaskLimitWindowOpened = false,
-                errorMessage = null
+                nameErrorMessage = null,
+                descriptionErrorMessage = null
             )
         }
     }
@@ -365,7 +370,8 @@ class TaskScreenViewModel @AssistedInject constructor(
                 isDifficultyPickerOpened = false,
                 isCategoryPickerOpened = false,
                 isTaskLimitWindowOpened = false,
-                errorMessage = null
+                nameErrorMessage = null,
+                descriptionErrorMessage = null
             )
         }
     }
