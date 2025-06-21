@@ -20,7 +20,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Grey40,
+    primary = Gray40,
     secondary = PurpleGrey40,
     tertiary = Blue40,
     tertiaryContainer = LightBlue40,
@@ -56,3 +56,6 @@ fun CourseWorkAndroidWeeklyPlannerTheme(
         )
     }
 }
+
+val MaterialTheme.extendedColors: ExtendedColors
+    @Composable get() = LocalExtendedColors.current
