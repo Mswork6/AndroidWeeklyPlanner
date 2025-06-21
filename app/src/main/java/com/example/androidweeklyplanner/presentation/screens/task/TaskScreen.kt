@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -28,7 +29,6 @@ import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroi
 import com.example.androidweeklyplanner.presentation.notificationTimeString
 import com.example.androidweeklyplanner.presentation.screens.shared.DatePickerModal
 import com.example.androidweeklyplanner.presentation.screens.shared.ErrorScreen
-import com.example.androidweeklyplanner.presentation.screens.shared.LoadingScreen
 import com.example.androidweeklyplanner.presentation.screens.shared.ScreenHorizontalDivider
 import com.example.androidweeklyplanner.presentation.screens.shared.TopBar
 import com.example.androidweeklyplanner.presentation.screens.task.component.CategoryDialogWindow
@@ -72,10 +72,7 @@ private fun TaskScreenContent(
     modifier: Modifier,
 ) = when (state) {
     is TaskScreenState.Initial ->
-        LoadingScreen(
-            modifier = modifier.fillMaxSize(),
-            title = stringResource(R.string.description_loading_data)
-        )
+        CircularProgressIndicator()
     is TaskScreenState.Content -> TaskScreenBaseContent(
         state = state,
         onAction = onAction,

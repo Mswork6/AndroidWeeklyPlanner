@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,7 +37,6 @@ import com.example.androidweeklyplanner.presentation.screens.filter.component.Fi
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenDateRangeInputField
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenDifficultyInputField
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterScreenPriorityInputField
-import com.example.androidweeklyplanner.presentation.screens.shared.LoadingScreen
 import com.example.androidweeklyplanner.presentation.screens.shared.ScreenHorizontalDivider
 import com.example.androidweeklyplanner.presentation.screens.shared.SortingChipGroup
 import com.example.androidweeklyplanner.presentation.screens.shared.TopBar
@@ -65,10 +65,7 @@ fun FilterScreenContent(
 ) {
     when (state) {
         is FilterScreenState.Initial -> {
-            LoadingScreen(
-                modifier = modifier.fillMaxSize(),
-                title = stringResource(R.string.description_loading_data)
-            )
+            CircularProgressIndicator()
         }
 
         is FilterScreenState.Default -> FilterScreenBaseContent(

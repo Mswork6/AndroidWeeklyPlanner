@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,7 +20,6 @@ import com.example.androidweeklyplanner.domain.model.Task
 import com.example.androidweeklyplanner.presentation.screens.list.NoTasksScreen
 import com.example.androidweeklyplanner.presentation.screens.list.component.ListScreenTaskItem
 import com.example.androidweeklyplanner.presentation.screens.main.tasks.component.TaskDialogWindow
-import com.example.androidweeklyplanner.presentation.screens.shared.LoadingScreen
 import java.util.UUID
 
 @Composable
@@ -48,10 +48,7 @@ private fun TasksListScreenContent(
     modifier: Modifier
 ) = when (state) {
     is TasksListScreenState.Initial -> {
-        LoadingScreen(
-            modifier = modifier.fillMaxSize(),
-            title = stringResource(R.string.description_loading_data)
-        )
+        CircularProgressIndicator()
     }
     is TasksListScreenState.Default -> {
         when (state.tasks.isEmpty()) {
