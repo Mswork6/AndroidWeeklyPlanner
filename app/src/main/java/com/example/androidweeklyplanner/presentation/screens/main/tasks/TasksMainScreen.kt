@@ -2,21 +2,24 @@ package com.example.androidweeklyplanner.presentation.screens.main.tasks
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.Day
 import com.example.androidweeklyplanner.presentation.screens.main.component.DayCard
 import com.example.androidweeklyplanner.presentation.screens.main.tasks.component.TaskDialogWindow
+import com.example.androidweeklyplanner.presentation.screens.shared.LoadingScreen
 import java.util.UUID
 
 @Composable
@@ -45,7 +48,10 @@ private fun TasksScreenContent(
     modifier: Modifier,
 ) = when (state) {
     is TasksMainScreenState.Initial -> {
-        CircularProgressIndicator()
+        LoadingScreen(
+            modifier = modifier.fillMaxSize(),
+            title = stringResource(R.string.description_loading_data)
+        )
     }
 
     is TasksMainScreenState.Default -> {

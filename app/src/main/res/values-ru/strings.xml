@@ -95,4 +95,5 @@
     <string name="description_sorting">Сортировка</string>
     <string name="description_filters">Фильтры</string>
     <string name="description_reset_values">Сбросить значения</string>
+    <string name="description_loading_data">Загружаем данные</string>
 </resources>

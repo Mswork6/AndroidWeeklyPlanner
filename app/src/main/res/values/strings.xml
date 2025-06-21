@@ -94,4 +94,5 @@
     <string name="description_sorting">Sorting</string>
     <string name="description_filters">Filters</string>
     <string name="description_reset_values">Reset values</string>
+    <string name="description_loading_data">Loading data</string>
 </resources>

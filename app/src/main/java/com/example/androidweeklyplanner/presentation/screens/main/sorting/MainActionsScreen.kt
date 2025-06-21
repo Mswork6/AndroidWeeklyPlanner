@@ -4,9 +4,9 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,6 +23,7 @@ import com.example.androidweeklyplanner.domain.model.SortConfig
 import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.screens.main.sorting.component.SortDialogWindow
 import com.example.androidweeklyplanner.presentation.screens.shared.ActionTab
+import com.example.androidweeklyplanner.presentation.screens.shared.LoadingScreen
 
 @Composable
 fun MainActionsScreen(
@@ -47,7 +48,10 @@ private fun SearchScreenContent(
     onNavigateToAllTasks: () -> Unit
 ) = when (state) {
     is MainScreenActionsState.Initial -> {
-        CircularProgressIndicator()
+        LoadingScreen(
+            modifier = modifier.fillMaxSize(),
+            title = stringResource(R.string.description_loading_data)
+        )
     }
 
     is MainScreenActionsState.Default -> {
