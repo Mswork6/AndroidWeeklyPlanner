@@ -109,7 +109,7 @@ fun FilterScreenBaseContent(
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = "Фильтры",
+                text = stringResource(R.string.description_filters),
                 style = MaterialTheme.typography.titleLarge
             )
             ScreenHorizontalDivider()
@@ -142,7 +142,7 @@ fun FilterScreenBaseContent(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Сортировка",
+                text = stringResource(R.string.description_sorting),
                 style = MaterialTheme.typography.titleLarge
             )
             ScreenHorizontalDivider()

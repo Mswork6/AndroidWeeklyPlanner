@@ -91,4 +91,7 @@
     <string name="description_end_date_extended">Конечная дата: %1$s</string>
     <string name="description_date_range">Временной диапазон</string>
     <string name="error_long_description">Описание не может превышать 300 символов</string>
+    <string name="description_no_tasks">Задачи не обнаружены.\nВы свободны как ветер!</string>
+    <string name="description_sorting">Сортировка</string>
+    <string name="description_filters">Фильтры</string>
 </resources>

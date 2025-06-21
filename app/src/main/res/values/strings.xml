@@ -90,4 +90,7 @@
     <string name="description_end_date_extended">End date: %1$s</string>
     <string name="description_date_range">Date range</string>
     <string name="error_long_description">Description cannot exceed 300 characters</string>
+    <string name="description_no_tasks">No tasks have been detected.\nYou are free as the wind!</string>
+    <string name="description_sorting">Sorting</string>
+    <string name="description_filters">Filters</string>
 </resources>
