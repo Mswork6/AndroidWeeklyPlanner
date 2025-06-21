@@ -29,6 +29,12 @@ class TaskRepositoryImpl @Inject constructor(
         tasks.asyncMap(::convertToState).toList()
     }.flowOn(Dispatchers.IO)
 
+    override fun getTasksForDateRange(
+        start: LocalDate,
+        end: LocalDate
+    ): Flow<List<Task>> = taskDao.getTasksForDateRange(start.toEpochDay(), end.toEpochDay())
+        .map { list -> list.map(::convertToState) }.flowOn(Dispatchers.IO)
+
     override suspend fun getTask(taskId: UUID): Task? = taskDao.getTask(taskId)?.let {
         convertToState(it)
     }

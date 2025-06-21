@@ -2,10 +2,13 @@ package com.example.androidweeklyplanner.domain.repository
 
 import com.example.androidweeklyplanner.domain.model.Task
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 import java.util.UUID
 
 interface TaskRepository {
     fun getTasks(): Flow<List<Task>>
+
+    fun getTasksForDateRange(start: LocalDate, end: LocalDate): Flow<List<Task>>
 
     suspend fun getTask(taskId: UUID): Task?
 

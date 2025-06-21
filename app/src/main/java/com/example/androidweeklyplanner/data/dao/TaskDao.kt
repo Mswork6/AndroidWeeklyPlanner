@@ -18,6 +18,16 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE id = :id")
     suspend fun getTask(id: UUID): TaskEntity?
 
+    @Query("""
+      SELECT * 
+      FROM tasks 
+      WHERE deadline_day BETWEEN :startDate AND :endDate
+    """)
+    fun getTasksForDateRange(
+        startDate: Long,
+        endDate: Long
+    ): Flow<List<TaskEntity>>
+
     @Insert(entity = TaskEntity::class, onConflict = OnConflictStrategy.ABORT)
     suspend fun insertTask(entity: TaskEntity)
 

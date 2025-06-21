@@ -10,12 +10,15 @@ import com.example.androidweeklyplanner.domain.repository.SortRepository
 import com.example.androidweeklyplanner.domain.repository.TaskRepository
 import com.example.androidweeklyplanner.domain.repository.WeekRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import java.time.LocalDate
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GetDaysUseCase @Inject constructor(
     private val taskRepository: TaskRepository,
     @MainScreenSortRepo private val sortRepository: SortRepository,
@@ -24,18 +27,17 @@ class GetDaysUseCase @Inject constructor(
 ) {
     // Получает таски с репозитория, формирует дни, потом сортирует их
     operator fun invoke(): Flow<List<Day>> =
-        combine(
-            taskRepository.getTasks(),
-            weekRepository.getWeek(),
-            sortRepository.getSortConfig()
-        ) { tasks, week, config ->
-            val comparator = comparatorProvider(config)
-            buildDays(week, tasks)
-                .map { day ->
-                    day.copy(tasks = day.tasks.sortedWith(comparator))
-                }
-        }
-            .flowOn(Dispatchers.Default)
+        weekRepository.getWeek()
+            .flatMapLatest { week ->
+                taskRepository.getTasksForDateRange(week.start, week.end)
+                    .combine(sortRepository.getSortConfig()) { tasks, sort ->
+                        val comparator = comparatorProvider(sort)
+                        buildDays(week, tasks).map { day ->
+                            day.copy(tasks = day.tasks.sortedWith(comparator))
+                        }
+                    }
+            }
+
 
     private fun buildDays(week: Week, tasks: List<Task>): List<Day> {
         val dayToTasks: Map<LocalDate, List<Task>> = tasks
