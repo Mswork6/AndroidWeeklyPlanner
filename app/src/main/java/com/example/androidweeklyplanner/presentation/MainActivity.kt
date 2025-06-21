@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.LaunchedEffect
@@ -47,10 +49,14 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     startDestination = "main",
                     enterTransition = {
-                        fadeIn(spring())
+                        fadeIn(tween(
+                            easing = FastOutSlowInEasing
+                        ))
                     },
                     exitTransition = {
-                        fadeOut(spring())
+                        fadeOut(tween(
+                            easing = FastOutSlowInEasing
+                        ))
                     }
                 ) {
                     installMainScreen(

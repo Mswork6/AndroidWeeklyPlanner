@@ -261,8 +261,7 @@ private fun TaskScreenBaseContent(
                 },
                 onDismissRequest = {
                     onAction(TaskScreenAction.SetTaskLimitWindowVisibility(false))
-                },
-                //modifier = Modifier.fillMaxWidth(0.95f)
+                }
             )
         }
     }
