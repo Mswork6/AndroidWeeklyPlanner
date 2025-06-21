@@ -70,7 +70,7 @@ private fun TasksScreenContent(
                 )
             }
             item {
-                Spacer(modifier = Modifier.height(72.dp))
+                Spacer(modifier = Modifier.height(80.dp))
             }
         }
 

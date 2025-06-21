@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -98,7 +99,7 @@ fun FilterScreenBaseContent(
             )
         }
     ) { padding: PaddingValues ->
-        Column(
+        LazyColumn(
             modifier = modifier
                 .padding(padding)
                 .padding(16.dp)
@@ -108,78 +109,93 @@ fun FilterScreenBaseContent(
             ),
             horizontalAlignment = Alignment.Start
         ) {
-            Text(
-                text = stringResource(R.string.description_filters),
-                style = MaterialTheme.typography.titleLarge
-            )
-            ScreenHorizontalDivider()
+            item {
+                Text(
+                    text = stringResource(R.string.description_filters),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                FilterScreenDateRangeInputField(
+                    startDate = state.startDate,
+                    endDate = state.endDate,
+                    onClick = { onAction(FilterScreenActions.SetDatePickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
 
-            FilterScreenDateRangeInputField(
-                startDate = state.startDate,
-                endDate = state.endDate,
-                onClick = { onAction(FilterScreenActions.SetDatePickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-
-            )
-            ScreenHorizontalDivider()
-            FilterScreenPriorityInputField(
-                priorities = state.selectedPriorities,
-                onClick = { onAction(FilterScreenActions.SetPriorityPickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ScreenHorizontalDivider()
-            FilterScreenDifficultyInputField(
-                difficulties = state.selectedDifficulties,
-                onClick = { onAction(FilterScreenActions.SetDifficultyPickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ScreenHorizontalDivider()
-            FilterScreenCategoryInputField(
-                categories = state.selectedCategories,
-                onClick = { onAction(FilterScreenActions.SetCategoryPickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = stringResource(R.string.description_sorting),
-                style = MaterialTheme.typography.titleLarge
-            )
-            ScreenHorizontalDivider()
-            SortingChipGroup(
-                title = stringResource(R.string.description_task_priority)
-                        + ": " + stringResource(state.sortPriorityOrder.description),
-                height = 28.dp,
-                textStyle = MaterialTheme.typography.titleSmall,
-                selectedOrder = state.sortPriorityOrder,
-                onOrderChange = { newOrder ->
-                    onAction(FilterScreenActions.SetPriorityOrder(newOrder))
-                }
-            )
-            SortingChipGroup(
-                title = stringResource(R.string.description_task_difficulty)
-                        + ": " + stringResource(state.sortDifficultyOrder.description),
-                height = 28.dp,
-                textStyle = MaterialTheme.typography.titleSmall,
-                selectedOrder = state.sortDifficultyOrder,
-                onOrderChange = { newOrder ->
-                    onAction(FilterScreenActions.SetDifficultyOrder(newOrder))
-                }
-            )
-            Row(
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                TextButton(
-                    onClick = {onAction(FilterScreenActions.ResetValues)},
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.tertiary
-                    )
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                FilterScreenPriorityInputField(
+                    priorities = state.selectedPriorities,
+                    onClick = { onAction(FilterScreenActions.SetPriorityPickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                FilterScreenDifficultyInputField(
+                    difficulties = state.selectedDifficulties,
+                    onClick = { onAction(FilterScreenActions.SetDifficultyPickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                FilterScreenCategoryInputField(
+                    categories = state.selectedCategories,
+                    onClick = { onAction(FilterScreenActions.SetCategoryPickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { Spacer(modifier = Modifier.height(8.dp)) }
+            item {
+                Text(
+                    text = stringResource(R.string.description_sorting),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                SortingChipGroup(
+                    title = stringResource(R.string.description_task_priority)
+                            + ": " + stringResource(state.sortPriorityOrder.description),
+                    height = 28.dp,
+                    textStyle = MaterialTheme.typography.titleSmall,
+                    selectedOrder = state.sortPriorityOrder,
+                    onOrderChange = { newOrder ->
+                        onAction(FilterScreenActions.SetPriorityOrder(newOrder))
+                    }
+                )
+            }
+            item {
+                SortingChipGroup(
+                    title = stringResource(R.string.description_task_difficulty)
+                            + ": " + stringResource(state.sortDifficultyOrder.description),
+                    height = 28.dp,
+                    textStyle = MaterialTheme.typography.titleSmall,
+                    selectedOrder = state.sortDifficultyOrder,
+                    onOrderChange = { newOrder ->
+                        onAction(FilterScreenActions.SetDifficultyOrder(newOrder))
+                    }
+                )
+            }
+            item {
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Сбросить значения")
+                    TextButton(
+                        onClick = {onAction(FilterScreenActions.ResetValues)},
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = MaterialTheme.colorScheme.tertiary
+                        )
+                    ) {
+                        Text(stringResource(R.string.description_reset_values))
+                    }
                 }
             }
-
         }
 
         if (state.isDifficultyFilterDialogOpened) {

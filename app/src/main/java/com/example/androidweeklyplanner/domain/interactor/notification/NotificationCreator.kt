@@ -96,7 +96,6 @@ class NotificationCreator : BroadcastReceiver() {
                             cancellingIntent = buildPostponeIntent(context, task.id)
                         )
                         notificationManager.notify(task.id.hashCode(), notification)
-                        //taskInteractor.updateTask(task.copy(notificationTime = null))
                     }
                 }
             }
