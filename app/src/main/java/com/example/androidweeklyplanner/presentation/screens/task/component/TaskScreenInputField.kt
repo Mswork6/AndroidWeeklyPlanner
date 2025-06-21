@@ -50,8 +50,7 @@ internal fun TaskScreenInputField(
     horizontalAlignment = Alignment.Start,
     verticalArrangement = Arrangement.spacedBy(8.dp)
 ) {
-    val titleScrollState = rememberScrollState()
-    val descriptionScrollState = rememberScrollState()
+
 
     BasicTextField(
         value = nameText,
@@ -69,8 +68,7 @@ internal fun TaskScreenInputField(
                     end = Offset(size.width, y),
                     strokeWidth = strokeWidth
                 )
-            }
-            .verticalScroll(titleScrollState),
+            },
         decorationBox = { innerTextField ->
             Box(modifier = Modifier.padding(8.dp)) {
                 if (nameText.isEmpty()) {
@@ -105,8 +103,7 @@ internal fun TaskScreenInputField(
                 width = 1.dp,
                 color = Color.Gray,
                 shape = RoundedCornerShape(8.dp)
-            )
-            .verticalScroll(descriptionScrollState),
+            ),
         decorationBox = { innerTextField ->
             Box(modifier = Modifier.padding(8.dp)) {
                 if (descriptionText?.isEmpty() != false) {

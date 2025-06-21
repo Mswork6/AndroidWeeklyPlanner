@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -114,7 +115,7 @@ private fun TaskScreenBaseContent(
             )
         }
     ) { padding: PaddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .padding(padding)
                 .padding(16.dp),
@@ -123,59 +124,73 @@ private fun TaskScreenBaseContent(
             ),
             horizontalAlignment = Alignment.Start
         ) {
-            TaskScreenInputField(
-                nameText = state.name,
-                taskNameError = state.errorMessage?.let { stringResource(id = it) },
-                descriptionText = state.description,
-                editState = state.editable,
-                onTaskTitleValueChange = { onAction(TaskScreenAction.SetName(it)) },
-                onTaskDescriptionValueChange = { onAction(TaskScreenAction.SetDescription(it)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            TaskScreenPriorityInputField(
-                editState = state.editable,
-                priority = state.priority,
-                onClick = { onAction(TaskScreenAction.SetPriorityPickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ScreenHorizontalDivider()
-            TaskScreenDifficultyInputField(
-                editState = state.editable,
-                difficulty = state.difficulty,
-                onClick = { onAction(TaskScreenAction.SetDifficultyPickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ScreenHorizontalDivider()
-            TaskScreenCategoryInputField(
-                editState = state.editable,
-                category = state.category,
-                onClick = { onAction(TaskScreenAction.SetCategoryPickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ScreenHorizontalDivider()
-            TaskScreenDateInputField(
-                selectedDate = state.date,
-                editState = state.editable,
-                onClick = { onAction(TaskScreenAction.SetDatePickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ScreenHorizontalDivider()
-            TaskScreenTimeInputField(
-                selectedTime = state.time,
-                editState = state.editable,
-                onClick = { onAction(TaskScreenAction.SetTimePickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ScreenHorizontalDivider()
-            TaskScreenNotificationTimeInputField(
-                notificationTime =
-                if (state.notificationTimeOffset != null)
-                    notificationTimeString(state.date, state.time, state.notificationTimeOffset)
-                else null,
-                editState = state.editable,
-                onClick = { onAction(TaskScreenAction.SetNotificationTimePickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
+            item {
+                TaskScreenInputField(
+                    nameText = state.name,
+                    taskNameError = state.errorMessage?.let { stringResource(id = it) },
+                    descriptionText = state.description,
+                    editState = state.editable,
+                    onTaskTitleValueChange = { onAction(TaskScreenAction.SetName(it)) },
+                    onTaskDescriptionValueChange = { onAction(TaskScreenAction.SetDescription(it)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item {
+                TaskScreenPriorityInputField(
+                    editState = state.editable,
+                    priority = state.priority,
+                    onClick = { onAction(TaskScreenAction.SetPriorityPickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                TaskScreenDifficultyInputField(
+                    editState = state.editable,
+                    difficulty = state.difficulty,
+                    onClick = { onAction(TaskScreenAction.SetDifficultyPickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                TaskScreenCategoryInputField(
+                    editState = state.editable,
+                    category = state.category,
+                    onClick = { onAction(TaskScreenAction.SetCategoryPickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                TaskScreenDateInputField(
+                    selectedDate = state.date,
+                    editState = state.editable,
+                    onClick = { onAction(TaskScreenAction.SetDatePickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                TaskScreenTimeInputField(
+                    selectedTime = state.time,
+                    editState = state.editable,
+                    onClick = { onAction(TaskScreenAction.SetTimePickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                TaskScreenNotificationTimeInputField(
+                    notificationTime =
+                    if (state.notificationTimeOffset != null)
+                        notificationTimeString(state.date, state.time, state.notificationTimeOffset)
+                    else null,
+                    editState = state.editable,
+                    onClick = { onAction(TaskScreenAction.SetNotificationTimePickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
 
         if (state.isDatePickerOpened) {
