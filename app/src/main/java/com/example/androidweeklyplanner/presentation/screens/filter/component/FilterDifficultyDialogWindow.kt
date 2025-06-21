@@ -1,6 +1,5 @@
 package com.example.androidweeklyplanner.presentation.screens.filter.component
 
-import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +35,7 @@ import androidx.compose.ui.window.Dialog
 import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.Difficulty
 import com.example.androidweeklyplanner.presentation.color
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.description
 import com.example.androidweeklyplanner.presentation.screens.main.component.DifficultyCircle
 

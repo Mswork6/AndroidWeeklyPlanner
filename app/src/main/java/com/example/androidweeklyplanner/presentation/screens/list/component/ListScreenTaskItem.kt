@@ -34,7 +34,7 @@ import com.example.androidweeklyplanner.domain.model.Difficulty
 import com.example.androidweeklyplanner.domain.model.Priority
 import com.example.androidweeklyplanner.domain.model.Task
 import com.example.androidweeklyplanner.presentation.color
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.dateTimeToString
 import com.example.androidweeklyplanner.presentation.screens.main.component.ItemCard
 import java.time.LocalDate

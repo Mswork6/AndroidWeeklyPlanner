@@ -20,8 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.SortConfig
-import com.example.androidweeklyplanner.domain.model.SortType
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.screens.main.sorting.component.SortDialogWindow
 import com.example.androidweeklyplanner.presentation.screens.shared.ActionTab
 

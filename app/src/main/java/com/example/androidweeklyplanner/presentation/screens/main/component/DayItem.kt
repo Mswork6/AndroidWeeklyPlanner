@@ -21,14 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,7 +37,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.Day
 import com.example.androidweeklyplanner.domain.model.DayType.MONDAY
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.LightGreen
 import com.example.androidweeklyplanner.presentation.dateToString
 import com.example.androidweeklyplanner.presentation.description
 import java.time.LocalDate
@@ -62,7 +59,7 @@ fun DayItem(
     )
 
     val allDone = enabled && day.tasks.all { it.isDone }
-    val cardColor = if (allDone) Color(0xFF87EA8A) /* светло-зелёный */
+    val cardColor = if (allDone) LightGreen
     else MaterialTheme.colorScheme.primary
 
     val composition by rememberLottieComposition(LottieCompositionSpec.Asset("confetti.json"))
@@ -82,7 +79,6 @@ fun DayItem(
 
     DisposableEffect(key1 = day.date) {
         onDispose {
-            // гарантированно убираем флаг, даже если анимация не успела отработать
             onStopEncouragingAnimation(day.date)
         }
     }

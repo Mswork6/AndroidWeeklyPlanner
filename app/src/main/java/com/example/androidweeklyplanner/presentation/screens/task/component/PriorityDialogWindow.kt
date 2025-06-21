@@ -34,7 +34,7 @@ import androidx.compose.ui.window.Dialog
 import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.Priority
 import com.example.androidweeklyplanner.presentation.description
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 
 @Composable
 fun PriorityDialogWindow(

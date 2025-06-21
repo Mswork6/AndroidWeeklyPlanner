@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.SortType
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.description
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterCategoryDialogWindow
 import com.example.androidweeklyplanner.presentation.screens.filter.component.FilterDifficultyDialogWindow
