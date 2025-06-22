@@ -23,11 +23,6 @@
             android:exported="false" />
 
         <receiver
-            android:name=".domain.interactor.notification.NotificationCreator"
-            android:enabled="true"
-            android:exported="false" />
-
-        <receiver
             android:name=".domain.interactor.notification.NotificationCompleter"
             android:enabled="true"
             android:exported="false" />

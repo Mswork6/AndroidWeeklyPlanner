@@ -1,16 +1,13 @@
 package com.example.androidweeklyplanner.domain.interactor.notification.impl
 
 import android.annotation.SuppressLint
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
+import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.example.androidweeklyplanner.domain.TASK_ID_KEY
-import com.example.androidweeklyplanner.domain.interactor.notification.NotificationCreator
 import com.example.androidweeklyplanner.domain.interactor.notification.NotificationInteractor
 import com.example.androidweeklyplanner.domain.interactor.notification.NotificationWorker
 import com.example.androidweeklyplanner.domain.model.Notification
@@ -43,7 +40,22 @@ class NotificationInteractorImpl @Inject constructor(
             "notification_${notification.taskId}",
             ExistingWorkPolicy.REPLACE,
             request
-        )
+        ).also {
+            Log.d("NotifInteractor", "Enqueued work for task=${notification.taskId}, delay=${delay}ms")
+
+            val workName = "notification_${notification.taskId}"
+            WorkManager.getInstance(context)
+                .getWorkInfosForUniqueWork(workName)
+                .addListener({
+                    val infos = WorkManager.getInstance(context)
+                        .getWorkInfosForUniqueWork(workName)
+                        .get()   // это List<WorkInfo>
+                    infos.forEach {
+                        Log.d("WorkDebug", "id=${it.id} state=${it.state} attempts=${it.runAttemptCount}")
+                    }
+                }, ContextCompat.getMainExecutor(context))
+        }
+
     }
 
     override suspend fun deleteNotification(notificationId: UUID) {

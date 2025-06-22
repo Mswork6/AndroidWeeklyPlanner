@@ -3,6 +3,7 @@ package com.example.androidweeklyplanner.domain
 import android.app.AlarmManager
 import android.app.NotificationManager
 import android.content.Context
+import androidx.work.WorkManager
 import com.example.androidweeklyplanner.domain.interactor.notification.NotificationInteractor
 import com.example.androidweeklyplanner.domain.interactor.notification.impl.NotificationInteractorImpl
 import com.example.androidweeklyplanner.domain.interactor.saver.TaskInteractor
@@ -64,6 +65,12 @@ interface DomainModule {
         fun provideNotificationManager(@ApplicationContext context: Context): NotificationManager {
             return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         }
+
+        @Provides
+        @Singleton
+        fun provideWorkManager(
+            @ApplicationContext context: Context
+        ): WorkManager = WorkManager.getInstance(context)
 
         @MainScreenSortRepo
         @Singleton
