@@ -29,7 +29,6 @@ class TasksListScreenViewModel @Inject constructor(
     private val actionDialogTask = MutableStateFlow<Task?>(null)
 
     init {
-        // Собираем поток задач + текущий выбранный для диалога
         viewModelScope.launch {
             getAllTasks()
                 .combine(actionDialogTask) { tasks, selectedTask ->
@@ -44,7 +43,7 @@ class TasksListScreenViewModel @Inject constructor(
                 .collect { _state.value = it }
         }
 
-        // При приходе push-уведомления закрываем любой открытый диалог
+        // Подписка на уведомление
         viewModelScope.launch {
             notificationEventBus.events.collect {
                 actionDialogTask.value = null

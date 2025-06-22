@@ -64,7 +64,6 @@ fun CategoryDialogWindow(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                // Группа радиокнопок
                 RadioButtonGroupWithCategoryEnum(
                     selectedOption = tempSelectedOption,
                     onOptionSelected = { option ->
@@ -74,7 +73,6 @@ fun CategoryDialogWindow(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Кнопки подтверждения и отмены
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
@@ -124,7 +122,6 @@ fun RadioButtonGroupWithCategoryEnum(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp)
-                    //.height(48.dp) // MAKE UNIFORM SIZE!
                     .clickable { onOptionSelected(option) }
 
             ) {

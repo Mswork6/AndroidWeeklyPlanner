@@ -40,7 +40,6 @@ fun SortDialogWindow(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // Локальная копия, чтобы юзер мог отменить изменения
     var tempConfig by remember { mutableStateOf(selectedConfig) }
 
     Dialog(onDismissRequest = onDismissRequest) {

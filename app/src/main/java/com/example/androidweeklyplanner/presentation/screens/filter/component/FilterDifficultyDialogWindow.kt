@@ -36,7 +36,7 @@ import com.example.androidweeklyplanner.domain.model.Difficulty
 import com.example.androidweeklyplanner.presentation.color
 import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.description
-import com.example.androidweeklyplanner.presentation.screens.main.component.DifficultyCircle
+import com.example.androidweeklyplanner.presentation.screens.main.component.ColorCircle
 
 @Composable
 fun FilterDifficultyDialogWindow(
@@ -66,7 +66,6 @@ fun FilterDifficultyDialogWindow(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                // Группа радиокнопок
                 CheckboxGroupWithDifficultyEnum(
                     selectedOptions = tempSelectedOptions,
                     onOptionToggled = { option, isChecked ->
@@ -154,7 +153,7 @@ fun CheckboxGroupWithDifficultyEnum(
                         .weight(3f)
                 )
                 Row(modifier = Modifier.weight(1f)) {
-                    DifficultyCircle(
+                    ColorCircle(
                         color = option.color
                     )
                 }

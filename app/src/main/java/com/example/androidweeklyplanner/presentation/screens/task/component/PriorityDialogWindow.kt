@@ -36,7 +36,7 @@ import com.example.androidweeklyplanner.domain.model.Priority
 import com.example.androidweeklyplanner.presentation.color
 import com.example.androidweeklyplanner.presentation.description
 import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
-import com.example.androidweeklyplanner.presentation.screens.main.component.DifficultyCircle
+import com.example.androidweeklyplanner.presentation.screens.main.component.ColorCircle
 
 @Composable
 fun PriorityDialogWindow(
@@ -66,7 +66,6 @@ fun PriorityDialogWindow(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                // Группа радиокнопок
                 RadioButtonGroupWithPriorityEnum(
                     selectedOption = tempSelectedOption,
                     onOptionSelected = { option ->
@@ -76,7 +75,6 @@ fun PriorityDialogWindow(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Кнопки подтверждения и отмены
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
@@ -144,7 +142,7 @@ fun RadioButtonGroupWithPriorityEnum(
                         .weight(3f)
                 )
                 Row(modifier = Modifier.weight(1f)) {
-                    DifficultyCircle(
+                    ColorCircle(
                         color = option.color
                     )
                 }

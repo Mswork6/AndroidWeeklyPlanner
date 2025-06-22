@@ -80,32 +80,6 @@ internal fun TaskScreenInputField(
             modifier = Modifier.padding(start = 8.dp)
         )
     }
-//
-//    BasicTextField(
-//        value = descriptionText ?: "",
-//        readOnly = !editState,
-//        onValueChange = onTaskDescriptionValueChange,
-//        maxLines = 5,
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .sizeIn(minHeight = 100.dp)
-//            .border(
-//                width = 1.dp,
-//                color = Color.Gray,
-//                shape = RoundedCornerShape(8.dp)
-//            ),
-//        decorationBox = { innerTextField ->
-//            Box(modifier = Modifier.padding(8.dp)) {
-//                if (descriptionText?.isEmpty() != false) {
-//                    Text(
-//                        text = stringResource(id = R.string.description_task_description),
-//                        color = Color.Gray
-//                    )
-//                }
-//                innerTextField()
-//            }
-//        }
-//    )
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

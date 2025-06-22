@@ -42,15 +42,6 @@ fun ItemCard(
         contentColor = colors.contentColor,
     ) {
         Row(
-//            Was 16.dp all In COURSE WORK
-//            modifier = Modifier.padding(16.dp),
-//            Was like That while writing DIPLOMA
-//            Modifier.
-//                padding(
-//                    top = 16.dp,
-//                    bottom = 16.dp,
-//                    start = 8.dp,
-//                    end = 8.dp),
             modifier = contentModifier,
             content = content,
             verticalAlignment = Alignment.CenterVertically,

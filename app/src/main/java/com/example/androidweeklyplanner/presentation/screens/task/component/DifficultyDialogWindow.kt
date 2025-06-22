@@ -36,7 +36,7 @@ import com.example.androidweeklyplanner.domain.model.Difficulty
 import com.example.androidweeklyplanner.presentation.color
 import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.description
-import com.example.androidweeklyplanner.presentation.screens.main.component.DifficultyCircle
+import com.example.androidweeklyplanner.presentation.screens.main.component.ColorCircle
 
 @Composable
 fun DifficultyDialogWindow(
@@ -66,7 +66,6 @@ fun DifficultyDialogWindow(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                // Группа радиокнопок
                 RadioButtonGroupWithDifficultyEnum(
                     selectedOption = tempSelectedOption,
                     onOptionSelected = { option ->
@@ -76,7 +75,6 @@ fun DifficultyDialogWindow(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Кнопки подтверждения и отмены
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
@@ -147,7 +145,7 @@ fun RadioButtonGroupWithDifficultyEnum(
                         .weight(3f)
                 )
                 Row(modifier = Modifier.weight(1f)) {
-                    DifficultyCircle(
+                    ColorCircle(
                         color = option.color
                     )
                 }

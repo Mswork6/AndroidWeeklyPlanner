@@ -5,9 +5,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/**
- * Singleton-сервис для рассылки и получения событий «пришло уведомление».
- */
 @Singleton
 class NotificationEventBus @Inject constructor() {
     private val _events = MutableSharedFlow<Unit>(replay = 1)

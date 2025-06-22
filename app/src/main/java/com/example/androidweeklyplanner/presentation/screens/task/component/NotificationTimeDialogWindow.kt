@@ -64,7 +64,6 @@ fun NotificationTimeDialogWindow(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                // Группа радиокнопок
                 RadioButtonGroupWithNotificationTimeEnum(
                     selectedOption = tempSelectedOption,
                     onOptionSelected = { option ->
@@ -74,7 +73,6 @@ fun NotificationTimeDialogWindow(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Кнопки подтверждения и отмены
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center

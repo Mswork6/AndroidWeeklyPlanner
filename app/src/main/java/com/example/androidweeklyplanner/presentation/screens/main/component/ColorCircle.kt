@@ -13,7 +13,7 @@ import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroi
 import com.example.androidweeklyplanner.presentation.core.theme.extendedColors
 
 @Composable
-fun DifficultyCircle(
+fun ColorCircle(
     color: Color
 ) {
     Canvas(
@@ -34,7 +34,7 @@ fun DifficultyCircle(
 @Composable
 private fun DifficultyCirclePreview1() {
     CourseWorkAndroidWeeklyPlannerTheme {
-        DifficultyCircle(
+        ColorCircle(
             color = MaterialTheme.extendedColors.green
         )
     }

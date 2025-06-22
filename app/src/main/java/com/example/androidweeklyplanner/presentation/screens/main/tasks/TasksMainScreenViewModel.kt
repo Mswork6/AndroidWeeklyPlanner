@@ -65,10 +65,9 @@ class TasksMainScreenViewModel @Inject constructor(
             }
         }
 
-        // Подписка на событие уведомления
+        // Подписка на уведомления
         viewModelScope.launch {
             notificationEventBus.events.collect {
-                // Закрытие любойго открытого диалога
                 actionDialogTask.value = null
             }
         }

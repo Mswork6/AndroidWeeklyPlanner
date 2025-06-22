@@ -64,7 +64,6 @@ fun FilterCategoryDialogWindow(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                // Группа радиокнопок
                 CheckboxGroupWithCategoryEnum(
                     selectedOptions = tempSelectedOptions,
                     onOptionToggled = { option, isChecked ->

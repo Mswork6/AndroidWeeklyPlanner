@@ -68,7 +68,6 @@ fun TaskLimitWindow(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Кнопки подтверждения и отмены
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
