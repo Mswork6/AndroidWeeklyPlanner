@@ -18,10 +18,18 @@
         android:theme="@style/Theme.CourseWorkAndroidWeeklyPlanner"
         tools:targetApi="31">
 
+
+        <!-- App-Startup Provider, чтобы WorkManager инициализировался на reboot -->
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
-            tools:node="remove">
+            android:exported="false"
+            tools:node="merge">
+
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
         </provider>
 
         <receiver

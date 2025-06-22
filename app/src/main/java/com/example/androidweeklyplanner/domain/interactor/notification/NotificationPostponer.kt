@@ -32,11 +32,11 @@ class NotificationPostponer : BroadcastReceiver() {
                 val task = taskInteractor.getTask(taskId) ?: return@launch
                 notificationInteractor.deleteNotification(taskId)
                 val originalOffset = task.notificationTimeOffset ?: 0L
-                var newOffset = originalOffset + 15L
+                var newOffset = originalOffset + 7L
                 val taskDateTime = LocalDateTime.of(task.date, task.time)
                 var nextNotify = taskDateTime.plusMinutes(newOffset)
                 while (!nextNotify.isAfter(LocalDateTime.now())) {
-                    newOffset += 15L
+                    newOffset += 7L
                     nextNotify = taskDateTime.plusMinutes(newOffset)
                 }
                 taskInteractor.updateTask(task.copy(notificationTimeOffset = newOffset))
