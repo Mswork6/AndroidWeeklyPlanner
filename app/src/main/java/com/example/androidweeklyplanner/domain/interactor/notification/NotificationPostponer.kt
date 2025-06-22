@@ -39,7 +39,6 @@ class NotificationPostponer : BroadcastReceiver() {
                             offset += 15L
                             nextNotify = taskTime.plusMinutes(offset)
                         }
-                        //Log.d("MSWORK6", date.toString())
                         taskInteractor.updateTask(task.copy(notificationTimeOffset = offset))
                     }
                 }

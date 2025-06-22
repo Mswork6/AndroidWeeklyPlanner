@@ -11,7 +11,8 @@ class TaskComparatorProvider @Inject constructor() {
 
     private fun buildComparator(config: SortConfig): Comparator<Task> {
         // базовый компаратор по времени
-        var comparator: Comparator<Task> = compareBy { it.time }
+        var comparator: Comparator<Task> = compareBy<Task> { it.date }
+            .thenBy { it.time }
 
         // вторичный ключ — сложность
         when (config.difficultyOrder) {
