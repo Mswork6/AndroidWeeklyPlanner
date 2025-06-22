@@ -2,6 +2,7 @@ package com.example.androidweeklyplanner.presentation.screens.main.tasks
 
 import androidx.lifecycle.viewModelScope
 import com.example.androidweeklyplanner.data.CelebratedDatesDataStore
+import com.example.androidweeklyplanner.domain.eventBus.CelebrationEventBus
 import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
 import com.example.androidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.androidweeklyplanner.domain.model.Task
@@ -13,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -25,7 +25,8 @@ class TasksMainScreenViewModel @Inject constructor(
     private val toggleTaskStatus: ToggleTaskStatusUseCase,
     private val taskInteractor: TaskInteractor,
     private val celebratedDatesDataStore: CelebratedDatesDataStore,
-    private val notificationEventBus: NotificationEventBus
+    private val notificationEventBus: NotificationEventBus,
+    private val celebrationEventBus: CelebrationEventBus
 ) : BaseViewModel<TasksMainScreenState, TasksMainScreenAction>() {
     private val _state: MutableStateFlow<TasksMainScreenState> = MutableStateFlow(TasksMainScreenState.Initial)
     override val state: StateFlow<TasksMainScreenState> = _state.asStateFlow()
@@ -35,6 +36,12 @@ class TasksMainScreenViewModel @Inject constructor(
     private val actionDialogTask: MutableStateFlow<Task?> = MutableStateFlow(null)
 
     init {
+        viewModelScope.launch {
+            celebrationEventBus.events.collect { date ->
+                _playingDates.update { it + date }
+            }
+        }
+
         viewModelScope.launch {
             combine(
                 getDays(),
@@ -79,23 +86,6 @@ class TasksMainScreenViewModel @Inject constructor(
         is TasksMainScreenAction.DeleteTask -> taskInteractor.deleteTask(action.task)
         is TasksMainScreenAction.StopEncouragingAnimation -> {
             _playingDates.update { it - action.date }
-        }
-    }
-
-    private suspend fun toggleTaskStatus(task: Task) {
-        toggleTaskStatus.invoke(task)
-
-        val date = task.date
-        val daysNow = getDays().first()
-        val dayNow = daysNow.find { it.date == date }
-        val allDone = dayNow?.tasks?.all { it.isDone } ?: false
-
-        if (allDone) {
-            celebratedDatesDataStore.markDateCelebrated(date)
-            _playingDates.update { it + date }
-        } else {
-            celebratedDatesDataStore.unmarkDateCelebrated(date)
-            _playingDates.update { it - date }
         }
     }
 }

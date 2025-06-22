@@ -8,9 +8,11 @@ import java.util.UUID
 interface TaskRepository {
     fun getTasks(): Flow<List<Task>>
 
+    suspend fun getTask(taskId: UUID): Task?
+
     fun getTasksForDateRange(start: LocalDate, end: LocalDate): Flow<List<Task>>
 
-    suspend fun getTask(taskId: UUID): Task?
+    fun getTasksByDate(date: LocalDate): Flow<List<Task>>
 
     suspend fun addTask(task: Task)
 
