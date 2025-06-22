@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.androidweeklyplanner"
+    namespace = "com.example.taskplanner"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.androidweeklyplanner"
+        applicationId = "com.example.taskplanner"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

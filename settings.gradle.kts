@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CourseWorkAndroidWeeklyPlanner"
+rootProject.name = "TaskPlanner"
 include(":app")
  
