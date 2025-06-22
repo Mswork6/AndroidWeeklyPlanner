@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Task Planner 1-3-5</string>
+    <string name="app_name">Task planner 1-3-5</string>
     <string name="action_back">Back</string>
     <string name="action_add_task">Add task</string>
     <string name="description_task_title">Task title</string>
