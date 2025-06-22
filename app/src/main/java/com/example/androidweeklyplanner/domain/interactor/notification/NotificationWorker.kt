@@ -11,6 +11,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.androidweeklyplanner.R
+import com.example.androidweeklyplanner.domain.TASK_ID_KEY
 import com.example.androidweeklyplanner.domain.interactor.saver.TaskInteractor
 import com.example.androidweeklyplanner.domain.notification
 import com.example.androidweeklyplanner.presentation.MainActivity
@@ -76,7 +77,13 @@ class NotificationWorker @AssistedInject constructor(
         ) R.string.description_notification_message_expired
         else R.string.description_notification_message
 
-        val text = applicationContext.getString(textRes, task.name.take(35) + "...", whenStr)
+        val taskName = if (task.name.length > 35) {
+            task.name.substring(0, 35).plus("...")
+        } else {
+            task.name
+        }
+
+        val text = applicationContext.getString(textRes, taskName, whenStr)
 
         // Intent на открытие задачи
         val clickIntent = PendingIntent.getActivity(
@@ -86,12 +93,44 @@ class NotificationWorker @AssistedInject constructor(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        // Intent для кнопки «Завершить»
+        val completeIntent = Intent(applicationContext, NotificationCompleter::class.java).apply {
+            putExtra(TASK_ID_KEY, taskId.toString())
+        }
+        val completePending = PendingIntent.getBroadcast(
+            applicationContext,
+            taskId.hashCode().inv(),
+            completeIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // Intent для кнопки «Отложить»
+        val postponeIntent = Intent(applicationContext, NotificationPostponer::class.java).apply {
+            putExtra(TASK_ID_KEY, taskId.toString())
+        }
+        val postponePending = PendingIntent.getBroadcast(
+            applicationContext,
+            taskId.hashCode(),
+            postponeIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.icon_checkbox_done)
             .setContentTitle(title)
             .setContentText(text)
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setContentIntent(clickIntent)
+            .addAction(
+                R.drawable.baseline_more_time_24,                              // иконка для «Отложить»
+                applicationContext.getString(R.string.postpone_for_15_minutes),// текст кнопки
+                postponePending                                               // Intent
+            )
+            .addAction(
+                R.drawable.icon_checkbox_done,                                // иконка для «Завершить»
+                applicationContext.getString(R.string.action_complete),      // текст кнопки
+                completePending                                              // Intent
+            )
             .setAutoCancel(true)
             .build()
 

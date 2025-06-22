@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".WeeklyPlannerApplication"
@@ -16,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CourseWorkAndroidWeeklyPlanner"
         tools:targetApi="31">
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove">
+        </provider>
 
         <receiver
             android:name=".domain.interactor.notification.NotificationPostponer"
