@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.androidweeklyplanner.R
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.dateToString
 import java.time.LocalDate
 

@@ -18,13 +18,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,7 +37,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.Day
 import com.example.androidweeklyplanner.domain.model.DayType.MONDAY
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.LightGreen
 import com.example.androidweeklyplanner.presentation.dateToString
 import com.example.androidweeklyplanner.presentation.description
 import java.time.LocalDate
@@ -47,41 +48,40 @@ fun DayItem(
     day: Day,
     isExpanded: Boolean,
     enabled: Boolean,
-    celebrated: Boolean,
+    needAnimation: Boolean,
     onClick: () -> Unit,
-    onCelebrate: (LocalDate) -> Unit,
-    onUnCelebrate: (LocalDate) -> Unit,
+    onStopEncouragingAnimation: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val rotationState by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
         label = stringResource(R.string.descipition_dayitem_animation)
     )
+
     val allDone = enabled && day.tasks.all { it.isDone }
+    val cardColor = if (allDone) LightGreen
+    else MaterialTheme.colorScheme.primary
 
     val composition by rememberLottieComposition(LottieCompositionSpec.Asset("confetti.json"))
     val animatable = rememberLottieAnimatable()
 
-    LaunchedEffect(allDone, celebrated, composition) {
-        if (allDone && !celebrated && composition != null) {
-            // проигрываем конфетти один раз
+
+    LaunchedEffect(needAnimation, composition) {
+        if (needAnimation && composition != null) {
             animatable.animate(
                 composition = composition,
-                iterations  = 1,
-                speed       = 1f
+                iterations = 1,
+                speed = 1f
             )
-            // только после того как анимация завершилась
-            onCelebrate(day.date)
-        }
-        // 2) если стало !allDone, но праздновали==true — сбрасываем
-        else if (!allDone && celebrated) {
-            onUnCelebrate(day.date)
+            onStopEncouragingAnimation(day.date)
         }
     }
 
-
-    val cardColor = if (allDone) Color(0xFF87EA8A) /* светло-зелёный */
-    else MaterialTheme.colorScheme.primary
+    DisposableEffect(key1 = day.date) {
+        onDispose {
+            onStopEncouragingAnimation(day.date)
+        }
+    }
 
     Box(
         modifier = modifier
@@ -134,7 +134,7 @@ fun DayItem(
 
         }
 
-        if (allDone && !celebrated && composition != null) {
+        if (needAnimation) {
             LottieAnimation(
                 composition = composition,
                 progress = animatable.progress,
@@ -165,20 +165,18 @@ private fun DayCardPreview() {
         ) {
             DayItem(
                 enabled = true,
-                celebrated = false,
                 onClick = { },
-                onCelebrate = { },
-                onUnCelebrate = { },
+                needAnimation = false,
+                onStopEncouragingAnimation = { },
                 day = day,
                 isExpanded = true,
                 modifier = Modifier.fillMaxWidth()
             )
             DayItem(
                 enabled = false,
-                celebrated = false,
                 onClick = { },
-                onCelebrate = { },
-                onUnCelebrate = { },
+                needAnimation = false,
+                onStopEncouragingAnimation = { },
                 day = day,
                 isExpanded = false,
                 modifier = Modifier.fillMaxWidth()

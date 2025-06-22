@@ -5,7 +5,8 @@ import com.example.androidweeklyplanner.domain.repository.TaskRepository
 import javax.inject.Inject
 
 class ToggleTaskStatusUseCase @Inject constructor(
-    private val taskRepository: TaskRepository
+    private val taskRepository: TaskRepository,
+    private val handleCelebration: HandleDayCelebrationUseCase
 ) {
     suspend operator fun invoke(task: Task) {
         taskRepository.updateTask(
@@ -13,5 +14,6 @@ class ToggleTaskStatusUseCase @Inject constructor(
                 copy(isDone = isDone.not())
             }
         )
+        handleCelebration(task.date)
     }
 }

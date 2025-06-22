@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.example.androidweeklyplanner.R
-import com.example.androidweeklyplanner.presentation.core.LightBlue20
+import com.example.androidweeklyplanner.presentation.core.theme.LightBlue20
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)

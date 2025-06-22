@@ -28,7 +28,7 @@ import com.example.androidweeklyplanner.domain.model.Category
 import com.example.androidweeklyplanner.domain.model.Difficulty
 import com.example.androidweeklyplanner.domain.model.Priority
 import com.example.androidweeklyplanner.domain.model.Task
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID

@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.Category
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.description
 
 @Composable
@@ -41,7 +41,7 @@ internal fun TaskScreenCategoryInputField(
             style = MaterialTheme.typography.titleSmall
         )
         Text(
-            text = stringResource(category.description),
+            text = stringResource(category.description) + " " + category.emoji,
             style = MaterialTheme.typography.labelSmall
         )
     }
@@ -54,7 +54,7 @@ private fun TaskAddScreenDifficultyInputFieldPreview() {
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenCategoryInputField(
             editState = true,
-            category = Category.NONE,
+            category = Category.WORK,
             onClick = {},
             modifier = Modifier.fillMaxWidth()
         )

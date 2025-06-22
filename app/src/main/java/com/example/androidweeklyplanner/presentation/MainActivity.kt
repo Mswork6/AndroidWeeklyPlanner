@@ -5,12 +5,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.androidweeklyplanner.domain.interactor.notification.NotificationEventBus
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.screens.filter.installFilterScreen
 import com.example.androidweeklyplanner.presentation.screens.filter.navigateToFilterScreen
 import com.example.androidweeklyplanner.presentation.screens.list.installListScreen
@@ -42,7 +47,17 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = "main"
+                    startDestination = "main",
+                    enterTransition = {
+                        fadeIn(tween(
+                            easing = FastOutSlowInEasing
+                        ))
+                    },
+                    exitTransition = {
+                        fadeOut(tween(
+                            easing = FastOutSlowInEasing
+                        ))
+                    }
                 ) {
                     installMainScreen(
                         onNavigateToTaskAddScreen  = navController::navigateToAddScreen,

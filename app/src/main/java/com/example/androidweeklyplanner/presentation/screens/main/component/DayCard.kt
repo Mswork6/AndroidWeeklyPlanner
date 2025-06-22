@@ -18,7 +18,7 @@ import com.example.androidweeklyplanner.domain.model.DayType
 import com.example.androidweeklyplanner.domain.model.Difficulty
 import com.example.androidweeklyplanner.domain.model.Priority
 import com.example.androidweeklyplanner.domain.model.Task
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID
@@ -26,10 +26,9 @@ import java.util.UUID
 @Composable
 fun DayCard(
     day: Day,
-    celebrated: Boolean,
+    needAnimation: Boolean,
     onTaskItemClick: (Task) -> Unit,
-    onCelebrate: (LocalDate) -> Unit,
-    onUnCelebrate: (LocalDate) -> Unit,
+    onStopEncouragingAnimation: (LocalDate) -> Unit,
     dayItemModifier: Modifier = Modifier,
     taskItemModifier: Modifier = Modifier
 ) = Column {
@@ -42,10 +41,11 @@ fun DayCard(
         day = day,
         isExpanded = isExpanded,
         enabled = hasTasks,
-        celebrated = celebrated,
+        needAnimation = needAnimation,
+        onStopEncouragingAnimation = { date ->
+            onStopEncouragingAnimation(date)
+        },
         onClick = { if (hasTasks) isExpanded = isExpanded.not() },
-        onCelebrate = onCelebrate,
-        onUnCelebrate = onUnCelebrate,
         modifier = dayItemModifier
     )
     AnimatedVisibility(isExpanded) {
@@ -101,10 +101,9 @@ private fun DayCardPreview() {
         )
         DayCard(
             day = day,
-            celebrated = false,
+            needAnimation = false,
             onTaskItemClick = { },
-            onCelebrate = { },
-            onUnCelebrate = { },
+            onStopEncouragingAnimation = { },
             dayItemModifier = Modifier,
             taskItemModifier = Modifier
                 .padding(

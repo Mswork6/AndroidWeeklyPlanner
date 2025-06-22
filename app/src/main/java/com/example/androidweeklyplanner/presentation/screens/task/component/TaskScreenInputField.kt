@@ -24,37 +24,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.androidweeklyplanner.R
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
-
-internal data class TaskAddInputFieldState(
-    val taskTitle: String,
-    val taskDescription: String,
-)
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 
 @Composable
 internal fun TaskScreenInputField(
     nameText: String,
     taskNameError: String?,
-    descriptionText: String?,
     editState: Boolean,
     onTaskTitleValueChange: (String) -> Unit,
-    onTaskDescriptionValueChange: (String) -> Unit,
-
     modifier: Modifier = Modifier,
 ) = Column(
     modifier = modifier,
     horizontalAlignment = Alignment.Start,
     verticalArrangement = Arrangement.spacedBy(8.dp)
 ) {
-    val titleScrollState = rememberScrollState()
-    val descriptionScrollState = rememberScrollState()
-
     BasicTextField(
         value = nameText,
         readOnly = !editState,
@@ -71,8 +58,7 @@ internal fun TaskScreenInputField(
                     end = Offset(size.width, y),
                     strokeWidth = strokeWidth
                 )
-            }
-            .verticalScroll(titleScrollState),
+            },
         decorationBox = { innerTextField ->
             Box(modifier = Modifier.padding(8.dp)) {
                 if (nameText.isEmpty()) {
@@ -94,55 +80,44 @@ internal fun TaskScreenInputField(
             modifier = Modifier.padding(start = 8.dp)
         )
     }
-
-    BasicTextField(
-        value = descriptionText ?: "",
-        readOnly = !editState,
-        onValueChange = onTaskDescriptionValueChange,
-        maxLines = 5,
-        modifier = Modifier
-            .fillMaxWidth()
-            .sizeIn(minHeight = 100.dp)
-            .border(
-                width = 1.dp,
-                color = Color.Gray,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .verticalScroll(descriptionScrollState),
-        decorationBox = { innerTextField ->
-            Box(modifier = Modifier.padding(8.dp)) {
-                if (descriptionText?.isEmpty() != false) {
-                    Text(
-                        text = stringResource(id = R.string.description_task_description),
-                        color = Color.Gray
-                    )
-                }
-                innerTextField()
-            }
-        }
-    )
+//
+//    BasicTextField(
+//        value = descriptionText ?: "",
+//        readOnly = !editState,
+//        onValueChange = onTaskDescriptionValueChange,
+//        maxLines = 5,
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .sizeIn(minHeight = 100.dp)
+//            .border(
+//                width = 1.dp,
+//                color = Color.Gray,
+//                shape = RoundedCornerShape(8.dp)
+//            ),
+//        decorationBox = { innerTextField ->
+//            Box(modifier = Modifier.padding(8.dp)) {
+//                if (descriptionText?.isEmpty() != false) {
+//                    Text(
+//                        text = stringResource(id = R.string.description_task_description),
+//                        color = Color.Gray
+//                    )
+//                }
+//                innerTextField()
+//            }
+//        }
+//    )
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun TaskAddScreenInputFieldPreview() {
-    var state by remember {
-        mutableStateOf(
-            TaskAddInputFieldState(
-                taskTitle = "",
-                taskDescription = ""
-            )
-        )
-    }
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenInputField(
             nameText = "",
             taskNameError = null,
-            descriptionText = "",
             editState = false,
-            onTaskTitleValueChange = { state = state.copy(taskTitle = it) },
-            onTaskDescriptionValueChange = { state = state.copy(taskDescription = it) },
+            onTaskTitleValueChange = { },
             modifier = Modifier.fillMaxWidth()
         )
     }

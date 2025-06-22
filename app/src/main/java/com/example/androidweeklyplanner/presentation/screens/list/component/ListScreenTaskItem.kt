@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -34,7 +33,7 @@ import com.example.androidweeklyplanner.domain.model.Difficulty
 import com.example.androidweeklyplanner.domain.model.Priority
 import com.example.androidweeklyplanner.domain.model.Task
 import com.example.androidweeklyplanner.presentation.color
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.dateTimeToString
 import com.example.androidweeklyplanner.presentation.screens.main.component.ItemCard
 import java.time.LocalDate
@@ -64,15 +63,13 @@ fun ListScreenTaskItem(
             .height(IntrinsicSize.Min)
     )
     {
-        // Used to write category color stripe
         Box(
             modifier = Modifier
                 .fillMaxHeight()
                 .width(stripeWidth)
                 .align(Alignment.CenterEnd)
-                .background(colorResource(stripeColor))
+                .background(stripeColor)
         )
-        // Main content
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -90,11 +87,8 @@ fun ListScreenTaskItem(
                     else
                         ImageVector.vectorResource(R.drawable.baseline_check_box_outline_blank_24),
                     contentDescription = null,
-                    tint = if (task.isDone) Color.Unspecified else when (task.priority) {
-                        Priority.LOW -> colorResource(R.color.gray)
-                        Priority.BASIC -> colorResource(R.color.black)
-                        Priority.HIGH -> colorResource(R.color.red)
-                    }
+                    tint = if (task.isDone) Color.Unspecified
+                    else task.priority.color
                 )
                 Spacer(Modifier.width(4.dp))
                 Text(

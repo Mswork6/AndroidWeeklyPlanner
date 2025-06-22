@@ -1,16 +1,14 @@
 package com.example.androidweeklyplanner.presentation.screens.task
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,11 +25,12 @@ import com.example.androidweeklyplanner.domain.model.Difficulty
 import com.example.androidweeklyplanner.domain.model.NotificationTime
 import com.example.androidweeklyplanner.domain.model.Priority
 import com.example.androidweeklyplanner.presentation.PastOrPresentSelectableDates
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.notificationTimeString
 import com.example.androidweeklyplanner.presentation.screens.shared.DatePickerModal
 import com.example.androidweeklyplanner.presentation.screens.shared.ErrorScreen
 import com.example.androidweeklyplanner.presentation.screens.shared.ScreenHorizontalDivider
+import com.example.androidweeklyplanner.presentation.screens.shared.TopBar
 import com.example.androidweeklyplanner.presentation.screens.task.component.CategoryDialogWindow
 import com.example.androidweeklyplanner.presentation.screens.task.component.DialWithDialogExample
 import com.example.androidweeklyplanner.presentation.screens.task.component.DifficultyDialogWindow
@@ -41,13 +39,12 @@ import com.example.androidweeklyplanner.presentation.screens.task.component.Prio
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskLimitWindow
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenCategoryInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenDateInputField
+import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenDescriptionInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenDifficultyInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenNotificationTimeInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenPriorityInputField
-import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenRepetitionInputField
 import com.example.androidweeklyplanner.presentation.screens.task.component.TaskScreenTimeInputField
-import com.example.androidweeklyplanner.presentation.screens.shared.TopBar
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.LocalTime
@@ -74,7 +71,8 @@ private fun TaskScreenContent(
     onNavigateBack: () -> Unit,
     modifier: Modifier,
 ) = when (state) {
-    is TaskScreenState.Initial -> CircularProgressIndicator(modifier = modifier)
+    is TaskScreenState.Initial ->
+        CircularProgressIndicator()
     is TaskScreenState.Content -> TaskScreenBaseContent(
         state = state,
         onAction = onAction,
@@ -118,7 +116,7 @@ private fun TaskScreenBaseContent(
             )
         }
     ) { padding: PaddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .padding(padding)
                 .padding(16.dp),
@@ -127,65 +125,77 @@ private fun TaskScreenBaseContent(
             ),
             horizontalAlignment = Alignment.Start
         ) {
-            TaskScreenInputField(
-                nameText = state.name,
-                taskNameError = state.errorMessage?.let { stringResource(id = it) },
-                descriptionText = state.description,
-                editState = state.editable,
-                onTaskTitleValueChange = { onAction(TaskScreenAction.SetName(it)) },
-                onTaskDescriptionValueChange = { onAction(TaskScreenAction.SetDescription(it)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            TaskScreenPriorityInputField(
-                editState = state.editable,
-                priority = state.priority,
-                onClick = { onAction(TaskScreenAction.SetPriorityPickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ScreenHorizontalDivider()
-            TaskScreenDifficultyInputField(
-                editState = state.editable,
-                difficulty = state.difficulty,
-                onClick = { onAction(TaskScreenAction.SetDifficultyPickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ScreenHorizontalDivider()
-            TaskScreenCategoryInputField(
-                editState = state.editable,
-                category = state.category,
-                onClick = { onAction(TaskScreenAction.SetCategoryPickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ScreenHorizontalDivider()
-            TaskScreenDateInputField(
-                selectedDate = state.date,
-                editState = state.editable,
-                onClick = { onAction(TaskScreenAction.SetDatePickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ScreenHorizontalDivider()
-            TaskScreenTimeInputField(
-                selectedTime = state.time,
-                editState = state.editable,
-                onClick = { onAction(TaskScreenAction.SetTimePickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            ScreenHorizontalDivider()
-            TaskScreenNotificationTimeInputField(
-                notificationTime =
-                if (state.notificationTimeOffset != null)
-                    notificationTimeString(state.date, state.time, state.notificationTimeOffset)
-                else null,
-                editState = state.editable,
-                onClick = { onAction(TaskScreenAction.SetNotificationTimePickerVisibility(true)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            if (state is TaskScreenState.Add) {
-                ScreenHorizontalDivider()
-                TaskScreenRepetitionInputField(
+            item {
+                TaskScreenInputField(
+                    nameText = state.name,
+                    taskNameError = state.nameErrorMessage?.let { stringResource(id = it) },
                     editState = state.editable,
-                    difficulty = Unit,
-                    onClick = {},
+                    onTaskTitleValueChange = { onAction(TaskScreenAction.SetName(it)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item {
+                TaskScreenDescriptionInputField(
+                    text = state.description,
+                    descriptionErrorString = state.descriptionErrorMessage?.let { stringResource(id = it) },
+                    editState = state.editable,
+                    onTaskDescriptionValueChange = { onAction(TaskScreenAction.SetDescription(it)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item {
+                TaskScreenPriorityInputField(
+                    editState = state.editable,
+                    priority = state.priority,
+                    onClick = { onAction(TaskScreenAction.SetPriorityPickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                TaskScreenDifficultyInputField(
+                    editState = state.editable,
+                    difficulty = state.difficulty,
+                    onClick = { onAction(TaskScreenAction.SetDifficultyPickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                TaskScreenCategoryInputField(
+                    editState = state.editable,
+                    category = state.category,
+                    onClick = { onAction(TaskScreenAction.SetCategoryPickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                TaskScreenDateInputField(
+                    selectedDate = state.date,
+                    editState = state.editable,
+                    onClick = { onAction(TaskScreenAction.SetDatePickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                TaskScreenTimeInputField(
+                    selectedTime = state.time,
+                    editState = state.editable,
+                    onClick = { onAction(TaskScreenAction.SetTimePickerVisibility(true)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item { ScreenHorizontalDivider() }
+            item {
+                TaskScreenNotificationTimeInputField(
+                    notificationTime =
+                    if (state.notificationTimeOffset != null)
+                        notificationTimeString(state.date, state.time, state.notificationTimeOffset)
+                    else null,
+                    editState = state.editable,
+                    onClick = { onAction(TaskScreenAction.SetNotificationTimePickerVisibility(true)) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -274,8 +284,7 @@ private fun TaskScreenBaseContent(
                 },
                 onDismissRequest = {
                     onAction(TaskScreenAction.SetTaskLimitWindowVisibility(false))
-                },
-                //modifier = Modifier.fillMaxWidth(0.95f)
+                }
             )
         }
     }
@@ -326,7 +335,8 @@ private fun TaskScreenContent2Preview() {
         isTimePickerOpened = false,
         isNotificationTimePickerOpened = false,
         isTaskLimitWindowOpened = false,
-        errorMessage = null
+        nameErrorMessage = null,
+        descriptionErrorMessage = null
     )
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenContent(
@@ -359,7 +369,8 @@ private fun TaskScreenContent3Preview() {
         isTimePickerOpened = false,
         isNotificationTimePickerOpened = false,
         isTaskLimitWindowOpened = false,
-        errorMessage = null
+        nameErrorMessage = null,
+        descriptionErrorMessage = null
     )
     CourseWorkAndroidWeeklyPlannerTheme {
         TaskScreenContent(

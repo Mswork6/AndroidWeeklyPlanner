@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.androidweeklyplanner.data.entity.TaskEntity
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 import java.util.UUID
 
 @Dao
@@ -17,6 +18,24 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks WHERE id = :id")
     suspend fun getTask(id: UUID): TaskEntity?
+
+    @Query("""
+      SELECT * 
+      FROM tasks 
+      WHERE deadline_day BETWEEN :startDate AND :endDate
+    """)
+    fun getTasksForDateRange(
+        startDate: Long,
+        endDate: Long
+    ): Flow<List<TaskEntity>>
+
+    @Query(
+        """
+  SELECT * FROM tasks
+  WHERE deadline_day = :date
+  """
+    )
+    fun getTasksByDate(date: Long): Flow<List<TaskEntity>>
 
     @Insert(entity = TaskEntity::class, onConflict = OnConflictStrategy.ABORT)
     suspend fun insertTask(entity: TaskEntity)

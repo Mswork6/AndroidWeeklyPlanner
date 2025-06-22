@@ -15,9 +15,7 @@ sealed interface TasksMainScreenAction {
 
     data class ToggleTaskStatus(val task: Task) : TasksMainScreenAction
 
-    data class CelebrateDay(val date: LocalDate) : TasksMainScreenAction
-
-    data class UncelebrateDay(val date: LocalDate) : TasksMainScreenAction
-
     data class DeleteTask(val task: Task) : TasksMainScreenAction
+
+    data class StopEncouragingAnimation(val date: LocalDate) : TasksMainScreenAction
 }

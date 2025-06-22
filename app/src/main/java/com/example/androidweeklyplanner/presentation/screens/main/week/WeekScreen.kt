@@ -25,8 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.Week
-import com.example.androidweeklyplanner.presentation.convertToLocalDate
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.dateToString
 import com.example.androidweeklyplanner.presentation.screens.shared.DatePickerModal
 import java.time.LocalDate

@@ -78,6 +78,6 @@ dependencies {
     implementation(libs.room.kotlin)
     ksp(libs.room.compiler)
 
-    implementation("com.airbnb.android:lottie-compose:6.1.0")
-    implementation("androidx.datastore:datastore-preferences:1.1.0")
+    implementation(libs.lottie.compose)
+    implementation(libs.androidx.datastore.preferences)
 }

@@ -5,6 +5,7 @@ sealed interface TaskBuilderReport {
 
     data class Default(
         val nameReport: NameReport,
+        val descriptionReport: DescriptionReport,
         val taskLimitReport: TaskLimitReport
     ) : TaskBuilderReport
 }
@@ -15,8 +16,12 @@ sealed interface NameReport {
     data object Empty : NameReport
 
     data object TooLong : NameReport
+}
 
-    data object UselessWhitespaces : NameReport
+sealed interface DescriptionReport {
+    data object Valid : DescriptionReport
+
+    data object TooLong : DescriptionReport
 }
 
 sealed interface TaskLimitReport {

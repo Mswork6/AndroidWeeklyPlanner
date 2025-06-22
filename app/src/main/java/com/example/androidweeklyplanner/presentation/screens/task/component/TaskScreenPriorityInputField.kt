@@ -15,8 +15,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.Priority
+import com.example.androidweeklyplanner.presentation.color
 import com.example.androidweeklyplanner.presentation.description
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 
 @Composable
 internal fun TaskScreenPriorityInputField(
@@ -42,6 +43,7 @@ internal fun TaskScreenPriorityInputField(
         )
         Text(
             text = stringResource(priority.description),
+            color = priority.color,
             style = MaterialTheme.typography.labelSmall
         )
     }

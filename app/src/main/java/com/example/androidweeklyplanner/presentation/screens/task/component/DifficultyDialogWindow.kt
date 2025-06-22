@@ -27,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,7 +34,7 @@ import androidx.compose.ui.window.Dialog
 import com.example.androidweeklyplanner.R
 import com.example.androidweeklyplanner.domain.model.Difficulty
 import com.example.androidweeklyplanner.presentation.color
-import com.example.androidweeklyplanner.presentation.core.CourseWorkAndroidWeeklyPlannerTheme
+import com.example.androidweeklyplanner.presentation.core.theme.CourseWorkAndroidWeeklyPlannerTheme
 import com.example.androidweeklyplanner.presentation.description
 import com.example.androidweeklyplanner.presentation.screens.main.component.DifficultyCircle
 
@@ -149,7 +148,7 @@ fun RadioButtonGroupWithDifficultyEnum(
                 )
                 Row(modifier = Modifier.weight(1f)) {
                     DifficultyCircle(
-                        color = colorResource(option.color)
+                        color = option.color
                     )
                 }
 

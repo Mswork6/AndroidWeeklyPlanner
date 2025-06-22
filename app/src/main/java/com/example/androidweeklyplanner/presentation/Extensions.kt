@@ -1,9 +1,11 @@
 package com.example.androidweeklyplanner.presentation
 
-import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SelectableDates
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -15,6 +17,7 @@ import com.example.androidweeklyplanner.domain.model.NotificationTime
 import com.example.androidweeklyplanner.domain.model.Priority
 import com.example.androidweeklyplanner.domain.model.SortType
 import com.example.androidweeklyplanner.domain.model.Week
+import com.example.androidweeklyplanner.presentation.core.theme.extendedColors
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -27,7 +30,6 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 private val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-private val dateFormatterShort: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yy")
 private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 private val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm")
 
@@ -65,9 +67,9 @@ fun notificationDateTimeString(date: LocalDate, time: LocalTime, offset: Long): 
     val taskDateTime: LocalDateTime = LocalDateTime.of(date, time)
     val notificationDateTime: LocalDateTime =
         LocalDateTime.of(date, time).plusMinutes(offset)
-    if (taskDateTime.toLocalDate().equals(notificationDateTime.toLocalDate())){
-        return timeToString(time.plusMinutes(offset))
-    } else return dateTimeToString(notificationDateTime)
+    return if (taskDateTime.toLocalDate().equals(notificationDateTime.toLocalDate())){
+        timeToString(time.plusMinutes(offset))
+    } else dateTimeToString(notificationDateTime)
 }
 
 fun notificationTimeString(date: LocalDate, time: LocalTime, offset: Long?): String? {
@@ -149,12 +151,21 @@ val Difficulty.description: Int
         Difficulty.HARD -> R.string.description_difficulty_hard
     }
 
-@get:ColorRes
-val Difficulty.color: Int
+
+val Difficulty.color: Color
+    @Composable
     get() = when (this) {
-        Difficulty.EASY -> R.color.green
-        Difficulty.MEDIUM -> R.color.orange
-        Difficulty.HARD -> R.color.red
+        Difficulty.EASY -> MaterialTheme.extendedColors.green
+        Difficulty.MEDIUM -> MaterialTheme.extendedColors.orange
+        Difficulty.HARD -> MaterialTheme.extendedColors.red
+    }
+
+val Priority.color: Color
+    @Composable
+    get() = when (this) {
+        Priority.HIGH -> MaterialTheme.extendedColors.red
+        Priority.BASIC -> MaterialTheme.extendedColors.black
+        Priority.LOW -> MaterialTheme.extendedColors.gray
     }
 
 @get:StringRes
