@@ -1,16 +1,21 @@
 package com.example.androidweeklyplanner.presentation
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.LaunchedEffect
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -37,7 +42,31 @@ class MainActivity : ComponentActivity() {
     lateinit var eventBus: NotificationEventBus
     private lateinit var navController: NavHostController
 
+    private val requestNotificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+                // Пользователь отказал в разрешении
+                Toast.makeText(
+                    this,
+                    "Чтобы получать напоминания, включите уведомления в настройках",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Android 13 и выше
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // проверка разрешения на уведомления
+            if (ContextCompat.checkSelfPermission(
+                    this, POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestNotificationPermissionLauncher
+                    .launch(POST_NOTIFICATIONS)
+            }
+        }
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
