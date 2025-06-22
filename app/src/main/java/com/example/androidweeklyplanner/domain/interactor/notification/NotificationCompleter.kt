@@ -1,5 +1,6 @@
 package com.example.androidweeklyplanner.domain.interactor.notification
 
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -16,6 +17,7 @@ import javax.inject.Inject
 class NotificationCompleter : BroadcastReceiver() {
     @Inject lateinit var taskInteractor: TaskInteractor
     @Inject lateinit var toggleTaskStatus: ToggleTaskStatusUseCase
+    @Inject lateinit var notificationInteractor: NotificationInteractor
     @Inject lateinit var scope: CoroutineScope
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -24,13 +26,13 @@ class NotificationCompleter : BroadcastReceiver() {
             val task = taskInteractor.getTask(taskId)
             if (task != null && !task.isDone) {
                 toggleTaskStatus(task)
+                notificationInteractor.deleteNotification(taskId)
             }
         }
 
         try {
-            val notifId = getTaskId(intent.extras).hashCode()
-            val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
-            nm.cancel(notifId)
-        } catch(e:Exception){ Log.w("NotificationCompleter", e) }
+            val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            nm.cancel(getTaskId(intent.extras).hashCode())
+        } catch (_: Exception) {}
     }
 }
