@@ -7,6 +7,7 @@ import android.content.Intent
 import android.util.Log
 import com.example.androidweeklyplanner.domain.getTaskId
 import com.example.androidweeklyplanner.domain.interactor.saver.TaskInteractor
+import com.example.androidweeklyplanner.domain.notification
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -19,7 +20,7 @@ class NotificationPostponer : BroadcastReceiver() {
     lateinit var taskInteractor: TaskInteractor
 
     @Inject
-    lateinit var notificationManager: NotificationManager
+    lateinit var notificationInteractor: NotificationInteractor
 
     @Inject
     lateinit var scope: CoroutineScope
@@ -27,22 +28,25 @@ class NotificationPostponer : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         try {
             scope.launch {
-                when (val task = taskInteractor.getTask(getTaskId(intent.extras))) {
-                    null -> Unit
-                    else -> {
-                        notificationManager.cancel(task.id.hashCode())
-                        val taskTime = LocalDateTime.of(task.date, task.time)
-                        val currentTime = LocalDateTime.now()
-                        var offset = (task.notificationTimeOffset ?: 0L) + 15L
-                        var nextNotify = taskTime.plusMinutes(offset)
-                        while (!nextNotify.isAfter(currentTime)) {
-                            offset += 15L
-                            nextNotify = taskTime.plusMinutes(offset)
-                        }
-                        taskInteractor.updateTask(task.copy(notificationTimeOffset = offset))
-                    }
+                val taskId = getTaskId(intent.extras)
+                val task = taskInteractor.getTask(taskId) ?: return@launch
+                notificationInteractor.deleteNotification(taskId)
+                val originalOffset = task.notificationTimeOffset ?: 0L
+                var newOffset = originalOffset + 15L
+                val taskDateTime = LocalDateTime.of(task.date, task.time)
+                var nextNotify = taskDateTime.plusMinutes(newOffset)
+                while (!nextNotify.isAfter(LocalDateTime.now())) {
+                    newOffset += 15L
+                    nextNotify = taskDateTime.plusMinutes(newOffset)
                 }
+                taskInteractor.updateTask(task.copy(notificationTimeOffset = newOffset))
+
             }
+            try {
+                val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                nm.cancel(getTaskId(intent.extras).hashCode())
+            } catch (_: Exception) {}
+
         } catch (exception: Exception) {
             Log.d(this::class.java.toString(), exception.stackTraceToString())
         }

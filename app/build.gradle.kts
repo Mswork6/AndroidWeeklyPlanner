@@ -80,4 +80,12 @@ dependencies {
 
     implementation(libs.lottie.compose)
     implementation(libs.androidx.datastore.preferences)
+
+    // WorkManager + Hilt
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.work.compiler)
+
+    ksp("androidx.hilt:hilt-compiler:1.1.0")
+    ksp("com.google.dagger:hilt-compiler:2.48.1")
 }
