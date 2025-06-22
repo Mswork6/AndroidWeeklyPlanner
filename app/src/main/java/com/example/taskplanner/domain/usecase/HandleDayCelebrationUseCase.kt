@@ -18,9 +18,11 @@ class HandleDayCelebrationUseCase @Inject constructor(
 
         if (allTasksDone) {
             celebratedDatesDataStore.markDateCelebrated(date)
-            celebrationEventBus.send(date)
+            celebrationEventBus.celebrate(date)
         } else {
             celebratedDatesDataStore.unmarkDateCelebrated(date)
+            celebrationEventBus.uncelebrate(date)
+
         }
     }
 }

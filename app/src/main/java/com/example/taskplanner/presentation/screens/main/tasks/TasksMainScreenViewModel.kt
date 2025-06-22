@@ -3,6 +3,7 @@ package com.example.taskplanner.presentation.screens.main.tasks
 import androidx.lifecycle.viewModelScope
 import com.example.taskplanner.data.CelebratedDatesDataStore
 import com.example.taskplanner.domain.eventBus.CelebrationEventBus
+import com.example.taskplanner.domain.eventBus.model.CelebrationEvent
 import com.example.taskplanner.domain.interactor.notification.NotificationEventBus
 import com.example.taskplanner.domain.interactor.saver.TaskInteractor
 import com.example.taskplanner.domain.model.Task
@@ -37,8 +38,11 @@ class TasksMainScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            celebrationEventBus.events.collect { date ->
-                _playingDates.update { it + date }
+            celebrationEventBus.events.collect { event ->
+                when (event) {
+                    is CelebrationEvent.Celebrate -> _playingDates.update { it + event.date }
+                    is CelebrationEvent.Uncelebrate -> _playingDates.update { it - event.date }
+                }
             }
         }
 
