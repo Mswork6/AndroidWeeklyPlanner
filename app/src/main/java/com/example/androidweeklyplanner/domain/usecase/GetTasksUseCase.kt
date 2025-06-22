@@ -33,43 +33,4 @@ class GetTasksUseCase @Inject constructor(
             }
             .flowOn(Dispatchers.Default)
 
-//    private fun applyFilter(tasks: List<Task>, cfg: FilterConfig): List<Task> {
-//        return tasks.filter { task ->
-//            // Диапазон дат
-//            (cfg.startDate == null || !task.date.isBefore(cfg.startDate)) &&
-//                    (cfg.endDate == null || !task.date.isAfter(cfg.endDate)) &&
-//                    // Приоритет
-//                    (cfg.priorityFilter.isEmpty() || cfg.priorityFilter.contains(task.priority)) &&
-//                    // Сложность
-//                    (cfg.difficultyFilter.isEmpty() || cfg.difficultyFilter.contains(task.difficulty)) &&
-//                    // Категории
-//                    (cfg.categoryFilter.isEmpty() || cfg.categoryFilter.contains(task.category))
-//        }
-//    }
-//
-//    private fun applySort(tasks: List<Task>, cfg: SortConfig): List<Task> {
-//        val comparator = buildComparator(cfg)
-//        return tasks.sortedWith(comparator)
-//    }
-//
-//    private fun buildComparator(cfg: SortConfig): Comparator<Task> {
-//        var comparator: Comparator<Task> = compareBy<Task> { it.date }
-//            .thenBy { it.time }
-//
-//        // Сложность
-//        when (cfg.difficultyOrder) {
-//            SortType.INCREASE -> comparator = compareBy<Task> { it.difficulty }.then(comparator)
-//            SortType.DECREASE -> comparator = compareByDescending<Task> { it.difficulty }.then(comparator)
-//            else -> { }
-//        }
-//
-//        // Приоритет
-//        when (cfg.priorityOrder) {
-//            SortType.INCREASE -> comparator = compareBy<Task> { it.priority }.then(comparator)
-//            SortType.DECREASE -> comparator = compareByDescending<Task> { it.priority }.then(comparator)
-//            else -> { }
-//        }
-//
-//        return comparator
-//    }
 }

@@ -53,25 +53,4 @@ class GetDaysUseCase @Inject constructor(
             )
         }.toList()
     }
-
-//    private fun createComparator(config: SortConfig): Comparator<Task> {
-//        // базовый компаратор по времени
-//        var comparator: Comparator<Task> = compareBy { it.time }
-//
-//        // вторичный ключ — сложность
-//        when (config.difficultyOrder) {
-//            SortType.INCREASE -> comparator = compareBy<Task> { it.difficulty }.then(comparator)
-//            SortType.DECREASE -> comparator = compareByDescending<Task> { it.difficulty }.then(comparator)
-//            else -> { /* ничего не делаем */ }
-//        }
-//
-//        // первичный ключ — приоритет
-//        when (config.priorityOrder) {
-//            SortType.INCREASE -> comparator = compareBy<Task> { it.priority }.then(comparator)
-//            SortType.DECREASE -> comparator = compareByDescending<Task> { it.priority }.then(comparator)
-//            else -> { /* ничего не делаем */ }
-//        }
-//
-//        return comparator
-//    }
 }
