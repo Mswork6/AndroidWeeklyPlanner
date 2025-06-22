@@ -122,14 +122,14 @@ class NotificationWorker @AssistedInject constructor(
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setContentIntent(clickIntent)
             .addAction(
-                R.drawable.baseline_more_time_24,                              // иконка для «Отложить»
-                applicationContext.getString(R.string.postpone_for_15_minutes),// текст кнопки
-                postponePending                                               // Intent
+                R.drawable.baseline_more_time_24,
+                applicationContext.getString(R.string.postpone_for_15_minutes),
+                postponePending
             )
             .addAction(
-                R.drawable.icon_checkbox_done,                                // иконка для «Завершить»
-                applicationContext.getString(R.string.action_complete),      // текст кнопки
-                completePending                                              // Intent
+                R.drawable.icon_checkbox_done,
+                applicationContext.getString(R.string.action_complete),
+                completePending
             )
             .setAutoCancel(true)
             .build()
